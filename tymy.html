@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Teko:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=280">
+    <link rel="stylesheet" href="style.css?v=300">
 
     <style>
         /* =========================================================
@@ -686,7 +686,7 @@
         }
 
         /* =========================================================
-           3. HEAD-TO-HEAD SROVNÁNÍ (COMPARE MODAL)
+           3. HEAD-TO-HEAD SROVNÁNÍ (COMPARE MODAL S FILTREM TÝMU)
            ========================================================= */
         .compare-switch-row {
             display: flex;
@@ -722,6 +722,19 @@
             margin-bottom: 1.5rem;
         }
 
+        .selector-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .selector-label {
+            font-size: 0.75rem;
+            color: #888;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
         .vs-circle {
             font-family: 'Teko', sans-serif;
             font-size: 1.4rem;
@@ -734,6 +747,7 @@
             align-items: center;
             justify-content: center;
             border: 1px solid #333;
+            margin-top: 1.2rem;
         }
 
         .compare-select {
@@ -741,11 +755,12 @@
             background: #161616;
             border: 1px solid #333;
             color: #fff;
-            padding: 0.6rem;
+            padding: 0.55rem;
             border-radius: 4px;
             font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             outline: none;
+            transition: border-color 0.2s ease;
         }
 
         .compare-select:focus {
@@ -1519,7 +1534,7 @@
         </div>
     </div>
 
-    <!-- 3. POP-UP MODAL: HEAD-TO-HEAD SROVNÁNÍ -->
+    <!-- 3. POP-UP MODAL: HEAD-TO-HEAD SROVNÁNÍ (S PODFILTREM TÝMU) -->
     <div class="modal-backdrop" id="compareModal" onclick="closeAllModals(event)">
         <div class="modal-box" id="compareModalBox" style="--modal-color: #ff4600;" onclick="event.stopPropagation()">
             <button class="modal-close-btn" onclick="closeAllModalsDirect()">✕</button>
@@ -1529,10 +1544,27 @@
                 <button class="switch-btn" id="compareTypePlayer" onclick="setCompareType('PLAYERS')">👤 SROVNÁNÍ HRÁČŮ</button>
             </div>
 
+            <!-- OVLÁDÁNÍ VÝBĚRU (PRO TÝMY I HRÁČE) -->
             <div class="selectors-grid">
-                <select id="compareSelectLeft" class="compare-select" onchange="renderComparison()"></select>
+                <!-- LEVÁ STRANA -->
+                <div class="selector-column">
+                    <div class="selector-label" id="labelLeftTop">Výběr týmu</div>
+                    <select id="compareTeamSelectLeft" class="compare-select" onchange="handleTeamSelectChange('LEFT')"></select>
+                    
+                    <div class="selector-label" id="labelLeftPlayer" style="display:none; margin-top:0.4rem;">Výběr hráče</div>
+                    <select id="comparePlayerSelectLeft" class="compare-select" style="display:none;" onchange="renderComparison()"></select>
+                </div>
+
                 <div class="vs-circle">VS</div>
-                <select id="compareSelectRight" class="compare-select" onchange="renderComparison()"></select>
+
+                <!-- PRAVÁ STRANA -->
+                <div class="selector-column">
+                    <div class="selector-label" id="labelRightTop">Výběr týmu</div>
+                    <select id="compareTeamSelectRight" class="compare-select" onchange="handleTeamSelectChange('RIGHT')"></select>
+                    
+                    <div class="selector-label" id="labelRightPlayer" style="display:none; margin-top:0.4rem;">Výběr hráče</div>
+                    <select id="comparePlayerSelectRight" class="compare-select" style="display:none;" onchange="renderComparison()"></select>
+                </div>
             </div>
 
             <div class="compare-table" id="compareTableContainer">
@@ -1632,8 +1664,27 @@
                 gameTime: "33:10", streak: "1L", fb: 40, ft: 40,
                 drags: 1.9, barons: 0.6, kills: 13.8, deaths: 15.2, goldDiff: -450,
                 bansAgainst: []
-            }
+            },
+            "Draconics": { tag: "DRA", record: "0W — 0L", coach: "Coach: TBD", winrate: 0, kda: 0, gameTime: "--:--", streak: "--", fb: 0, ft: 0, drags: 0, barons: 0, kills: 0, deaths: 0, goldDiff: 0, bansAgainst: [] },
+            "Eternals": { tag: "ETE", record: "0W — 0L", coach: "Coach: TBD", winrate: 0, kda: 0, gameTime: "--:--", streak: "--", fb: 0, ft: 0, drags: 0, barons: 0, kills: 0, deaths: 0, goldDiff: 0, bansAgainst: [] },
+            "Forgottens": { tag: "FRG", record: "0W — 0L", coach: "Coach: TBD", winrate: 0, kda: 0, gameTime: "--:--", streak: "--", fb: 0, ft: 0, drags: 0, barons: 0, kills: 0, deaths: 0, goldDiff: 0, bansAgainst: [] },
+            "Hellions": { tag: "HEL", record: "0W — 0L", coach: "Coach: TBD", winrate: 0, kda: 0, gameTime: "--:--", streak: "--", fb: 0, ft: 0, drags: 0, barons: 0, kills: 0, deaths: 0, goldDiff: 0, bansAgainst: [] },
+            "Lunars": { tag: "LUN", record: "0W — 0L", coach: "Coach: TBD", winrate: 0, kda: 0, gameTime: "--:--", streak: "--", fb: 0, ft: 0, drags: 0, barons: 0, kills: 0, deaths: 0, goldDiff: 0, bansAgainst: [] },
+            "Mystics": { tag: "MYS", record: "0W — 0L", coach: "Coach: TBD", winrate: 0, kda: 0, gameTime: "--:--", streak: "--", fb: 0, ft: 0, drags: 0, barons: 0, kills: 0, deaths: 0, goldDiff: 0, bansAgainst: [] },
+            "Protectors": { tag: "PRO", record: "0W — 0L", coach: "Coach: TBD", winrate: 0, kda: 0, gameTime: "--:--", streak: "--", fb: 0, ft: 0, drags: 0, barons: 0, kills: 0, deaths: 0, goldDiff: 0, bansAgainst: [] },
+            "Redeemed": { tag: "RED", record: "0W — 0L", coach: "Coach: TBD", winrate: 0, kda: 0, gameTime: "--:--", streak: "--", fb: 0, ft: 0, drags: 0, barons: 0, kills: 0, deaths: 0, goldDiff: 0, bansAgainst: [] },
+            "Revenants": { tag: "REV", record: "0W — 0L", coach: "Coach: TBD", winrate: 0, kda: 0, gameTime: "--:--", streak: "--", fb: 0, ft: 0, drags: 0, barons: 0, kills: 0, deaths: 0, goldDiff: 0, bansAgainst: [] },
+            "Solars": { tag: "SOL", record: "0W — 0L", coach: "Coach: TBD", winrate: 0, kda: 0, gameTime: "--:--", streak: "--", fb: 0, ft: 0, drags: 0, barons: 0, kills: 0, deaths: 0, goldDiff: 0, bansAgainst: [] },
+            "Soul Stealers": { tag: "SSL", record: "0W — 0L", coach: "Coach: TBD", winrate: 0, kda: 0, gameTime: "--:--", streak: "--", fb: 0, ft: 0, drags: 0, barons: 0, kills: 0, deaths: 0, goldDiff: 0, bansAgainst: [] },
+            "Vanguards": { tag: "VAN", record: "0W — 0L", coach: "Coach: TBD", winrate: 0, kda: 0, gameTime: "--:--", streak: "--", fb: 0, ft: 0, drags: 0, barons: 0, kills: 0, deaths: 0, goldDiff: 0, bansAgainst: [] }
         };
+
+        const allTeamNames = [
+            "Imperials", "Abominations", "Apex Predators", "Arcanists", 
+            "Draconics", "Eternals", "Forgottens", "Hellions", 
+            "Lunars", "Mystics", "Protectors", "Redeemed", 
+            "Revenants", "Solars", "Soul Stealers", "Vanguards"
+        ];
 
         let currentRoleFilter = 'ALL';
         let currentCompareMode = 'TEAMS';
@@ -1798,7 +1849,7 @@
         }
 
         // =========================================================
-        // HEAD-TO-HEAD COMPARE LOGIKA
+        // HEAD-TO-HEAD COMPARE LOGIKA (S PODFILTREM TÝMU)
         // =========================================================
         function openCompareModal() {
             closeAllModalsDirect();
@@ -1810,44 +1861,95 @@
             currentCompareMode = type;
             const btnTeam = document.getElementById('compareTypeTeam');
             const btnPlayer = document.getElementById('compareTypePlayer');
-            const selLeft = document.getElementById('compareSelectLeft');
-            const selRight = document.getElementById('compareSelectRight');
+            
+            const teamSelLeft = document.getElementById('compareTeamSelectLeft');
+            const teamSelRight = document.getElementById('compareTeamSelectRight');
+            const playerSelLeft = document.getElementById('comparePlayerSelectLeft');
+            const playerSelRight = document.getElementById('comparePlayerSelectRight');
+
+            const labelLeftTop = document.getElementById('labelLeftTop');
+            const labelRightTop = document.getElementById('labelRightTop');
+            const labelLeftPlayer = document.getElementById('labelLeftPlayer');
+            const labelRightPlayer = document.getElementById('labelRightPlayer');
 
             if (type === 'TEAMS') {
                 btnTeam.classList.add('active');
                 btnPlayer.classList.remove('active');
 
-                const allTeams = ["Imperials", "Abominations", "Apex Predators", "Arcanists", "Draconics", "Eternals", "Forgottens", "Hellions", "Lunars", "Mystics", "Protectors", "Redeemed", "Revenants", "Solars", "Soul Stealers", "Vanguards"];
-                selLeft.innerHTML = allTeams.map(t => `<option value="${t}">${t}</option>`).join('');
-                selRight.innerHTML = allTeams.map(t => `<option value="${t}">${t}</option>`).join('');
+                labelLeftTop.textContent = "Výběr týmu";
+                labelRightTop.textContent = "Výběr týmu";
+                labelLeftPlayer.style.display = "none";
+                labelRightPlayer.style.display = "none";
+                playerSelLeft.style.display = "none";
+                playerSelRight.style.display = "none";
+
+                teamSelLeft.innerHTML = allTeamNames.map(t => `<option value="${t}">${t}</option>`).join('');
+                teamSelRight.innerHTML = allTeamNames.map(t => `<option value="${t}">${t}</option>`).join('');
                 
-                selLeft.value = "Imperials";
-                selRight.value = "Apex Predators";
+                teamSelLeft.value = "Imperials";
+                teamSelRight.value = "Apex Predators";
             } else {
                 btnPlayer.classList.add('active');
                 btnTeam.classList.remove('active');
 
-                const playerNames = Object.keys(playersDatabase);
-                selLeft.innerHTML = playerNames.map(p => `<option value="${p}">${p} (${playersDatabase[p].role})</option>`).join('');
-                selRight.innerHTML = playerNames.map(p => `<option value="${p}">${p} (${playersDatabase[p].role})</option>`).join('');
+                labelLeftTop.textContent = "1. Vyber tým hráče";
+                labelRightTop.textContent = "1. Vyber tým hráče";
+                labelLeftPlayer.style.display = "block";
+                labelRightPlayer.style.display = "block";
+                playerSelLeft.style.display = "block";
+                playerSelRight.style.display = "block";
+
+                teamSelLeft.innerHTML = allTeamNames.map(t => `<option value="${t}">${t}</option>`).join('');
+                teamSelRight.innerHTML = allTeamNames.map(t => `<option value="${t}">${t}</option>`).join('');
                 
-                if (playerNames.length >= 2) {
-                    selLeft.value = playerNames[0];
-                    selRight.value = playerNames[1];
+                teamSelLeft.value = "Imperials";
+                teamSelRight.value = "Imperials";
+
+                populatePlayersForTeam('LEFT', 'Imperials');
+                populatePlayersForTeam('RIGHT', 'Imperials');
+
+                // Nastavíme výchozí porovnání např. Tomíno vs Fish
+                const pKeys = Object.keys(playersDatabase);
+                if (pKeys.length >= 2) {
+                    playerSelLeft.value = pKeys[0];
+                    playerSelRight.value = pKeys[1];
                 }
             }
 
             renderComparison();
         }
 
-        function renderComparison() {
-            const leftVal = document.getElementById('compareSelectLeft').value;
-            const rightVal = document.getElementById('compareSelectRight').value;
-            const container = document.getElementById('compareTableContainer');
+        function handleTeamSelectChange(side) {
+            if (currentCompareMode === 'TEAMS') {
+                renderComparison();
+            } else {
+                const teamVal = document.getElementById(side === 'LEFT' ? 'compareTeamSelectLeft' : 'compareTeamSelectRight').value;
+                populatePlayersForTeam(side, teamVal);
+                renderComparison();
+            }
+        }
 
+        function populatePlayersForTeam(side, teamName) {
+            const playerSel = document.getElementById(side === 'LEFT' ? 'comparePlayerSelectLeft' : 'comparePlayerSelectRight');
+            
+            // Najdeme hráče pro daný tým z databáze
+            const matchedPlayers = Object.keys(playersDatabase).filter(p => playersDatabase[p].team === teamName);
+
+            if (matchedPlayers.length > 0) {
+                playerSel.innerHTML = matchedPlayers.map(p => `<option value="${p}">${p} (${playersDatabase[p].role})</option>`).join('');
+            } else {
+                playerSel.innerHTML = `<option value="TBD">TBD (Zatím bez dat)</option>`;
+            }
+        }
+
+        function renderComparison() {
+            const container = document.getElementById('compareTableContainer');
             container.innerHTML = '';
 
             if (currentCompareMode === 'TEAMS') {
+                const leftVal = document.getElementById('compareTeamSelectLeft').value;
+                const rightVal = document.getElementById('compareTeamSelectRight').value;
+
                 const t1 = teamsDatabase[leftVal] || { winrate: 0, kda: 0, drags: 0, barons: 0, goldDiff: 0, kills: 0 };
                 const t2 = teamsDatabase[rightVal] || { winrate: 0, kda: 0, drags: 0, barons: 0, goldDiff: 0, kills: 0 };
 
@@ -1858,15 +1960,18 @@
                 container.appendChild(createCompareRow(t1.kills, 'Kills / Hru', t2.kills, t1.kills, t2.kills));
                 container.appendChild(createCompareRow((t1.goldDiff > 0 ? '+' : '') + t1.goldDiff, 'Gold Diff @ 15', (t2.goldDiff > 0 ? '+' : '') + t2.goldDiff, t1.goldDiff, t2.goldDiff));
             } else {
+                const leftVal = document.getElementById('comparePlayerSelectLeft').value;
+                const rightVal = document.getElementById('comparePlayerSelectRight').value;
+
                 const p1 = playersDatabase[leftVal] || { winrate: 0, kda: 0, cs: 0, dmg: 0, vision: 0, soloKills: 0 };
                 const p2 = playersDatabase[rightVal] || { winrate: 0, kda: 0, cs: 0, dmg: 0, vision: 0, soloKills: 0 };
 
-                container.appendChild(createCompareRow(p1.winrate + '%', 'Winrate', p2.winrate + '%', p1.winrate, p2.winrate));
-                container.appendChild(createCompareRow(p1.kda, 'KDA Ratio', p2.kda, p1.kda, p2.kda));
-                container.appendChild(createCompareRow(p1.cs, 'CS / Minutu', p2.cs, p1.cs, p2.cs));
-                container.appendChild(createCompareRow(p1.dmg + 'k', 'DMG / Hru', p2.dmg + 'k', p1.dmg, p2.dmg));
-                container.appendChild(createCompareRow(p1.vision, 'Vision Score', p2.vision, p1.vision, p2.vision));
-                container.appendChild(createCompareRow(p1.soloKills, 'Solo Kills', p2.soloKills, p1.soloKills, p2.soloKills));
+                container.appendChild(createCompareRow((p1.winrate || 0) + '%', 'Winrate', (p2.winrate || 0) + '%', p1.winrate || 0, p2.winrate || 0));
+                container.appendChild(createCompareRow(p1.kda || 0, 'KDA Ratio', p2.kda || 0, p1.kda || 0, p2.kda || 0));
+                container.appendChild(createCompareRow(p1.cs || 0, 'CS / Minutu', p2.cs || 0, p1.cs || 0, p2.cs || 0));
+                container.appendChild(createCompareRow((p1.dmg || 0) + 'k', 'DMG / Hru', (p2.dmg || 0) + 'k', p1.dmg || 0, p2.dmg || 0));
+                container.appendChild(createCompareRow(p1.vision || 0, 'Vision Score', p2.vision || 0, p1.vision || 0, p2.vision || 0));
+                container.appendChild(createCompareRow(p1.soloKills || 0, 'Solo Kills', p2.soloKills || 0, p1.soloKills || 0, p2.soloKills || 0));
             }
         }
 
