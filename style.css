@@ -4,7 +4,7 @@
     --col-primary: #ff4600;
     --text-light: #ffffff;
     --text-muted: #a0a0a0;
-    --font-heading: 'Bebas Neue', sans-serif;
+    --font-heading: 'Teko', sans-serif;
     --font-body: 'Inter', sans-serif;
 }
 
@@ -167,18 +167,18 @@ a {
 .subtitle {
     font-family: var(--font-heading);
     letter-spacing: 2px;
-    font-size: 1.1rem;
-    margin-bottom: 1.2rem;
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
     text-transform: uppercase;
     color: var(--col-primary);
 }
 
 .main-title {
     font-family: var(--font-heading);
-    font-size: clamp(4.5rem, 9vw, 8.5rem);
-    line-height: 0.95;
+    font-size: clamp(5.5rem, 11vw, 10rem);
+    line-height: 0.88;
     text-transform: uppercase;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     letter-spacing: 1px;
 }
 
@@ -262,14 +262,10 @@ a {
 
 .massive-text {
     font-family: var(--font-heading);
-    font-size: clamp(3.8rem, 6.5vw, 6.2rem);
-    line-height: 1.15;
+    font-size: clamp(4.5rem, 8vw, 7.5rem);
+    line-height: 0.9;
     letter-spacing: 1px;
     text-transform: uppercase;
-}
-
-.massive-text .muted-text {
-    color: #555555;
 }
 
 .massive-text .highlight {
@@ -278,8 +274,8 @@ a {
 
 .massive-text-dark {
     font-family: var(--font-heading);
-    font-size: clamp(3.8rem, 6.5vw, 6.2rem);
-    line-height: 1.15;
+    font-size: clamp(4.5rem, 8vw, 7.5rem);
+    line-height: 0.9;
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--bg-dark);
@@ -289,8 +285,8 @@ a {
 .subtitle-dark {
     font-family: var(--font-heading);
     letter-spacing: 2px;
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
     text-transform: uppercase;
     color: #666;
 }
@@ -336,8 +332,9 @@ a {
 
 .stat-item h3 {
     font-family: var(--font-heading);
-    font-size: clamp(3rem, 4.5vw, 4.2rem);
+    font-size: clamp(3.5rem, 5.5vw, 5rem);
     letter-spacing: 1px;
+    line-height: 0.9;
     margin-bottom: 0.4rem;
 }
 
@@ -362,15 +359,15 @@ a {
 
 .step-number {
     font-family: var(--font-heading);
-    font-size: 3.5rem;
+    font-size: 4rem;
     color: var(--col-primary);
-    line-height: 1;
-    margin-bottom: 1rem;
+    line-height: 0.9;
+    margin-bottom: 0.8rem;
 }
 
 .step-card h4 {
     font-family: var(--font-heading);
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 0.75rem;
@@ -387,7 +384,7 @@ a {
     color: var(--col-primary);
     font-family: var(--font-heading);
     letter-spacing: 0.18em;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     text-transform: uppercase;
     margin-bottom: 1rem;
 }
@@ -412,14 +409,15 @@ a {
     color: var(--col-primary);
     font-family: var(--font-heading);
     letter-spacing: 0.12em;
-    font-size: 1rem;
+    font-size: 1.1rem;
     text-transform: uppercase;
 }
 
 .activity-card h3 {
-    margin: 1.5rem 0 0.8rem;
+    margin: 1.2rem 0 0.8rem;
     font-family: var(--font-heading);
-    font-size: 2.4rem;
+    font-size: 2.8rem;
+    line-height: 0.95;
     letter-spacing: 1px;
     text-transform: uppercase;
 }
@@ -448,7 +446,7 @@ a {
 
 .faq-item summary {
     font-family: var(--font-heading);
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     cursor: pointer;
     list-style: none;
     display: flex;
