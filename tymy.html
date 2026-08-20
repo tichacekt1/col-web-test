@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Přehled 16 týmů a soupisek League of Legends komunitní ligy Clash of Legends.">
+    <meta name="description" content="Přehled 16 týmových sestav a statistik League of Legends komunitní ligy Clash of Legends.">
     <title>Týmy — COL League</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Teko:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=180">
+    <link rel="stylesheet" href="style.css?v=200">
 
     <style>
         .hero .subtitle {
@@ -42,7 +42,7 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px color-mix(in srgb, var(--team-color) 25%, transparent);
         }
 
-        /* BANNER LOGA */
+        /* BANNER LOGA S TÝMOVÝM MODALEM */
         .team-banner {
             position: relative;
             height: 160px;
@@ -52,6 +52,7 @@
             justify-content: center;
             border-bottom: 1px solid #1f1f1f;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .team-banner-bg {
@@ -61,6 +62,11 @@
             background-position: center;
             filter: blur(14px) opacity(0.22);
             transform: scale(1.2);
+            transition: opacity 0.3s ease;
+        }
+
+        .team-banner:hover .team-banner-bg {
+            opacity: 0.35;
         }
 
         .team-logo-img {
@@ -74,8 +80,31 @@
             transition: transform 0.3s ease;
         }
 
-        .team-card:hover .team-logo-img {
-            transform: scale(1.05);
+        .team-banner:hover .team-logo-img {
+            transform: scale(1.08);
+        }
+
+        .team-banner-badge {
+            position: absolute;
+            bottom: 8px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #333;
+            color: var(--team-color, #ff4600);
+            font-size: 0.68rem;
+            font-weight: bold;
+            padding: 0.15rem 0.45rem;
+            border-radius: 3px;
+            z-index: 3;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .team-banner:hover .team-banner-badge {
+            opacity: 1;
+            border-color: var(--team-color, #ff4600);
         }
 
         .team-body {
@@ -261,9 +290,9 @@
         }
 
         /* =========================================================
-           POP-UP MODAL (HRÁČSKÁ STATISTICKÁ KARTA)
+           SPOLEČNÝ STYL PRO MODÁLNÍ OKNA (POP-UP)
            ========================================================= */
-        .player-modal-backdrop {
+        .modal-backdrop {
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.85);
@@ -278,18 +307,18 @@
             padding: 1.5rem;
         }
 
-        .player-modal-backdrop.active {
+        .modal-backdrop.active {
             opacity: 1;
             pointer-events: auto;
         }
 
-        .player-modal-box {
+        .modal-box {
             background: #0d0d0d;
             border: 1px solid #282828;
             border-top: 4px solid var(--modal-color, #ff4600);
             border-radius: 8px;
             width: 100%;
-            max-width: 540px;
+            max-width: 560px;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
@@ -299,7 +328,7 @@
             transition: transform 0.25s ease;
         }
 
-        .player-modal-backdrop.active .player-modal-box {
+        .modal-backdrop.active .modal-box {
             transform: scale(1);
         }
 
@@ -327,7 +356,6 @@
             border-color: #ff4600;
         }
 
-        /* MODAL HEADER */
         .modal-header-badges {
             display: flex;
             gap: 0.5rem;
@@ -346,12 +374,12 @@
             text-transform: uppercase;
         }
 
-        .modal-badge.role-badge {
+        .modal-badge.primary-badge {
             border-color: var(--modal-color, #ff4600);
             color: var(--modal-color, #ff4600);
         }
 
-        .modal-player-name {
+        .modal-main-title {
             font-family: 'Teko', sans-serif;
             font-size: 3rem;
             line-height: 0.9;
@@ -361,7 +389,7 @@
             margin: 0;
         }
 
-        .modal-team-subtitle {
+        .modal-subtitle {
             color: var(--modal-color, #ff4600);
             font-size: 0.95rem;
             font-weight: 600;
@@ -370,7 +398,7 @@
             margin-bottom: 1.5rem;
         }
 
-        /* MODAL TOP STRIP */
+        /* MODAL STRIP (4 POLÍČKA) */
         .modal-strip {
             background: #141414;
             border: 1px solid #222;
@@ -379,7 +407,7 @@
             grid-template-columns: repeat(4, 1fr);
             padding: 1rem 0.5rem;
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.4rem;
         }
 
         .strip-item strong {
@@ -397,7 +425,6 @@
             font-weight: 600;
         }
 
-        /* MODAL SECTION TITLE */
         .modal-sec-title {
             color: var(--modal-color, #ff4600);
             font-family: 'Teko', sans-serif;
@@ -407,8 +434,7 @@
             margin: 1.4rem 0 0.6rem;
         }
 
-        /* STATS GRID */
-        .modal-stats-grid {
+        .modal-stats-grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 0.6rem;
@@ -445,8 +471,8 @@
             font-weight: 600;
         }
 
-        /* CHAMPIONS LIST */
-        .modal-champs-list {
+        /* SEZNAMY V MODALU */
+        .modal-list {
             list-style: none;
             padding: 0;
             margin: 0;
@@ -455,7 +481,7 @@
             gap: 0.5rem;
         }
 
-        .champ-row {
+        .modal-list-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -465,13 +491,13 @@
             border-radius: 4px;
         }
 
-        .champ-left {
+        .item-left {
             display: flex;
             align-items: center;
             gap: 0.7rem;
         }
 
-        .champ-icon {
+        .item-icon {
             width: 28px;
             height: 28px;
             border-radius: 50%;
@@ -479,18 +505,18 @@
             object-fit: cover;
         }
 
-        .champ-name {
+        .item-name {
             font-weight: 600;
             font-size: 0.92rem;
             color: #fff;
         }
 
-        .champ-right {
+        .item-right {
             font-size: 0.85rem;
             color: #888;
         }
 
-        .champ-right strong {
+        .item-right strong {
             color: var(--modal-color, #ff4600);
             margin-left: 0.5rem;
         }
@@ -528,7 +554,7 @@
             </h1>
             <div class="hero-actions">
                 <div class="hero-text">
-                    <p>Kompletní přehled 16 ligových týmů a bodové essence. Kliknutím na kteréhokoliv hráče otevřeš jeho detailní kartu statistik.</p>
+                    <p>Kompletní přehled 16 ligových týmů. Kliknutím na <strong>logo týmu</strong> zobrazíš týmové statistiky, kliknutím na <strong>hráče</strong> otevřeš jeho kartu.</p>
                 </div>
             </div>
         </div>
@@ -549,9 +575,10 @@
 
                 <!-- 1. ABOMINATIONS -->
                 <div class="team-card" style="--team-color: #22c55e;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Abominations', 'ABO', 'assets/team-logos/Abominatios.png', '#22c55e')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Abominatios.png');"></div>
                         <img src="assets/team-logos/Abominatios.png" alt="Abominations" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -575,9 +602,10 @@
 
                 <!-- 2. APEX PREDATORS -->
                 <div class="team-card" style="--team-color: #ef4444;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Apex Predators', 'APX', 'assets/team-logos/Apex_Predators.png', '#ef4444')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Apex_Predators.png');"></div>
                         <img src="assets/team-logos/Apex_Predators.png" alt="Apex Predators" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -601,9 +629,10 @@
 
                 <!-- 3. ARCANISTS -->
                 <div class="team-card" style="--team-color: #00d2ff;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Arcanists', 'ARC', 'assets/team-logos/Arcanists.png', '#00d2ff')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Arcanists.png');"></div>
                         <img src="assets/team-logos/Arcanists.png" alt="Arcanists" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -627,9 +656,10 @@
 
                 <!-- 4. DRACONICS -->
                 <div class="team-card" style="--team-color: #ea580c;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Draconics', 'DRA', 'assets/team-logos/Draconics.png', '#ea580c')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Draconics.png');"></div>
                         <img src="assets/team-logos/Draconics.png" alt="Draconics" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -653,9 +683,10 @@
 
                 <!-- 5. ETERNALS -->
                 <div class="team-card" style="--team-color: #e2e8f0;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Eternals', 'ETE', 'assets/team-logos/Eternals.png', '#e2e8f0')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Eternals.png');"></div>
                         <img src="assets/team-logos/Eternals.png" alt="Eternals" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -679,9 +710,10 @@
 
                 <!-- 6. FORGOTTENS -->
                 <div class="team-card" style="--team-color: #14b8a6;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Forgottens', 'FRG', 'assets/team-logos/Forgottens.png', '#14b8a6')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Forgottens.png');"></div>
                         <img src="assets/team-logos/Forgottens.png" alt="Forgottens" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -705,9 +737,10 @@
 
                 <!-- 7. HELLIONS -->
                 <div class="team-card" style="--team-color: #f97316;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Hellions', 'HEL', 'assets/team-logos/Hellions.png', '#f97316')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Hellions.png');"></div>
                         <img src="assets/team-logos/Hellions.png" alt="Hellions" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -731,9 +764,10 @@
 
                 <!-- 8. IMPERIALS -->
                 <div class="team-card" style="--team-color: #d97706;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Imperials', 'IMP', 'assets/team-logos/Imperials.png', '#d97706')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Imperials.png');"></div>
                         <img src="assets/team-logos/Imperials.png" alt="Imperials" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -757,9 +791,10 @@
 
                 <!-- 9. LUNARS -->
                 <div class="team-card" style="--team-color: #6366f1;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Lunars', 'LUN', 'assets/team-logos/Lunars.png', '#6366f1')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Lunars.png');"></div>
                         <img src="assets/team-logos/Lunars.png" alt="Lunars" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -783,9 +818,10 @@
 
                 <!-- 10. MYSTICS -->
                 <div class="team-card" style="--team-color: #a855f7;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Mystics', 'MYS', 'assets/team-logos/Mystics.png', '#a855f7')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Mystics.png');"></div>
                         <img src="assets/team-logos/Mystics.png" alt="Mystics" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -809,9 +845,10 @@
 
                 <!-- 11. PROTECTORS -->
                 <div class="team-card" style="--team-color: #06b6d4;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Protectors', 'PRO', 'assets/team-logos/Protectors.png', '#06b6d4')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Protectors.png');"></div>
                         <img src="assets/team-logos/Protectors.png" alt="Protectors" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -835,9 +872,10 @@
 
                 <!-- 12. REDEEMED -->
                 <div class="team-card" style="--team-color: #facc15;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Redeemed', 'RED', 'assets/team-logos/Redeemed.png', '#facc15')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Redeemed.png');"></div>
                         <img src="assets/team-logos/Redeemed.png" alt="Redeemed" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -861,9 +899,10 @@
 
                 <!-- 13. REVENANTS -->
                 <div class="team-card" style="--team-color: #b91c1c;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Revenants', 'REV', 'assets/team-logos/Revenants.png', '#b91c1c')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Revenants.png');"></div>
                         <img src="assets/team-logos/Revenants.png" alt="Revenants" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -887,9 +926,10 @@
 
                 <!-- 14. SOLARS -->
                 <div class="team-card" style="--team-color: #eab308;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Solars', 'SOL', 'assets/team-logos/Solars.png', '#eab308')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Solars.png');"></div>
                         <img src="assets/team-logos/Solars.png" alt="Solars" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -913,9 +953,10 @@
 
                 <!-- 15. SOUL STEALERS -->
                 <div class="team-card" style="--team-color: #38bdf8;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Soul Stealers', 'SSL', 'assets/team-logos/Soul_Stealers.png', '#38bdf8')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Soul_Stealers.png');"></div>
                         <img src="assets/team-logos/Soul_Stealers.png" alt="Soul Stealers" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -939,9 +980,10 @@
 
                 <!-- 16. VANGUARDS -->
                 <div class="team-card" style="--team-color: #3b82f6;">
-                    <div class="team-banner">
+                    <div class="team-banner" onclick="openTeamModal('Vanguards', 'VAN', 'assets/team-logos/Vanguards.png', '#3b82f6')">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Vanguards.png');"></div>
                         <img src="assets/team-logos/Vanguards.png" alt="Vanguards" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
                     </div>
                     <div class="team-body">
                         <div class="team-header">
@@ -968,65 +1010,65 @@
         </div>
     </section>
 
-    <!-- STATISTICKÉ MODÁLNÍ OKNO -->
-    <div class="player-modal-backdrop" id="playerModal" onclick="closePlayerModal(event)">
-        <div class="player-modal-box" id="playerModalBox" onclick="event.stopPropagation()">
-            <button class="modal-close-btn" onclick="closePlayerModalDirect()">✕</button>
+    <!-- 1. POP-UP MODAL: HRÁČSKÉ STATISTIKY -->
+    <div class="modal-backdrop" id="playerModal" onclick="closeAllModals(event)">
+        <div class="modal-box" id="playerModalBox" onclick="event.stopPropagation()">
+            <button class="modal-close-btn" onclick="closeAllModalsDirect()">✕</button>
             
             <div class="modal-header-badges">
-                <span class="modal-badge role-badge" id="modalRole">TOP</span>
-                <span class="modal-badge" id="modalRank">DIAMOND II</span>
-                <span class="modal-badge" id="modalEssence">22 PTS</span>
+                <span class="modal-badge primary-badge" id="modalPlayerRole">TOP</span>
+                <span class="modal-badge" id="modalPlayerRank">DIAMOND II</span>
+                <span class="modal-badge" id="modalPlayerEssence">22 PTS</span>
             </div>
 
-            <h2 class="modal-player-name" id="modalName">Tomíno</h2>
-            <div class="modal-team-subtitle" id="modalTeam">IMPERIALS</div>
+            <h2 class="modal-main-title" id="modalPlayerName">Tomíno</h2>
+            <div class="modal-subtitle" id="modalPlayerTeam">IMPERIALS</div>
 
             <!-- Souhrn -->
             <div class="modal-strip">
                 <div class="strip-item">
-                    <strong id="modalGames">12</strong>
+                    <strong id="modalPlayerGames">12</strong>
                     <span>Her</span>
                 </div>
                 <div class="strip-item">
-                    <strong id="modalWinrate" style="color: #22c55e;">67%</strong>
+                    <strong id="modalPlayerWinrate" style="color: #22c55e;">67%</strong>
                     <span>Winrate</span>
                 </div>
                 <div class="strip-item">
-                    <strong id="modalKDA" style="color: #eab308;">3.45</strong>
+                    <strong id="modalPlayerKDA" style="color: #eab308;">3.45</strong>
                     <span>KDA</span>
                 </div>
                 <div class="strip-item">
-                    <strong id="modalMVP" style="color: #f97316;">2×</strong>
+                    <strong id="modalPlayerMVP" style="color: #f97316;">2×</strong>
                     <span>MVP</span>
                 </div>
             </div>
 
             <!-- Klíčové metriky -->
             <div class="modal-sec-title">Klíčové metriky splitu</div>
-            <div class="modal-stats-grid">
+            <div class="modal-stats-grid-3">
                 <div class="stat-box">
-                    <strong id="modalKills" style="color: #22c55e;">42</strong>
+                    <strong id="modalPlayerKills" style="color: #22c55e;">42</strong>
                     <span>Kills Celkem</span>
                 </div>
                 <div class="stat-box">
-                    <strong id="modalDeaths" style="color: #ef4444;">21</strong>
+                    <strong id="modalPlayerDeaths" style="color: #ef4444;">21</strong>
                     <span>Deaths Celkem</span>
                 </div>
                 <div class="stat-box">
-                    <strong id="modalAssists" style="color: #00d2ff;">86</strong>
+                    <strong id="modalPlayerAssists" style="color: #00d2ff;">86</strong>
                     <span>Assists Celkem</span>
                 </div>
                 <div class="stat-box">
-                    <strong id="modalCS">7.8</strong>
+                    <strong id="modalPlayerCS">7.8</strong>
                     <span>CS / Min</span>
                 </div>
                 <div class="stat-box">
-                    <strong id="modalVision">28.4</strong>
+                    <strong id="modalPlayerVision">28.4</strong>
                     <span>Vision Score</span>
                 </div>
                 <div class="stat-box">
-                    <strong id="modalDMG">21.5k</strong>
+                    <strong id="modalPlayerDMG">21.5k</strong>
                     <span>DMG / Hru</span>
                 </div>
             </div>
@@ -1035,178 +1077,277 @@
             <div class="modal-sec-title">Highlighty &amp; Speciální akce</div>
             <div class="modal-stats-grid-4">
                 <div class="stat-box">
-                    <strong id="modalSoloKills" style="color: #10b981;">8</strong>
+                    <strong id="modalPlayerSoloKills" style="color: #10b981;">8</strong>
                     <span>Solo Kills</span>
                 </div>
                 <div class="stat-box">
-                    <strong id="modalPentaKills" style="color: #ec4899;">1</strong>
+                    <strong id="modalPlayerPentaKills" style="color: #ec4899;">1</strong>
                     <span>Penta Kills</span>
                 </div>
                 <div class="stat-box">
-                    <strong id="modalFirstBloods" style="color: #f59e0b;">3</strong>
+                    <strong id="modalPlayerFirstBloods" style="color: #f59e0b;">3</strong>
                     <span>First Bloods</span>
                 </div>
                 <div class="stat-box">
-                    <strong id="modalTotalMvp" style="color: #6366f1;">2</strong>
+                    <strong id="modalPlayerTotalMvp" style="color: #6366f1;">2</strong>
                     <span>MVP Ocenění</span>
                 </div>
             </div>
 
             <!-- Odehraní šampioni -->
             <div class="modal-sec-title">Nejhranější šampioni</div>
-            <ul class="modal-champs-list" id="modalChampsList">
-                <li class="champ-row">
-                    <div class="champ-left">
-                        <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/Aatrox.png" class="champ-icon" alt="Aatrox">
-                        <span class="champ-name">Aatrox</span>
+            <ul class="modal-list" id="modalPlayerChampsList">
+                <li class="modal-list-item">
+                    <div class="item-left">
+                        <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/Aatrox.png" class="item-icon" alt="Aatrox">
+                        <span class="item-name">Aatrox</span>
                     </div>
-                    <div class="champ-right">5 her <strong>60% WR</strong></div>
-                </li>
-                <li class="champ-row">
-                    <div class="champ-left">
-                        <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/Renekton.png" class="champ-icon" alt="Renekton">
-                        <span class="champ-name">Renekton</span>
-                    </div>
-                    <div class="champ-right">4 hry <strong>75% WR</strong></div>
+                    <div class="item-right">5 her <strong>60% WR</strong></div>
                 </li>
             </ul>
 
         </div>
     </div>
 
-    <!-- JAVASCRIPT PRO INTERAKTIVNÍ POP-UP STATISTIKY -->
+    <!-- 2. POP-UP MODAL: CELKOVÉ STATISTIKY TÝMU -->
+    <div class="modal-backdrop" id="teamModal" onclick="closeAllModals(event)">
+        <div class="modal-box" id="teamModalBox" onclick="event.stopPropagation()">
+            <button class="modal-close-btn" onclick="closeAllModalsDirect()">✕</button>
+            
+            <div class="modal-header-badges">
+                <span class="modal-badge primary-badge" id="modalTeamTag">IMP</span>
+                <span class="modal-badge" id="modalTeamRecord">8W — 2L</span>
+                <span class="modal-badge" id="modalTeamCoach">Coach: TBD</span>
+            </div>
+
+            <h2 class="modal-main-title" id="modalTeamTitle">IMPERIALS</h2>
+            <div class="modal-subtitle">TÝMOVÝ PROFIL // AUTUMN SPLIT 2026</div>
+
+            <!-- Souhrn Týmu -->
+            <div class="modal-strip">
+                <div class="strip-item">
+                    <strong id="modalTeamWinrate" style="color: #22c55e;">80%</strong>
+                    <span>Winrate</span>
+                </div>
+                <div class="strip-item">
+                    <strong id="modalTeamKDA" style="color: #eab308;">4.12</strong>
+                    <span>Týmové KDA</span>
+                </div>
+                <div class="strip-item">
+                    <strong id="modalTeamGameTime">29:15</strong>
+                    <span>Prům. délka</span>
+                </div>
+                <div class="strip-item">
+                    <strong id="modalTeamStreak" style="color: #38bdf8;">4W</strong>
+                    <span>Streak</span>
+                </div>
+            </div>
+
+            <!-- Objektová kontrola -->
+            <div class="modal-sec-title">Objektová kontrola &amp; Early Game</div>
+            <div class="modal-stats-grid-4">
+                <div class="stat-box">
+                    <strong id="modalTeamFB" style="color: #ef4444;">70%</strong>
+                    <span>First Blood %</span>
+                </div>
+                <div class="stat-box">
+                    <strong id="modalTeamFT" style="color: #f59e0b;">60%</strong>
+                    <span>First Tower %</span>
+                </div>
+                <div class="stat-box">
+                    <strong id="modalTeamDrags" style="color: #06b6d4;">2.8</strong>
+                    <span>Draků / Hru</span>
+                </div>
+                <div class="stat-box">
+                    <strong id="modalTeamBarons" style="color: #a855f7;">1.1</strong>
+                    <span>Baronů / Hru</span>
+                </div>
+            </div>
+
+            <!-- Bojové statistiky týmu -->
+            <div class="modal-sec-title">Bojová čísla týmu</div>
+            <div class="modal-stats-grid-3">
+                <div class="stat-box">
+                    <strong id="modalTeamKillsGame" style="color: #22c55e;">18.4</strong>
+                    <span>Kills / Hru</span>
+                </div>
+                <div class="stat-box">
+                    <strong id="modalTeamDeathsGame" style="color: #ef4444;">11.2</strong>
+                    <span>Deaths / Hru</span>
+                </div>
+                <div class="stat-box">
+                    <strong id="modalTeamGoldDiff" style="color: #eab308;">+1 450</strong>
+                    <span>Gold Diff @ 15</span>
+                </div>
+            </div>
+
+            <!-- Nejčastější bany soupeřů proti tomuto týmu -->
+            <div class="modal-sec-title">Nejčastější bany soupeřů proti týmu</div>
+            <ul class="modal-list" id="modalTeamBansList">
+                <li class="modal-list-item">
+                    <div class="item-left">
+                        <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/Thresh.png" class="item-icon" alt="Thresh">
+                        <span class="item-name">Thresh</span>
+                    </div>
+                    <div class="item-right">Zabanován <strong>8× (80% banrate)</strong></div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT PRO INTERAKTIVNÍ POP-UP STATISTIKY HRÁČŮ I TÝMŮ -->
     <script>
-        // UKÁZKOVÁ DATABÁZE STATISTIK (Lze doplňovat data jakýchkoliv hráčů)
+        // DATABÁZE HRÁČŮ
         const playersDatabase = {
             "Tomíno": {
-                games: "14",
-                winrate: "71%",
-                kda: "3.80",
-                mvp: "3×",
-                kills: "52",
-                deaths: "24",
-                assists: "98",
-                cs: "8.1",
-                vision: "26.5",
-                dmg: "24.2k",
-                soloKills: "9",
-                pentaKills: "1",
-                firstBloods: "4",
-                totalMvp: "3",
+                games: "14", winrate: "71%", kda: "3.80", mvp: "3×",
+                kills: "52", deaths: "24", assists: "98", cs: "8.1", vision: "26.5", dmg: "24.2k",
+                soloKills: "9", pentaKills: "1", firstBloods: "4", totalMvp: "3",
                 champions: [
                     { name: "Aatrox", img: "Aatrox", games: "6 her", wr: "83%" },
-                    { name: "Renekton", img: "Renekton", games: "5 her", wr: "60%" },
-                    { name: "K'Sante", img: "KSante", games: "3 hry", wr: "67%" }
-                ]
-            },
-            "Fish": {
-                games: "14",
-                winrate: "71%",
-                kda: "4.20",
-                mvp: "2×",
-                kills: "45",
-                deaths: "20",
-                assists: "120",
-                cs: "6.2",
-                vision: "42.0",
-                dmg: "18.5k",
-                soloKills: "4",
-                pentaKills: "0",
-                firstBloods: "5",
-                totalMvp: "2",
-                champions: [
-                    { name: "Jarvan IV", img: "JarvanIV", games: "7 her", wr: "71%" },
-                    { name: "Sejuani", img: "Sejuani", games: "4 hry", wr: "75%" },
-                    { name: "Lee Sin", img: "LeeSin", games: "3 hry", wr: "67%" }
+                    { name: "Renekton", img: "Renekton", games: "5 her", wr: "60%" }
                 ]
             }
         };
 
+        // DATABÁZE TÝMŮ
+        const teamsDatabase = {
+            "Imperials": {
+                record: "8W — 2L", coach: "Coach: Alex", winrate: "80%", kda: "4.12",
+                gameTime: "29:15", streak: "4W", fb: "70%", ft: "60%",
+                drags: "2.8", barons: "1.1", kills: "18.4", deaths: "11.2", goldDiff: "+1 450",
+                bansAgainst: [
+                    { name: "Thresh", img: "Thresh", count: "8× (80% banrate)" },
+                    { name: "Ahri", img: "Ahri", count: "6× (60% banrate)" }
+                ]
+            }
+        };
+
+        // OTEVŘENÍ HRÁČSKÉHO MODALU
         function openPlayerModal(playerName, teamName, role, rank, essence, color) {
+            closeAllModalsDirect();
             const modal = document.getElementById('playerModal');
             const modalBox = document.getElementById('playerModalBox');
-            
-            // Nastavení barvy okna podle týmu
             modalBox.style.setProperty('--modal-color', color);
 
-            // Základní info
-            document.getElementById('modalName').textContent = playerName;
-            document.getElementById('modalTeam').textContent = teamName;
-            document.getElementById('modalRole').textContent = role;
-            document.getElementById('modalRank').textContent = rank !== '--' ? rank : 'UNRANKED';
-            document.getElementById('modalEssence').textContent = essence !== '--' ? essence + ' PTS' : '-- PTS';
+            document.getElementById('modalPlayerName').textContent = playerName;
+            document.getElementById('modalPlayerTeam').textContent = teamName;
+            document.getElementById('modalPlayerRole').textContent = role;
+            document.getElementById('modalPlayerRank').textContent = rank !== '--' ? rank : 'UNRANKED';
+            document.getElementById('modalPlayerEssence').textContent = essence !== '--' ? essence + ' PTS' : '-- PTS';
 
-            // Načtení dat z databáze nebo výchozí stav pro TBD
             const stats = playersDatabase[playerName] || {
-                games: "--",
-                winrate: "--",
-                kda: "--",
-                mvp: "--",
-                kills: "--",
-                deaths: "--",
-                assists: "--",
-                cs: "--",
-                vision: "--",
-                dmg: "--",
-                soloKills: "--",
-                pentaKills: "--",
-                firstBloods: "--",
-                totalMvp: "--",
+                games: "--", winrate: "--", kda: "--", mvp: "--",
+                kills: "--", deaths: "--", assists: "--", cs: "--", vision: "--", dmg: "--",
+                soloKills: "--", pentaKills: "--", firstBloods: "--", totalMvp: "--",
                 champions: []
             };
 
-            document.getElementById('modalGames').textContent = stats.games;
-            document.getElementById('modalWinrate').textContent = stats.winrate;
-            document.getElementById('modalKDA').textContent = stats.kda;
-            document.getElementById('modalMVP').textContent = stats.mvp;
-            document.getElementById('modalKills').textContent = stats.kills;
-            document.getElementById('modalDeaths').textContent = stats.deaths;
-            document.getElementById('modalAssists').textContent = stats.assists;
-            document.getElementById('modalCS').textContent = stats.cs;
-            document.getElementById('modalVision').textContent = stats.vision;
-            document.getElementById('modalDMG').textContent = stats.dmg;
+            document.getElementById('modalPlayerGames').textContent = stats.games;
+            document.getElementById('modalPlayerWinrate').textContent = stats.winrate;
+            document.getElementById('modalPlayerKDA').textContent = stats.kda;
+            document.getElementById('modalPlayerMVP').textContent = stats.mvp;
+            document.getElementById('modalPlayerKills').textContent = stats.kills;
+            document.getElementById('modalPlayerDeaths').textContent = stats.deaths;
+            document.getElementById('modalPlayerAssists').textContent = stats.assists;
+            document.getElementById('modalPlayerCS').textContent = stats.cs;
+            document.getElementById('modalPlayerVision').textContent = stats.vision;
+            document.getElementById('modalPlayerDMG').textContent = stats.dmg;
+            document.getElementById('modalPlayerSoloKills').textContent = stats.soloKills;
+            document.getElementById('modalPlayerPentaKills').textContent = stats.pentaKills;
+            document.getElementById('modalPlayerFirstBloods').textContent = stats.firstBloods;
+            document.getElementById('modalPlayerTotalMvp').textContent = stats.totalMvp;
 
-            // Highlighty
-            document.getElementById('modalSoloKills').textContent = stats.soloKills;
-            document.getElementById('modalPentaKills').textContent = stats.pentaKills;
-            document.getElementById('modalFirstBloods').textContent = stats.firstBloods;
-            document.getElementById('modalTotalMvp').textContent = stats.totalMvp;
-
-            // Seznam šampionů
-            const champsList = document.getElementById('modalChampsList');
-            champsList.innerHTML = '';
-
+            const list = document.getElementById('modalPlayerChampsList');
+            list.innerHTML = '';
             if (stats.champions.length > 0) {
                 stats.champions.forEach(c => {
                     const li = document.createElement('li');
-                    li.className = 'champ-row';
+                    li.className = 'modal-list-item';
                     li.innerHTML = `
-                        <div class="champ-left">
-                            <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${c.img}.png" class="champ-icon" alt="${c.name}">
-                            <span class="champ-name">${c.name}</span>
+                        <div class="item-left">
+                            <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${c.img}.png" class="item-icon" alt="${c.name}">
+                            <span class="item-name">${c.name}</span>
                         </div>
-                        <div class="champ-right">${c.games} <strong>${c.wr} WR</strong></div>
+                        <div class="item-right">${c.games} <strong>${c.wr} WR</strong></div>
                     `;
-                    champsList.appendChild(li);
+                    list.appendChild(li);
                 });
             } else {
-                champsList.innerHTML = '<li class="champ-row" style="color:#666; justify-content:center;">Zatím nebyly odehrány žádné zápasy</li>';
+                list.innerHTML = '<li class="modal-list-item" style="color:#666; justify-content:center;">Zatím nebyly odehrány žádné zápasy</li>';
             }
 
             modal.classList.add('active');
         }
 
-        function closePlayerModal(e) {
-            document.getElementById('playerModal').classList.remove('active');
+        // OTEVŘENÍ TÝMOVÉHO MODALU
+        function openTeamModal(teamName, teamTag, logoSrc, color) {
+            closeAllModalsDirect();
+            const modal = document.getElementById('teamModal');
+            const modalBox = document.getElementById('teamModalBox');
+            modalBox.style.setProperty('--modal-color', color);
+
+            document.getElementById('modalTeamTitle').textContent = teamName;
+            document.getElementById('modalTeamTag').textContent = teamTag;
+
+            const data = teamsDatabase[teamName] || {
+                record: "0W — 0L", coach: "Coach: TBD", winrate: "--", kda: "--",
+                gameTime: "--:--", streak: "--", fb: "--", ft: "--",
+                drags: "--", barons: "--", kills: "--", deaths: "--", goldDiff: "--",
+                bansAgainst: []
+            };
+
+            document.getElementById('modalTeamRecord').textContent = data.record;
+            document.getElementById('modalTeamCoach').textContent = data.coach;
+            document.getElementById('modalTeamWinrate').textContent = data.winrate;
+            document.getElementById('modalTeamKDA').textContent = data.kda;
+            document.getElementById('modalTeamGameTime').textContent = data.gameTime;
+            document.getElementById('modalTeamStreak').textContent = data.streak;
+            document.getElementById('modalTeamFB').textContent = data.fb;
+            document.getElementById('modalTeamFT').textContent = data.ft;
+            document.getElementById('modalTeamDrags').textContent = data.drags;
+            document.getElementById('modalTeamBarons').textContent = data.barons;
+            document.getElementById('modalTeamKillsGame').textContent = data.kills;
+            document.getElementById('modalTeamDeathsGame').textContent = data.deaths;
+            document.getElementById('modalTeamGoldDiff').textContent = data.goldDiff;
+
+            const bansList = document.getElementById('modalTeamBansList');
+            bansList.innerHTML = '';
+            if (data.bansAgainst.length > 0) {
+                data.bansAgainst.forEach(b => {
+                    const li = document.createElement('li');
+                    li.className = 'modal-list-item';
+                    li.innerHTML = `
+                        <div class="item-left">
+                            <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${b.img}.png" class="item-icon" alt="${b.name}">
+                            <span class="item-name">${b.name}</span>
+                        </div>
+                        <div class="item-right">Zabanován <strong>${b.count}</strong></div>
+                    `;
+                    bansList.appendChild(li);
+                });
+            } else {
+                bansList.innerHTML = '<li class="modal-list-item" style="color:#666; justify-content:center;">Zatím žádná data o banech</li>';
+            }
+
+            modal.classList.add('active');
         }
 
-        function closePlayerModalDirect() {
+        // ZAVÍRÁNÍ MODALŮ
+        function closeAllModals(e) {
             document.getElementById('playerModal').classList.remove('active');
+            document.getElementById('teamModal').classList.remove('active');
+        }
+
+        function closeAllModalsDirect() {
+            document.getElementById('playerModal').classList.remove('active');
+            document.getElementById('teamModal').classList.remove('active');
         }
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                closePlayerModalDirect();
+                closeAllModalsDirect();
             }
         });
     </script>
