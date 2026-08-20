@@ -8,7 +8,175 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Teko:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=100">
+    <link rel="stylesheet" href="style.css?v=101">
+
+    <style>
+        /* Okamžitá pojistka pro správné vykreslení a rozvržení */
+        .page-body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .content-wrap {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        .massive-text {
+            font-family: 'Teko', sans-serif;
+            font-size: clamp(4rem, 7vw, 6.5rem);
+            line-height: 0.95;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 0;
+        }
+        .massive-text-dark {
+            font-family: 'Teko', sans-serif;
+            font-size: clamp(4rem, 7vw, 6.5rem);
+            line-height: 0.95;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #0a0a0a;
+            margin-bottom: 2.5rem;
+        }
+        .highlight {
+            color: #ff4600;
+        }
+        .section-dark {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            padding: 5rem 0;
+        }
+        .section-light {
+            background-color: #ffffff;
+            color: #0a0a0a;
+            padding: 5rem 0;
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            border-top: 1px solid #262626;
+            padding-top: 2.5rem;
+        }
+        .step-card {
+            border-left: 2px solid #e0e0e0;
+            padding-left: 1.2rem;
+        }
+        .step-number {
+            font-family: 'Teko', sans-serif;
+            font-size: 3.5rem;
+            color: #ff4600;
+            line-height: 0.9;
+            margin-bottom: 0.5rem;
+        }
+        .about-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+        .about-desc {
+            max-width: 450px;
+            color: #a0a0a0;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        .history-col {
+            border-left: 2px solid #e0e0e0;
+            padding-left: 1.2rem;
+        }
+        .history-col h3 {
+            font-family: 'Teko', sans-serif;
+            font-size: 2.2rem;
+            color: #ff4600;
+            margin: 0 0 0.5rem;
+            line-height: 1;
+        }
+        .history-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            color: #444;
+            font-size: 0.95rem;
+        }
+        .history-col p {
+            color: #666;
+            font-size: 0.92rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        .team-card {
+            border-left: 2px solid #333;
+            padding-left: 1.2rem;
+        }
+        .team-card.featured {
+            border-left-color: #ff4600;
+        }
+        .team-card h3 {
+            font-family: 'Teko', sans-serif;
+            font-size: 2rem;
+            color: #ff4600;
+            margin: 0 0 0.2rem;
+            line-height: 1;
+        }
+        .team-card h4 {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin: 0 0 0.5rem;
+            font-weight: 600;
+        }
+        .team-card p {
+            color: #a0a0a0;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        .ticket-box {
+            background: #111111;
+            border: 1px solid #262626;
+            padding: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 3rem;
+        }
+        @media (max-width: 980px) {
+            .steps-grid, .stats-grid, .history-grid, .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .about-top, .ticket-box {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        @media (max-width: 600px) {
+            .steps-grid, .stats-grid, .history-grid, .team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body class="page-body">
 
@@ -32,7 +200,7 @@
     </header>
 
     <!-- Hero Sekce -->
-    <section class="hero" style="min-height: 70vh;">
+    <section class="hero" style="min-height: 60vh;">
         <div class="hero-inner">
             <p class="subtitle">O PROJEKTU / OD ROKU 2020</p>
             <h1 class="main-title">
@@ -90,23 +258,23 @@
             <div class="steps-grid">
                 <div class="step-card">
                     <div class="step-number">01</div>
-                    <h4>FAIR PLAY</h4>
-                    <p>Transparentní systém draftu, jasný rulebook a nulová tolerance k toxicitě a nesportovnímu chování.</p>
+                    <h4 style="font-family: 'Teko', sans-serif; font-size: 1.6rem; text-transform: uppercase; margin-bottom: 0.5rem;">FAIR PLAY</h4>
+                    <p style="color: #555; font-size: 0.92rem; line-height: 1.6;">Transparentní systém draftu, jasný rulebook a nulová tolerance k toxicitě a nesportovnímu chování.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-number">02</div>
-                    <h4>KOMUNITA</h4>
-                    <p>Vytváříme místo pro setkávání nových lidí, hledání spoluhráčů a společné sledování zápasů.</p>
+                    <h4 style="font-family: 'Teko', sans-serif; font-size: 1.6rem; text-transform: uppercase; margin-bottom: 0.5rem;">KOMUNITA</h4>
+                    <p style="color: #555; font-size: 0.92rem; line-height: 1.6;">Vytváříme místo pro setkávání nových lidí, hledání spoluhráčů a společné sledování zápasů.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-number">03</div>
-                    <h4>KONZISTENCE</h4>
-                    <p>Pravidelné sezóny, pevně dané hrací dny, streamované broadcasty a sezónní inhouse žebříček.</p>
+                    <h4 style="font-family: 'Teko', sans-serif; font-size: 1.6rem; text-transform: uppercase; margin-bottom: 0.5rem;">KONZISTENCE</h4>
+                    <p style="color: #555; font-size: 0.92rem; line-height: 1.6;">Pravidelné sezóny, pevně dané hrací dny, streamované broadcasty a sezónní inhouse žebříček.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-number">04</div>
-                    <h4>KOMUNIKACE</h4>
-                    <p>Aktivní a dostupný admin tým na Discordu, který řeší problémy a naslouchá zpětné vazbě hráčů.</p>
+                    <h4 style="font-family: 'Teko', sans-serif; font-size: 1.6rem; text-transform: uppercase; margin-bottom: 0.5rem;">KOMUNIKACE</h4>
+                    <p style="color: #555; font-size: 0.92rem; line-height: 1.6;">Aktivní a dostupný admin tým na Discordu, který řeší problémy a naslouchá zpětné vazbě hráčů.</p>
                 </div>
             </div>
         </div>
@@ -118,45 +286,45 @@
             <p class="page-kicker">REALIZAČNÍ TÝM &amp; MANAGEMENT</p>
             <h2 class="massive-text" style="margin-bottom: 3rem;">KDO ZA TÍM<br><span class="highlight">CELÝM STOJÍ.</span></h2>
             
-            <div class="steps-grid">
-                <div class="step-card" style="border-left: 2px solid var(--col-primary);">
-                    <div style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--col-primary); margin-bottom: 0.3rem;">ADMIN TÝM</div>
-                    <h4 style="color: #fff; font-size: 1.3rem; margin-bottom: 0.5rem;">Fish &amp; Tomíno</h4>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">Hlavní vedení ligy, organizace splitů, dohled nad pravidly a arbitráž sporných situací.</p>
+            <div class="team-grid">
+                <div class="team-card featured">
+                    <h3>ADMIN TÝM</h3>
+                    <h4>Fish &amp; Tomíno</h4>
+                    <p>Hlavní vedení ligy, organizace sezón, dohled nad pravidly a arbitráž sporných situací v průběhu turnajů.</p>
                 </div>
-                <div class="step-card" style="border-left: 2px solid #333;">
-                    <div style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--col-primary); margin-bottom: 0.3rem;">BROADCAST</div>
-                    <h4 style="color: #fff; font-size: 1.3rem; margin-bottom: 0.5rem;">Komentář &amp; Režie</h4>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">Živý přenos zápasů na Twitchi, overlaye, práce se záznamy a turnajová produkce pro diváky.</p>
+                <div class="team-card">
+                    <h3>BROADCAST</h3>
+                    <h4>Komentář &amp; Režie</h4>
+                    <p>Živý přenos zápasů na Twitchi, turnajové overlaye, režie, práce s replayi a zprostředkování atmosféry pro diváky.</p>
                 </div>
-                <div class="step-card" style="border-left: 2px solid #333;">
-                    <div style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--col-primary); margin-bottom: 0.3rem;">COMMUNITY &amp; BOT</div>
-                    <h4 style="color: #fff; font-size: 1.3rem; margin-bottom: 0.5rem;">Discord Správa</h4>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">Provoz inhouse bota, sezónní žebříčky MMR, správa rolí a každodenní chod komunitního serveru.</p>
+                <div class="team-card">
+                    <h3>COMMUNITY &amp; BOT</h3>
+                    <h4>Discord Správa</h4>
+                    <p>Provoz inhouse bota, sezónní žebříčky MMR, správa rolí a každodenní bezproblémový chod Discord serveru.</p>
                 </div>
-                <div class="step-card" style="border-left: 2px solid #333;">
-                    <div style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--col-primary); margin-bottom: 0.3rem;">KONTAKT &amp; PODPORA</div>
-                    <h4 style="color: #fff; font-size: 1.3rem; margin-bottom: 0.5rem;">COL Team</h4>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">S jakýmkoliv dotazem, námětem nebo problémem se můžete kdykoliv obrátit na náš Admin tým či COL Team přímo na Discordu.</p>
+                <div class="team-card">
+                    <h3>PODPORA</h3>
+                    <h4>COL Team</h4>
+                    <p>S jakýmkoliv dotazem, námětem na zlepšení nebo problémem se můžete kdykoliv obrátit na náš tým přímo na Discordu.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sekce: Zapoj se do týmu (Nábor přes ticket) -->
-    <section class="section-dark" style="border-top: 1px solid #1a1a1a; background: #0e0e0e;">
+    <!-- Sekce: Přidej se k organizaci (Ticket na Discordu) -->
+    <section class="section-dark" style="padding-top: 0;">
         <div class="content-wrap">
-            <div class="about-top" style="margin-bottom: 0;">
+            <div class="ticket-box">
                 <div>
-                    <p class="page-kicker">PŘIDEJ SE K ORGANIZACI</p>
-                    <h2 class="massive-text">
-                        CHCEŠ SE<br>
-                        <span class="highlight">PODÍLET NA COL?</span>
+                    <p class="page-kicker" style="margin-bottom: 0.5rem;">PŘIDEJ SE K ORGANIZACI</p>
+                    <h2 class="massive-text" style="font-size: clamp(3rem, 5vw, 4.5rem); margin-bottom: 1rem;">
+                        CHCEŠ SE PODÍLET<br><span class="highlight">NA PROJEKTU COL?</span>
                     </h2>
+                    <p style="color: #a0a0a0; max-width: 550px; line-height: 1.6; margin-bottom: 0.5rem;">
+                        Neustále hledáme motivované nadšence, kteří se chtějí zapojit do chodu ligy. Ať už máš zájem o moderaci Discordu, organizaci turnajů, komentování zápasů, grafiku nebo produkci streamů, rádi tě uvítáme v týmu.
+                    </p>
                 </div>
-                <div class="about-desc" style="max-width: 480px;">
-                    <p style="margin-bottom: 1.2rem;">Neustále hledáme motivované lidi, kteří mají zájem přiložit ruku k dílu. Ať už tě láká správa Discordu, organizace zápasů, komentování, grafika nebo produkce streamů, rádi tě poznáme.</p>
-                    <p style="margin-bottom: 1.5rem; color: #fff;"><strong>Jak postupovat?</strong> Otevři si na našem Discord serveru ticket v sekci podpory, představ se a popiš nám své zkušenosti a vizi, jak bys chtěl projekt posunout.</p>
+                <div style="flex-shrink: 0; text-align: right;">
                     <a href="https://discord.gg/68KqHuSgA" target="_blank" rel="noopener" class="btn-primary large" style="display: inline-block;">OTEVŘÍT TICKET NA DISCORDU ↗</a>
                 </div>
             </div>
@@ -169,36 +337,36 @@
             <p class="subtitle-dark">KUDY JSME PROŠLI</p>
             <h2 class="massive-text-dark">HISTORIE<br>A PŘEHLED SPLITŮ.</h2>
             
-            <div class="activity-grid" style="grid-template-columns: repeat(4, 1fr); gap: 1.5rem;">
-                <div style="border-left: 2px solid #e0e0e0; padding-left: 1.5rem;">
-                    <div style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--col-primary); margin-bottom: 0.5rem;">2026</div>
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.6rem; color: #444; font-size: 0.95rem;">
+            <div class="history-grid">
+                <div class="history-col">
+                    <h3>2026</h3>
+                    <ul>
                         <li><strong>Autumn Split 26</strong> (Split 10)</li>
                         <li>CoL Spring Split 26</li>
                         <li>VTuber's Leek</li>
                     </ul>
                 </div>
-                <div style="border-left: 2px solid #e0e0e0; padding-left: 1.5rem;">
-                    <div style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--col-primary); margin-bottom: 0.5rem;">2025</div>
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.6rem; color: #444; font-size: 0.95rem;">
+                <div class="history-col">
+                    <h3>2025</h3>
+                    <ul>
                         <li>CoL Main Event 25</li>
                         <li>CoL Summer 25</li>
                         <li>CoL Spring 25</li>
                     </ul>
                 </div>
-                <div style="border-left: 2px solid #e0e0e0; padding-left: 1.5rem;">
-                    <div style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--col-primary); margin-bottom: 0.5rem;">2024</div>
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.6rem; color: #444; font-size: 0.95rem;">
+                <div class="history-col">
+                    <h3>2024</h3>
+                    <ul>
                         <li>CoL League 2024</li>
                         <li>CoL Season 3 — Elements</li>
                         <li>CoL Season 2 — Domination</li>
                         <li>CoL Season 1 — Arcane</li>
                     </ul>
                 </div>
-                <div style="border-left: 2px solid #e0e0e0; padding-left: 1.5rem;">
-                    <div style="font-family: var(--font-heading); font-size: 2.2rem; color: var(--col-primary); margin-bottom: 0.5rem;">2020 – 2023</div>
-                    <p style="color: #666; font-size: 0.95rem; line-height: 1.6;">
-                        Založení Clash of Legends (listopad 2020), první komunitní víkendové turnaje a vybudování základů komunity na Discordu.
+                <div class="history-col">
+                    <h3>2020 – 2023</h3>
+                    <p>
+                        Založení Clash of Legends (listopad 2020), první komunitní víkendové turnaje a vybudování základů na Discordu.
                     </p>
                 </div>
             </div>
