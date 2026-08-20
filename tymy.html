@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Teko:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=107">
+    <link rel="stylesheet" href="style.css?v=110">
 
     <style>
         .hero .subtitle {
@@ -18,26 +18,70 @@
 
         .teams-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 1.8rem;
-            margin-top: 2.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
         }
 
         .team-card-box {
             background: #111111;
             border: 1px solid #262626;
-            border-top: 4px solid #ff4600;
-            padding: 1.6rem;
+            border-radius: 6px;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
         }
 
         .team-card-box:hover {
-            transform: translateY(-3px);
-            border-color: #444;
-            border-top-color: #ff4600;
+            transform: translateY(-4px);
+            border-color: #ff4600;
+            box-shadow: 0 10px 25px rgba(255, 70, 0, 0.15);
+        }
+
+        /* BANNER S LOGEM TÝMU */
+        .team-banner {
+            position: relative;
+            height: 170px;
+            background: #080808;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #222;
+            overflow: hidden;
+        }
+
+        .team-banner-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            filter: blur(12px) opacity(0.25);
+            transform: scale(1.2);
+        }
+
+        .team-logo-img {
+            position: relative;
+            z-index: 2;
+            height: 135px;
+            width: auto;
+            max-width: 85%;
+            object-fit: contain;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
+            transition: transform 0.3s ease;
+        }
+
+        .team-card-box:hover .team-logo-img {
+            transform: scale(1.05);
+        }
+
+        .team-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
         }
 
         .team-header {
@@ -66,6 +110,7 @@
             font-size: 1.15rem;
             padding: 0.15rem 0.55rem;
             border: 1px solid #333;
+            border-radius: 3px;
             letter-spacing: 1px;
         }
 
@@ -106,7 +151,7 @@
             width: 20px;
             height: 20px;
             object-fit: contain;
-            filter: drop-shadow(0 0 2px rgba(255, 70, 0, 0.2));
+            filter: drop-shadow(0 0 2px rgba(255, 70, 0, 0.3));
         }
 
         .sub-icon {
@@ -208,7 +253,7 @@
     <section class="section-dark">
         <div class="content-wrap">
             
-            <div class="about-top" style="margin-bottom: 1rem;">
+            <div class="about-top" style="margin-bottom: 1.5rem;">
                 <div>
                     <p class="page-kicker" style="margin-bottom: 0.3rem;">AUTUMN SPLIT 2026</p>
                     <h2 class="massive-text">SESTAVY LIGY</h2>
@@ -219,151 +264,59 @@
 
                 <!-- 1. ABOMINATIONS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Abominatios.jpg');"></div>
+                        <img src="Abominatios.jpg" alt="Abominations" class="team-logo-img" onerror="this.src='Abominations.jpg'">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Abominations</h3>
                             <span class="team-tag">ABO</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-player">
-                                <span class="player-role-wrap">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" alt="TOP" class="role-icon-img">
-                                    <span class="player-role">TOP</span>
-                                </span>
-                                <span class="player-name">TBD <span class="player-badge">C</span></span>
-                                <span class="player-rank">--</span>
-                            </li>
-                            <li class="roster-player">
-                                <span class="player-role-wrap">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" alt="JGL" class="role-icon-img">
-                                    <span class="player-role">JGL</span>
-                                </span>
-                                <span class="player-name">TBD</span>
-                                <span class="player-rank">--</span>
-                            </li>
-                            <li class="roster-player">
-                                <span class="player-role-wrap">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" alt="MID" class="role-icon-img">
-                                    <span class="player-role">MID</span>
-                                </span>
-                                <span class="player-name">TBD</span>
-                                <span class="player-rank">--</span>
-                            </li>
-                            <li class="roster-player">
-                                <span class="player-role-wrap">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" alt="ADC" class="role-icon-img">
-                                    <span class="player-role">ADC</span>
-                                </span>
-                                <span class="player-name">TBD</span>
-                                <span class="player-rank">--</span>
-                            </li>
-                            <li class="roster-player">
-                                <span class="player-role-wrap">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" alt="SUP" class="role-icon-img">
-                                    <span class="player-role">SUPP</span>
-                                </span>
-                                <span class="player-name">TBD</span>
-                                <span class="player-rank">--</span>
-                            </li>
-                            <li class="roster-player sub">
-                                <span class="player-role-wrap">
-                                    <span class="sub-icon">+</span>
-                                    <span class="player-role">SUB 1</span>
-                                </span>
-                                <span class="player-name">TBD</span>
-                                <span class="player-rank">--</span>
-                            </li>
-                            <li class="roster-player sub">
-                                <span class="player-role-wrap">
-                                    <span class="sub-icon">+</span>
-                                    <span class="player-role">SUB 2</span>
-                                </span>
-                                <span class="player-name">TBD</span>
-                                <span class="player-rank">--</span>
-                            </li>
+                            <li class="roster-player"><span class="player-role-wrap"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" alt="TOP" class="role-icon-img"><span class="player-role">TOP</span></span><span class="player-name">TBD <span class="player-badge">C</span></span><span class="player-rank">--</span></li>
+                            <li class="roster-player"><span class="player-role-wrap"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" alt="JGL" class="role-icon-img"><span class="player-role">JGL</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
+                            <li class="roster-player"><span class="player-role-wrap"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" alt="MID" class="role-icon-img"><span class="player-role">MID</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
+                            <li class="roster-player"><span class="player-role-wrap"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" alt="ADC" class="role-icon-img"><span class="player-role">ADC</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
+                            <li class="roster-player"><span class="player-role-wrap"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" alt="SUP" class="role-icon-img"><span class="player-role">SUPP</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
+                            <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
+                            <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
-                    </div>
-                    <div class="team-footer">
-                        <span>Essence cap</span>
-                        <strong>100 / 100 PTS</strong>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
                 <!-- 2. APEX PREDATORS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Apex_Predators.jpg');"></div>
+                        <img src="Apex_Predators.jpg" alt="Apex Predators" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Apex Predators</h3>
                             <span class="team-tag">APX</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-player">
-                                <span class="player-role-wrap">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" alt="TOP" class="role-icon-img">
-                                    <span class="player-role">TOP</span>
-                                </span>
-                                <span class="player-name">TBD</span>
-                                <span class="player-rank">--</span>
-                            </li>
-                            <li class="roster-player">
-                                <span class="player-role-wrap">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" alt="JGL" class="role-icon-img">
-                                    <span class="player-role">JGL</span>
-                                </span>
-                                <span class="player-name">TBD <span class="player-badge">C</span></span>
-                                <span class="player-rank">--</span>
-                            </li>
-                            <li class="roster-player">
-                                <span class="player-role-wrap">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" alt="MID" class="role-icon-img">
-                                    <span class="player-role">MID</span>
-                                </span>
-                                <span class="player-name">TBD</span>
-                                <span class="player-rank">--</span>
-                            </li>
-                            <li class="roster-player">
-                                <span class="player-role-wrap">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" alt="ADC" class="role-icon-img">
-                                    <span class="player-role">ADC</span>
-                                </span>
-                                <span class="player-name">TBD</span>
-                                <span class="player-rank">--</span>
-                            </li>
-                            <li class="roster-player">
-                                <span class="player-role-wrap">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" alt="SUP" class="role-icon-img">
-                                    <span class="player-role">SUPP</span>
-                                </span>
-                                <span class="player-name">TBD</span>
-                                <span class="player-rank">--</span>
-                            </li>
-                            <li class="roster-player sub">
-                                <span class="player-role-wrap">
-                                    <span class="sub-icon">+</span>
-                                    <span class="player-role">SUB 1</span>
-                                </span>
-                                <span class="player-name">TBD</span>
-                                <span class="player-rank">--</span>
-                            </li>
-                            <li class="roster-player sub">
-                                <span class="player-role-wrap">
-                                    <span class="sub-icon">+</span>
-                                    <span class="player-role">SUB 2</span>
-                                </span>
-                                <span class="player-name">TBD</span>
-                                <span class="player-rank">--</span>
-                            </li>
+                            <li class="roster-player"><span class="player-role-wrap"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" alt="TOP" class="role-icon-img"><span class="player-role">TOP</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
+                            <li class="roster-player"><span class="player-role-wrap"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" alt="JGL" class="role-icon-img"><span class="player-role">JGL</span></span><span class="player-name">TBD <span class="player-badge">C</span></span><span class="player-rank">--</span></li>
+                            <li class="roster-player"><span class="player-role-wrap"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" alt="MID" class="role-icon-img"><span class="player-role">MID</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
+                            <li class="roster-player"><span class="player-role-wrap"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" alt="ADC" class="role-icon-img"><span class="player-role">ADC</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
+                            <li class="roster-player"><span class="player-role-wrap"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" alt="SUP" class="role-icon-img"><span class="player-role">SUPP</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
+                            <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
+                            <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
-                    </div>
-                    <div class="team-footer">
-                        <span>Essence cap</span>
-                        <strong>100 / 100 PTS</strong>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
                 <!-- 3. ARCANISTS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Arcanists.jpg');"></div>
+                        <img src="Arcanists.jpg" alt="Arcanists" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Arcanists</h3>
                             <span class="team-tag">ARC</span>
@@ -377,13 +330,17 @@
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
-                    <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                 </div>
 
                 <!-- 4. DRACONICS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Draconics.jpg');"></div>
+                        <img src="Draconics.jpg" alt="Draconics" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Draconics</h3>
                             <span class="team-tag">DRA</span>
@@ -397,13 +354,17 @@
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
-                    <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                 </div>
 
                 <!-- 5. ETERNALS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Eternals.jpg');"></div>
+                        <img src="Eternals.jpg" alt="Eternals" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Eternals</h3>
                             <span class="team-tag">ETE</span>
@@ -417,13 +378,17 @@
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
-                    <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                 </div>
 
                 <!-- 6. FORGOTTENS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Forgottens.jpg');"></div>
+                        <img src="Forgottens.jpg" alt="Forgottens" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Forgottens</h3>
                             <span class="team-tag">FRG</span>
@@ -437,13 +402,17 @@
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
-                    <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                 </div>
 
                 <!-- 7. HELLIONS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Hellions.jpg');"></div>
+                        <img src="Hellions.jpg" alt="Hellions" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Hellions</h3>
                             <span class="team-tag">HEL</span>
@@ -457,13 +426,17 @@
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
-                    <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                 </div>
 
                 <!-- 8. IMPERIALS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Imperials.jpg');"></div>
+                        <img src="Imperials.jpg" alt="Imperials" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Imperials</h3>
                             <span class="team-tag">IMP</span>
@@ -477,13 +450,17 @@
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
-                    <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                 </div>
 
                 <!-- 9. LUNARS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Lunars.jpg');"></div>
+                        <img src="Lunars.jpg" alt="Lunars" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Lunars</h3>
                             <span class="team-tag">LUN</span>
@@ -497,13 +474,17 @@
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
-                    <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                 </div>
 
                 <!-- 10. MYSTICS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Mystics.jpg');"></div>
+                        <img src="Mystics.jpg" alt="Mystics" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Mystics</h3>
                             <span class="team-tag">MYS</span>
@@ -517,13 +498,17 @@
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
-                    <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                 </div>
 
                 <!-- 11. PROTECTORS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Protectors.jpg');"></div>
+                        <img src="Protectors.jpg" alt="Protectors" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Protectors</h3>
                             <span class="team-tag">PRO</span>
@@ -537,13 +522,17 @@
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
-                    <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                 </div>
 
                 <!-- 12. REDEEMED -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Redeemed.jpg');"></div>
+                        <img src="Redeemed.jpg" alt="Redeemed" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Redeemed</h3>
                             <span class="team-tag">RED</span>
@@ -557,13 +546,17 @@
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
-                    <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                 </div>
 
                 <!-- 13. REVENANTS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Revenants.jpg');"></div>
+                        <img src="Revenants.jpg" alt="Revenants" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Revenants</h3>
                             <span class="team-tag">REV</span>
@@ -577,13 +570,17 @@
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
-                    <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                 </div>
 
                 <!-- 14. SOLARS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Solars.jpg');"></div>
+                        <img src="Solars.jpg" alt="Solars" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Solars</h3>
                             <span class="team-tag">SOL</span>
@@ -597,13 +594,17 @@
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
-                    <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                 </div>
 
                 <!-- 15. SOUL STEALERS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Soul_Stealers.jpg');"></div>
+                        <img src="Soul_Stealers.jpg" alt="Soul Stealers" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Soul Stealers</h3>
                             <span class="team-tag">SSL</span>
@@ -617,13 +618,17 @@
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
-                    <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                 </div>
 
                 <!-- 16. VANGUARDS -->
                 <div class="team-card-box">
-                    <div>
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('Vanguards.jpg');"></div>
+                        <img src="Vanguards.jpg" alt="Vanguards" class="team-logo-img">
+                    </div>
+                    <div class="team-body">
                         <div class="team-header">
                             <h3 class="team-name">Vanguards</h3>
                             <span class="team-tag">VAN</span>
@@ -637,8 +642,8 @@
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 1</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                             <li class="roster-player sub"><span class="player-role-wrap"><span class="sub-icon">+</span><span class="player-role">SUB 2</span></span><span class="player-name">TBD</span><span class="player-rank">--</span></li>
                         </ul>
+                        <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
-                    <div class="team-footer"><span>Essence cap</span><strong>100 / 100 PTS</strong></div>
                 </div>
 
             </div>
