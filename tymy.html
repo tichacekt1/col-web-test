@@ -8,35 +8,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Teko:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=320">
+    <link rel="stylesheet" href="style.css?v=300">
 
     <style>
         /* =========================================================
-           OPRAVA PŘEKRYVU TEXTŮ V HERO SEKCl
+           HLAVNÍ STYLY & OVLÁDACÍ PRVKY
            ========================================================= */
-        .hero-inner {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .hero .subtitle {
-            display: block !important;
-            margin-bottom: 1.2rem !important;
-            margin-top: 0 !important;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero .main-title {
-            margin-top: 0 !important;
-            padding-top: 0 !important;
-            line-height: 0.95 !important;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* STATS LEADERBOARDS (TOP 3 KARTY) */
         .leaderboards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -478,7 +455,9 @@
             letter-spacing: 1px;
         }
 
-        /* MODÁLNÍ OKNA */
+        /* =========================================================
+           SPOLEČNÝ STYL PRO MODÁLNÍ OKNA (POP-UP)
+           ========================================================= */
         .modal-backdrop {
             position: fixed;
             inset: 0;
@@ -706,7 +685,9 @@
             margin-left: 0.5rem;
         }
 
-        /* COMPARE MODAL */
+        /* =========================================================
+           3. HEAD-TO-HEAD SROVNÁNÍ (COMPARE MODAL)
+           ========================================================= */
         .compare-switch-row {
             display: flex;
             gap: 0.5rem;
@@ -1604,6 +1585,13 @@
 
     <!-- JAVASCRIPT PRO INTERAKTIVITU -->
     <script>
+        const allLeagueTeams = [
+            "Imperials", "Abominations", "Apex Predators", "Arcanists", 
+            "Draconics", "Eternals", "Forgottens", "Hellions", 
+            "Lunars", "Mystics", "Protectors", "Redeemed", 
+            "Revenants", "Solars", "Soul Stealers", "Vanguards"
+        ];
+
         // KOMPLETNÍ DATABÁZE VŠECH HRÁČŮ Z 16 TÝMŮ
         const playersDatabase = {
             // 1. IMPERIALS
@@ -1771,7 +1759,171 @@
             "Vanguards": { tag: "VAN", record: "7W — 3L", coach: "Coach: General", winrate: 70, kda: 3.90, gameTime: "29:30", streak: "3W", fb: 70, ft: 60, drags: 2.6, barons: 1.1, kills: 17.5, deaths: 12.2, goldDiff: 890, bansAgainst: [{ name: "Sejuani", img: "Sejuani", count: "6× (60%)" }] }
         };
 
-        // HEAD-TO-HEAD COMPARE
+        let currentRoleFilter = 'ALL';
+        let currentCompareMode = 'TEAMS';
+
+        // FILTROVÁNÍ PODLE ROLE
+        function setRoleFilter(role, btn) {
+            currentRoleFilter = role;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            handleSearchAndFilter();
+        }
+
+        function handleSearchAndFilter() {
+            const query = document.getElementById('teamSearchInput').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.team-card');
+
+            cards.forEach(card => {
+                const teamName = (card.getAttribute('data-team') || '').toLowerCase();
+                const teamTag = (card.getAttribute('data-tag') || '').toLowerCase();
+                const playerRows = card.querySelectorAll('.roster-row');
+                
+                let matchesQuery = teamName.includes(query) || teamTag.includes(query);
+                let hasMatchingPlayer = false;
+
+                playerRows.forEach(row => {
+                    const playerName = row.querySelector('.roster-name').textContent.toLowerCase();
+                    const playerRole = row.getAttribute('data-role');
+
+                    const roleMatches = (currentRoleFilter === 'ALL' || playerRole === currentRoleFilter);
+                    const nameMatches = playerName.includes(query);
+
+                    if (query && nameMatches) {
+                        matchesQuery = true;
+                    }
+
+                    if (roleMatches) {
+                        row.style.display = 'flex';
+                        if (nameMatches || !query || teamName.includes(query)) {
+                            hasMatchingPlayer = true;
+                        }
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                if (matchesQuery && (currentRoleFilter === 'ALL' || hasMatchingPlayer)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // OTEVŘENÍ HRÁČSKÉHO MODALU
+        function openPlayerModal(playerName, teamName, role, rank, essence, color) {
+            closeAllModalsDirect();
+            const modal = document.getElementById('playerModal');
+            const modalBox = document.getElementById('playerModalBox');
+            modalBox.style.setProperty('--modal-color', color);
+
+            document.getElementById('modalPlayerName').textContent = playerName;
+            document.getElementById('modalPlayerTeam').textContent = teamName;
+            document.getElementById('modalPlayerRole').textContent = role;
+            document.getElementById('modalPlayerRank').textContent = rank !== '--' ? rank : 'UNRANKED';
+            document.getElementById('modalPlayerEssence').textContent = essence !== '--' ? essence + ' PTS' : '-- PTS';
+
+            const stats = playersDatabase[playerName] || {
+                games: 10, winrate: 50, kda: 3.00, mvp: 0,
+                kills: 30, deaths: 20, assists: 40, cs: 7.0, vision: 20.0, dmg: 20.0,
+                soloKills: 2, pentaKills: 0, firstBloods: 1,
+                champions: []
+            };
+
+            document.getElementById('modalPlayerGames').textContent = stats.games;
+            document.getElementById('modalPlayerWinrate').textContent = typeof stats.winrate === 'number' ? stats.winrate + '%' : stats.winrate;
+            document.getElementById('modalPlayerKDA').textContent = stats.kda;
+            document.getElementById('modalPlayerMVP').textContent = stats.mvp !== '--' ? stats.mvp + '×' : '--';
+            document.getElementById('modalPlayerKills').textContent = stats.kills;
+            document.getElementById('modalPlayerDeaths').textContent = stats.deaths;
+            document.getElementById('modalPlayerAssists').textContent = stats.assists;
+            document.getElementById('modalPlayerCS').textContent = stats.cs;
+            document.getElementById('modalPlayerVision').textContent = stats.vision;
+            document.getElementById('modalPlayerDMG').textContent = typeof stats.dmg === 'number' ? stats.dmg + 'k' : stats.dmg;
+            document.getElementById('modalPlayerSoloKills').textContent = stats.soloKills;
+            document.getElementById('modalPlayerPentaKills').textContent = stats.pentaKills;
+            document.getElementById('modalPlayerFirstBloods').textContent = stats.firstBloods;
+            document.getElementById('modalPlayerTotalMvp').textContent = stats.mvp;
+
+            const list = document.getElementById('modalPlayerChampsList');
+            list.innerHTML = '';
+            if (stats.champions && stats.champions.length > 0) {
+                stats.champions.forEach(c => {
+                    const li = document.createElement('li');
+                    li.className = 'modal-list-item';
+                    li.innerHTML = `
+                        <div class="item-left">
+                            <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${c.img}.png" class="item-icon" alt="${c.name}">
+                            <span class="item-name">${c.name}</span>
+                        </div>
+                        <div class="item-right">${c.games} <strong>${c.wr} WR</strong></div>
+                    `;
+                    list.appendChild(li);
+                });
+            } else {
+                list.innerHTML = '<li class="modal-list-item" style="color:#666; justify-content:center;">Zatím nebyly odehrány žádné zápasy</li>';
+            }
+
+            modal.classList.add('active');
+        }
+
+        // OTEVŘENÍ TÝMOVÉHO MODALU
+        function openTeamModal(teamName, teamTag, logoSrc, color) {
+            closeAllModalsDirect();
+            const modal = document.getElementById('teamModal');
+            const modalBox = document.getElementById('teamModalBox');
+            modalBox.style.setProperty('--modal-color', color);
+
+            document.getElementById('modalTeamTitle').textContent = teamName;
+            document.getElementById('modalTeamTag').textContent = teamTag;
+
+            const data = teamsDatabase[teamName] || {
+                record: "0W — 0L", coach: "Coach: TBD", winrate: 0, kda: 0,
+                gameTime: "--:--", streak: "--", fb: 0, ft: 0,
+                drags: 0, barons: 0, kills: 0, deaths: 0, goldDiff: 0,
+                bansAgainst: []
+            };
+
+            document.getElementById('modalTeamRecord').textContent = data.record;
+            document.getElementById('modalTeamCoach').textContent = data.coach;
+            document.getElementById('modalTeamWinrate').textContent = typeof data.winrate === 'number' ? data.winrate + '%' : data.winrate;
+            document.getElementById('modalTeamKDA').textContent = data.kda;
+            document.getElementById('modalTeamGameTime').textContent = data.gameTime;
+            document.getElementById('modalTeamStreak').textContent = data.streak;
+            document.getElementById('modalTeamFB').textContent = typeof data.fb === 'number' ? data.fb + '%' : data.fb;
+            document.getElementById('modalTeamFT').textContent = typeof data.ft === 'number' ? data.ft + '%' : data.ft;
+            document.getElementById('modalTeamDrags').textContent = data.drags;
+            document.getElementById('modalTeamBarons').textContent = data.barons;
+            document.getElementById('modalTeamKillsGame').textContent = data.kills;
+            document.getElementById('modalTeamDeathsGame').textContent = data.deaths;
+            document.getElementById('modalTeamGoldDiff').textContent = typeof data.goldDiff === 'number' ? (data.goldDiff > 0 ? '+' + data.goldDiff : data.goldDiff) : data.goldDiff;
+
+            const bansList = document.getElementById('modalTeamBansList');
+            bansList.innerHTML = '';
+            if (data.bansAgainst && data.bansAgainst.length > 0) {
+                data.bansAgainst.forEach(b => {
+                    const li = document.createElement('li');
+                    li.className = 'modal-list-item';
+                    li.innerHTML = `
+                        <div class="item-left">
+                            <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${b.img}.png" class="item-icon" alt="${b.name}">
+                            <span class="item-name">${b.name}</span>
+                        </div>
+                        <div class="item-right">Zabanován <strong>${b.count}</strong></div>
+                    `;
+                    bansList.appendChild(li);
+                });
+            } else {
+                bansList.innerHTML = '<li class="modal-list-item" style="color:#666; justify-content:center;">Zatím žádná data o banech</li>';
+            }
+
+            modal.classList.add('active');
+        }
+
+        // =========================================================
+        // HEAD-TO-HEAD COMPARE LOGIKA
+        // =========================================================
         function openCompareModal() {
             closeAllModalsDirect();
             setCompareType(currentCompareMode);
