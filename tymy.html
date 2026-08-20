@@ -8,9 +8,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Teko:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=106">
+    <link rel="stylesheet" href="style.css?v=107">
 
     <style>
+        .hero .subtitle {
+            margin-bottom: 2rem !important;
+            display: inline-block;
+        }
+
         .teams-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -159,33 +164,6 @@
             font-family: 'Teko', sans-serif;
             letter-spacing: 1px;
         }
-
-        .season-filter {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-            margin-top: 1.5rem;
-        }
-
-        .filter-btn {
-            background: #161616;
-            border: 1px solid #333;
-            color: #aaa;
-            padding: 0.6rem 1.4rem;
-            font-family: 'Teko', sans-serif;
-            font-size: 1.3rem;
-            letter-spacing: 1px;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: 0.2s;
-        }
-
-        .filter-btn.active,
-        .filter-btn:hover {
-            background: #ff4600;
-            color: #fff;
-            border-color: #ff4600;
-        }
     </style>
 </head>
 <body class="page-body">
@@ -220,7 +198,7 @@
             </h1>
             <div class="hero-actions">
                 <div class="hero-text">
-                    <p>Kompletní přehled 16 ligových týmů, draftovaných hráčů a bodové essence jednotlivých sestav v aktuálním i minulých splitech.</p>
+                    <p>Kompletní přehled 16 ligových týmů, draftovaných hráčů a bodové essence jednotlivých sestav v Autumn Splitu 2026.</p>
                 </div>
             </div>
         </div>
@@ -230,15 +208,10 @@
     <section class="section-dark">
         <div class="content-wrap">
             
-            <div class="about-top" style="margin-bottom: 1.5rem;">
+            <div class="about-top" style="margin-bottom: 1rem;">
                 <div>
-                    <p class="page-kicker" style="margin-bottom: 0.3rem;">PŘEHLED ROSTERŮ</p>
-                    <h2 class="massive-text">SESTAVY SPLITU</h2>
-                </div>
-                <div class="season-filter">
-                    <button class="filter-btn active">Autumn Split 2026</button>
-                    <button class="filter-btn">Spring Split 2026</button>
-                    <button class="filter-btn">VTuber's Leek</button>
+                    <p class="page-kicker" style="margin-bottom: 0.3rem;">AUTUMN SPLIT 2026</p>
+                    <h2 class="massive-text">SESTAVY LIGY</h2>
                 </div>
             </div>
 
