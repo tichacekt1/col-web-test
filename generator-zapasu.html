@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Statický HTML generátor karet zápasů pro COL League.">
+    <title>Generátor zápasů — COL League</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-body">
+    <header class="navbar page-navbar">
+        <a class="logo" href="index.html" aria-label="COL League — úvodní stránka"><strong>COL</strong> LEAGUE</a>
+        <nav class="nav-links" aria-label="Hlavní navigace">
+            <a href="index.html">SPLIT 10</a>
+            <a href="zapasy.html" aria-current="page">ZÁPASY</a>
+            <a href="pavouk.html">PAVOUK</a>
+            <a href="pravidla.html">PRAVIDLA</a>
+            <a href="about.html">O NÁS</a>
+        </nav>
+        <div class="nav-actions"><a href="zapasy.html" class="btn-outline">ZPĚT NA ZÁPASY ↗</a></div>
+    </header>
+
+    <main class="page-main">
+        <section class="page-hero page-hero--compact">
+            <div class="page-hero__inner">
+                <p class="page-kicker">INTERNÍ NÁSTROJ / HTML</p>
+                <h1 class="page-title">GENERÁTOR<br><span class="highlight">ZÁPASŮ.</span></h1>
+                <p class="page-lead">Vyplň údaje, zkontroluj náhled a zkopíruj hotovou kartu do stránky zápasů. Vše funguje lokálně bez databáze.</p>
+            </div>
+        </section>
+
+        <section class="content-section section-dark">
+            <div class="content-wrap generator-shell">
+                <section class="generator-panel" aria-labelledby="generatorFormTitle">
+                    <div class="generator-panel__head">
+                        <h2 id="generatorFormTitle">Údaje o zápasu</h2>
+                        <p>Pole označená hvězdičkou jsou povinná.</p>
+                    </div>
+
+                    <form class="generator-form" id="matchGeneratorForm">
+                        <fieldset class="generator-fieldset">
+                            <legend>01 / První tým</legend>
+                            <div class="generator-field">
+                                <label for="team1">Tým *</label>
+                                <select id="team1" name="team1" required></select>
+                            </div>
+                            <div class="team-choice-preview" id="team1Preview" aria-live="polite"></div>
+                            <div class="generator-field-row">
+                                <div class="generator-field"><label for="team1Wins">Počet výher</label><input id="team1Wins" name="team1Wins" type="number" min="0" value="0"></div>
+                                <div class="generator-field"><label for="team1Losses">Počet proher</label><input id="team1Losses" name="team1Losses" type="number" min="0" value="0"></div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="generator-fieldset">
+                            <legend>02 / Druhý tým</legend>
+                            <div class="generator-field">
+                                <label for="team2">Tým *</label>
+                                <select id="team2" name="team2" required></select>
+                            </div>
+                            <div class="team-choice-preview" id="team2Preview" aria-live="polite"></div>
+                            <div class="generator-field-row">
+                                <div class="generator-field"><label for="team2Wins">Počet výher</label><input id="team2Wins" name="team2Wins" type="number" min="0" value="0"></div>
+                                <div class="generator-field"><label for="team2Losses">Počet proher</label><input id="team2Losses" name="team2Losses" type="number" min="0" value="0"></div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="generator-fieldset">
+                            <legend>03 / Termín a formát</legend>
+                            <div class="generator-field-row">
+                                <div class="generator-field">
+                                    <label for="phase">Fáze *</label>
+                                    <select id="phase" name="phase" required>
+                                        <option value="ZÁKLADNÍ ČÁST">Základní část</option>
+                                        <option value="PLAY-OFF">Play-off</option>
+                                        <option value="SHOWMATCH">Showmatch</option>
+                                    </select>
+                                </div>
+                                <div class="generator-field"><label for="round">Kolo *</label><input id="round" name="round" type="number" min="1" value="1" required></div>
+                            </div>
+                            <div class="generator-field">
+                                <label for="startAt">Datum a čas *</label>
+                                <input id="startAt" name="startAt" type="datetime-local" required>
+                            </div>
+                            <div class="generator-field-row">
+                                <div class="generator-field">
+                                    <label for="matchState">Stav zápasu *</label>
+                                    <select id="matchState" name="matchState" required>
+                                        <option value="scheduled" selected>Nadcházející</option>
+                                        <option value="finished">Dohraný</option>
+                                    </select>
+                                </div>
+                                <div class="generator-field">
+                                    <label for="format">Formát *</label>
+                                    <select id="format" name="format" required>
+                                        <option value="BO2" selected>BO2</option>
+                                        <option value="BO1">BO1</option>
+                                        <option value="BO3">BO3</option>
+                                        <option value="BO5">BO5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="generator-field-row generator-score-fields" id="scoreFields" hidden>
+                                <div class="generator-field"><label for="team1Score">Výsledek prvního týmu *</label><input id="team1Score" name="team1Score" type="number" min="0" value="1"></div>
+                                <div class="generator-field"><label for="team2Score">Výsledek druhého týmu *</label><input id="team2Score" name="team2Score" type="number" min="0" value="1"></div>
+                            </div>
+                            <label class="generator-check" for="broadcast">
+                                <input id="broadcast" name="broadcast" type="checkbox" checked>
+                                <span>Přidat Twitch broadcast<small>Pevný odkaz: twitch.tv/col_official</small></span>
+                            </label>
+                        </fieldset>
+
+                        <div class="generator-error" id="generatorError" role="alert" hidden></div>
+                        <div class="generator-actions">
+                            <button class="generator-button" type="submit">Vygenerovat HTML</button>
+                            <button class="generator-button generator-button--secondary" id="resetGenerator" type="button">Vymazat</button>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="generator-panel generator-panel--sticky" aria-labelledby="generatorOutputTitle">
+                    <div class="generator-panel__head">
+                        <h2 id="generatorOutputTitle">Náhled a kód</h2>
+                        <p>Náhled se mění automaticky při vyplňování.</p>
+                    </div>
+                    <div class="generator-preview" id="matchPreview" aria-live="polite"></div>
+                    <div class="code-output-wrap">
+                        <label class="generator-field__label" for="generatedCode">Vygenerovaný HTML snippet</label>
+                        <textarea class="code-output" id="generatedCode" readonly spellcheck="false"></textarea>
+                    </div>
+                    <div class="generator-actions" style="margin-top: 1rem;">
+                        <button class="generator-button" id="copyCode" type="button">Zkopírovat kód</button>
+                    </div>
+                    <p class="copy-status" id="copyStatus" aria-live="polite"></p>
+                    <div class="generator-help">
+                        Otevři soubor <code>zapasy.html</code> a vlož snippet do sekce <code id="pasteTarget">#nejblizsi</code><span id="pasteHint"> pod komentář „NOVÝ VYGENEROVANÝ ZÁPAS“</span>.
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <script src="generator-zapasu.js"></script>
+</body>
+</html>
