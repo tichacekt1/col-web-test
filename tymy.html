@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Teko:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=130">
+    <link rel="stylesheet" href="style.css?v=135">
 
     <style>
         .hero .subtitle {
@@ -18,11 +18,10 @@
 
         .preview-section-title {
             font-family: 'Teko', sans-serif;
-            font-size: 2.2rem;
-            color: #ff4600;
+            font-size: 2rem;
             letter-spacing: 1px;
-            margin: 3rem 0 1rem;
-            border-bottom: 1px solid #333;
+            margin: 3.5rem 0 1.2rem;
+            border-bottom: 1px solid #262626;
             padding-bottom: 0.5rem;
             text-transform: uppercase;
         }
@@ -31,22 +30,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
             gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        /* SPOLEČNÝ ZÁKLAD KARTY */
-        .team-card-base {
-            background: #111111;
-            border: 1px solid #262626;
-            border-radius: 6px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.25s ease, border-color 0.25s ease;
-        }
-        .team-card-base:hover {
-            transform: translateY(-4px);
+            margin-bottom: 2rem;
         }
 
         /* SPOLEČNÝ BANNER LOGA */
@@ -78,33 +62,6 @@
             filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
         }
 
-        /* HLAVIČKA TÝMU */
-        .team-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.2rem 1.4rem 0.8rem;
-        }
-        .team-name {
-            font-family: 'Teko', sans-serif;
-            font-size: 2.2rem;
-            line-height: 0.9;
-            color: #ffffff;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin: 0;
-        }
-        .team-tag {
-            background: #1c1c1c;
-            color: #ff4600;
-            font-family: 'Teko', sans-serif;
-            font-size: 1.15rem;
-            padding: 0.15rem 0.55rem;
-            border: 1px solid #333;
-            border-radius: 3px;
-            letter-spacing: 1px;
-        }
-
         .role-icon-img {
             width: 18px;
             height: 18px;
@@ -112,236 +69,474 @@
         }
 
         /* =========================================================
-           STYL A: BROADCAST HUD (Šikmé linky, bar, kompaktní suby)
+           1. STYL: HEXTECH CYAN & GOLD (LoL Klient styl)
            ========================================================= */
-        .style-a-body {
-            padding: 0 1.4rem 1.4rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+        .card-hextech {
+            background: #09141f;
+            border: 1px solid #1e3a56;
+            border-top: 3px solid #00f0ff;
+            border-radius: 6px;
+            overflow: hidden;
         }
-        .hud-row {
+        .hex-body {
+            padding: 1.4rem;
+        }
+        .hex-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(90deg, #181818 0%, #121212 100%);
-            border-left: 3px solid #333;
-            padding: 0.45rem 0.75rem;
-            clip-path: polygon(0 0, 97% 0, 100% 100%, 0% 100%);
-            transition: 0.2s;
+            margin-bottom: 1rem;
         }
-        .hud-row.captain-row {
-            border-left-color: #ff4600;
-            background: linear-gradient(90deg, rgba(255,70,0,0.12) 0%, #141414 100%);
-        }
-        .hud-left {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-        .hud-role {
-            color: #ff4600;
-            font-weight: bold;
-            font-size: 0.75rem;
-            width: 32px;
-        }
-        .hud-name {
+        .hex-header h3 {
             font-family: 'Teko', sans-serif;
-            font-size: 1.35rem;
-            letter-spacing: 0.5px;
-            color: #fff;
-            line-height: 1;
+            font-size: 2.2rem;
+            color: #f0e6d2;
+            margin: 0;
+            line-height: 0.9;
+            letter-spacing: 1px;
         }
-        .hud-badge-c {
-            color: #ff4600;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-left: 0.3rem;
-        }
-        .hud-right {
-            font-size: 0.8rem;
-            color: #888;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-        .hud-subs-box {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.4rem;
-        }
-        .hud-sub-pill {
-            flex: 1;
-            background: #161616;
-            border: 1px dashed #333;
-            padding: 0.35rem 0.6rem;
-            font-size: 0.78rem;
-            color: #777;
+        .hex-tag {
+            background: rgba(0, 240, 255, 0.1);
+            color: #00f0ff;
+            border: 1px solid #00f0ff;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.1rem;
+            padding: 0.1rem 0.5rem;
             border-radius: 3px;
-            display: flex;
-            justify-content: space-between;
         }
-        .hud-sub-pill strong {
-            color: #aaa;
-        }
-        .hud-progress-wrap {
-            margin-top: 0.6rem;
-            border-top: 1px solid #222;
-            padding-top: 0.6rem;
-        }
-        .hud-bar-bg {
-            height: 4px;
-            background: #222;
-            border-radius: 2px;
-            overflow: hidden;
-            margin-bottom: 0.4rem;
-        }
-        .hud-bar-fill {
-            height: 100%;
-            background: #ff4600;
-            width: 98%;
-        }
-        .hud-footer-text {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: #666;
-            text-transform: uppercase;
-        }
-        .hud-footer-text strong {
-            color: #ff4600;
-            font-family: 'Teko', sans-serif;
-            font-size: 1.15rem;
-        }
-
-        /* =========================================================
-           STYL B: 5v5 GRID SLOTS (Dresy / Mřížka 2 sloupce)
-           ========================================================= */
-        .style-b-body {
-            padding: 0 1.4rem 1.4rem;
-        }
-        .grid-roster {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-            margin-bottom: 0.6rem;
-        }
-        .grid-player-card {
-            background: #161616;
-            border: 1px solid #262626;
-            padding: 0.5rem 0.6rem;
-            border-radius: 4px;
-            display: flex;
-            flex-direction: column;
-            gap: 0.15rem;
-        }
-        .grid-player-card.captain {
-            border-top: 2px solid #ff4600;
-        }
-        .grid-player-card.full-width {
-            grid-column: span 2;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .grid-role-header {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.72rem;
-            color: #888;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .grid-player-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: #fff;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .grid-player-rank {
-            font-size: 0.75rem;
-            color: #666;
-        }
-        .grid-footer {
-            border-top: 1px solid #222;
-            padding-top: 0.6rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            color: #666;
-            text-transform: uppercase;
-        }
-        .grid-footer strong {
-            color: #ff4600;
-            font-family: 'Teko', sans-serif;
-            font-size: 1.15rem;
-        }
-
-        /* =========================================================
-           STYL C: CYBER DARK (Čisté linky, badge ranků, neon akcent)
-           ========================================================= */
-        .style-c-body {
-            padding: 0 1.4rem 1.4rem;
-        }
-        .cyber-list {
+        .hex-list {
             list-style: none;
             padding: 0;
-            margin: 0 0 0.8rem;
+            margin: 0 0 1rem;
             display: flex;
             flex-direction: column;
-            gap: 0.35rem;
+            gap: 0.4rem;
         }
-        .cyber-item {
+        .hex-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.35rem 0;
-            border-bottom: 1px solid #1a1a1a;
+            background: rgba(1, 10, 19, 0.6);
+            border-left: 2px solid #00f0ff;
+            padding: 0.4rem 0.7rem;
         }
-        .cyber-item.captain {
-            border-bottom-color: rgba(255, 70, 0, 0.4);
+        .hex-row.captain {
+            border-left-color: #c89b3c;
+            background: rgba(200, 155, 60, 0.12);
         }
-        .cyber-left {
+        .hex-left {
             display: flex;
             align-items: center;
             gap: 0.6rem;
         }
-        .cyber-name {
-            font-size: 0.92rem;
-            font-weight: 600;
-            color: #eee;
-        }
-        .cyber-badge {
-            background: #202020;
-            color: #aaa;
-            font-size: 0.7rem;
-            padding: 0.15rem 0.4rem;
-            border-radius: 2px;
+        .hex-role {
+            color: #00f0ff;
+            font-size: 0.75rem;
             font-weight: bold;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
+            width: 32px;
         }
-        .cyber-badge.captain-badge {
-            background: #ff4600;
+        .hex-row.captain .hex-role {
+            color: #c89b3c;
+        }
+        .hex-name {
+            color: #fff;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.3rem;
+            line-height: 1;
+        }
+        .hex-badge-c {
+            background: #c89b3c;
             color: #000;
+            font-size: 0.65rem;
+            padding: 0.1rem 0.3rem;
+            font-weight: bold;
+            border-radius: 2px;
+            margin-left: 0.3rem;
         }
-        .cyber-footer {
-            border-top: 1px solid #222;
+        .hex-rank {
+            color: #785a28;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .hex-subs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .hex-sub-item {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px dashed #1e3a56;
+            padding: 0.35rem 0.5rem;
+            font-size: 0.75rem;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+        }
+        .hex-footer {
+            border-top: 1px solid #1e3a56;
             padding-top: 0.6rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 0.8rem;
-            color: #666;
+            color: #888;
             text-transform: uppercase;
         }
-        .cyber-footer strong {
-            color: #ff4600;
+        .hex-footer strong {
+            color: #00f0ff;
             font-family: 'Teko', sans-serif;
-            font-size: 1.15rem;
+            font-size: 1.2rem;
+        }
+
+        /* =========================================================
+           2. STYL: TÝMOVÁ ZELENÁ IDENTITA (Bio / Acid Green)
+           ========================================================= */
+        .card-green {
+            background: #0d120d;
+            border: 1px solid #1f2d1f;
+            border-top: 3px solid #22c55e;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .green-body {
+            padding: 1.4rem;
+        }
+        .green-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .green-header h3 {
+            font-family: 'Teko', sans-serif;
+            font-size: 2.2rem;
+            color: #ffffff;
+            margin: 0;
+            line-height: 0.9;
+            letter-spacing: 1px;
+        }
+        .green-tag {
+            background: #142414;
+            color: #22c55e;
+            border: 1px solid #22c55e;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.1rem;
+            padding: 0.1rem 0.5rem;
+            border-radius: 3px;
+        }
+        .green-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .green-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #121912;
+            border-left: 2px solid #22c55e;
+            padding: 0.4rem 0.7rem;
+        }
+        .green-row.captain {
+            background: rgba(34, 197, 94, 0.15);
+            border-left-width: 4px;
+        }
+        .green-left {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .green-role {
+            color: #22c55e;
+            font-size: 0.75rem;
+            font-weight: bold;
+            width: 32px;
+        }
+        .green-name {
+            color: #fff;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.3rem;
+            line-height: 1;
+        }
+        .green-badge-c {
+            background: #22c55e;
+            color: #000;
+            font-size: 0.65rem;
+            padding: 0.1rem 0.3rem;
+            font-weight: bold;
+            border-radius: 2px;
+            margin-left: 0.3rem;
+        }
+        .green-rank {
+            color: #6ee7b7;
+            font-size: 0.8rem;
+        }
+        .green-subs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .green-sub-item {
+            flex: 1;
+            background: #0f150f;
+            border: 1px dashed #284428;
+            padding: 0.35rem 0.5rem;
+            font-size: 0.75rem;
+            color: #777;
+            display: flex;
+            justify-content: space-between;
+        }
+        .green-footer {
+            border-top: 1px solid #1f2d1f;
+            padding-top: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+        }
+        .green-footer strong {
+            color: #22c55e;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.2rem;
+        }
+
+        /* =========================================================
+           3. STYL: MATNÁ OCEL & FROST WHITE (Monochrome Minimal)
+           ========================================================= */
+        .card-mono {
+            background: #141414;
+            border: 1px solid #2b2b2b;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .mono-body {
+            padding: 1.4rem;
+        }
+        .mono-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .mono-header h3 {
+            font-family: 'Teko', sans-serif;
+            font-size: 2.2rem;
+            color: #ffffff;
+            margin: 0;
+            line-height: 0.9;
+            letter-spacing: 1px;
+        }
+        .mono-tag {
+            background: #222;
+            color: #fff;
+            border: 1px solid #444;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.1rem;
+            padding: 0.1rem 0.5rem;
+            border-radius: 3px;
+        }
+        .mono-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .mono-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1a1a1a;
+            border-left: 2px solid #555;
+            padding: 0.4rem 0.7rem;
+        }
+        .mono-row.captain {
+            border-left-color: #fff;
+            background: #242424;
+        }
+        .mono-left {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .mono-role {
+            color: #aaa;
+            font-size: 0.75rem;
+            font-weight: bold;
+            width: 32px;
+        }
+        .mono-name {
+            color: #fff;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.3rem;
+            line-height: 1;
+        }
+        .mono-badge-c {
+            background: #fff;
+            color: #000;
+            font-size: 0.65rem;
+            padding: 0.1rem 0.3rem;
+            font-weight: bold;
+            border-radius: 2px;
+            margin-left: 0.3rem;
+        }
+        .mono-rank {
+            color: #888;
+            font-size: 0.8rem;
+        }
+        .mono-subs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .mono-sub-item {
+            flex: 1;
+            background: #111;
+            border: 1px dashed #333;
+            padding: 0.35rem 0.5rem;
+            font-size: 0.75rem;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+        }
+        .mono-footer {
+            border-top: 1px solid #2b2b2b;
+            padding-top: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+        }
+        .mono-footer strong {
+            color: #ffffff;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.2rem;
+        }
+
+        /* =========================================================
+           4. STYL: DARK VIOLET ARCANE (Mystic Glow)
+           ========================================================= */
+        .card-arcane {
+            background: #110d1a;
+            border: 1px solid #2e1d44;
+            border-top: 3px solid #a855f7;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .arcane-body {
+            padding: 1.4rem;
+        }
+        .arcane-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .arcane-header h3 {
+            font-family: 'Teko', sans-serif;
+            font-size: 2.2rem;
+            color: #ffffff;
+            margin: 0;
+            line-height: 0.9;
+            letter-spacing: 1px;
+        }
+        .arcane-tag {
+            background: #241438;
+            color: #c084fc;
+            border: 1px solid #a855f7;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.1rem;
+            padding: 0.1rem 0.5rem;
+            border-radius: 3px;
+        }
+        .arcane-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .arcane-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #181126;
+            border-left: 2px solid #a855f7;
+            padding: 0.4rem 0.7rem;
+        }
+        .arcane-row.captain {
+            background: rgba(168, 85, 247, 0.15);
+            border-left-width: 4px;
+        }
+        .arcane-left {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .arcane-role {
+            color: #c084fc;
+            font-size: 0.75rem;
+            font-weight: bold;
+            width: 32px;
+        }
+        .arcane-name {
+            color: #fff;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.3rem;
+            line-height: 1;
+        }
+        .arcane-badge-c {
+            background: #a855f7;
+            color: #fff;
+            font-size: 0.65rem;
+            padding: 0.1rem 0.3rem;
+            font-weight: bold;
+            border-radius: 2px;
+            margin-left: 0.3rem;
+        }
+        .arcane-rank {
+            color: #d8b4fe;
+            font-size: 0.8rem;
+        }
+        .arcane-subs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .arcane-sub-item {
+            flex: 1;
+            background: #130d1f;
+            border: 1px dashed #3f265e;
+            padding: 0.35rem 0.5rem;
+            font-size: 0.75rem;
+            color: #777;
+            display: flex;
+            justify-content: space-between;
+        }
+        .arcane-footer {
+            border-top: 1px solid #2e1d44;
+            padding-top: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+        }
+        .arcane-footer strong {
+            color: #c084fc;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.2rem;
         }
     </style>
 </head>
@@ -370,14 +565,14 @@
     <!-- Hero Sekce -->
     <section class="hero" style="min-height: 55vh;">
         <div class="hero-inner">
-            <p class="subtitle">AUTUMN SPLIT 2026 // NÁVRHY VZHLEDU</p>
+            <p class="subtitle">AUTUMN SPLIT 2026 // BAREVNÉ KONCEPTY</p>
             <h1 class="main-title">
                 TÝMY A SESTAVY<br>
                 <span class="highlight">V AKCI.</span>
             </h1>
             <div class="hero-actions">
                 <div class="hero-text">
-                    <p>Porovnej níže 3 různé vizuální koncepty týmových karet a vyber ten, který nejlépe sedí ke stylu ligy.</p>
+                    <p>Porovnej níže 4 barevná provedení karet a vyber styl, který nejlépe sedí ke grafice ligy.</p>
                 </div>
             </div>
         </div>
@@ -387,287 +582,160 @@
     <section class="section-dark">
         <div class="content-wrap">
 
-            <!-- 1. STYL A -->
-            <div class="preview-section-title">NÁVRH A: ESPORT BROADCAST HUD (Zkosené pruhy + Progress bar)</div>
+            <!-- 1. HEXTECH CYAN & GOLD -->
+            <div class="preview-section-title" style="color: #00f0ff;">1. STYL: HEXTECH CYAN &amp; GOLD (LoL Klient Styl)</div>
             <div class="teams-grid">
-                
-                <div class="team-card-base">
+                <div class="card-hextech">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Imperials.png');"></div>
                         <img src="assets/team-logos/Imperials.png" alt="Imperials" class="team-logo-img">
                     </div>
-                    <div class="team-header-row">
-                        <h3 class="team-name">Imperials</h3>
-                        <span class="team-tag">IMP</span>
-                    </div>
-                    <div class="style-a-body">
-                        <div class="hud-row captain-row">
-                            <div class="hud-left">
-                                <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP">
-                                <span class="hud-role">TOP</span>
-                                <span class="hud-name">Tomíno <span class="hud-badge-c">[C]</span></span>
-                            </div>
-                            <span class="hud-right">Master // 30p</span>
+                    <div class="hex-body">
+                        <div class="hex-header">
+                            <h3>Imperials</h3>
+                            <span class="hex-tag">IMP</span>
                         </div>
-                        <div class="hud-row">
-                            <div class="hud-left">
-                                <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL">
-                                <span class="hud-role">JGL</span>
-                                <span class="hud-name">Fish</span>
-                            </div>
-                            <span class="hud-right">Diamond // 22p</span>
-                        </div>
-                        <div class="hud-row">
-                            <div class="hud-left">
-                                <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID">
-                                <span class="hud-role">MID</span>
-                                <span class="hud-name">Player_3</span>
-                            </div>
-                            <span class="hud-right">Emerald // 18p</span>
-                        </div>
-                        <div class="hud-row">
-                            <div class="hud-left">
-                                <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC">
-                                <span class="hud-role">ADC</span>
-                                <span class="hud-name">Player_4</span>
-                            </div>
-                            <span class="hud-right">Plat // 14p</span>
-                        </div>
-                        <div class="hud-row">
-                            <div class="hud-left">
-                                <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP">
-                                <span class="hud-role">SUP</span>
-                                <span class="hud-name">Player_5</span>
-                            </div>
-                            <span class="hud-right">Gold // 10p</span>
-                        </div>
-
-                        <div class="hud-subs-box">
-                            <div class="hud-sub-pill"><span>SUB 1:</span> <strong>Player_6</strong></div>
-                            <div class="hud-sub-pill"><span>SUB 2:</span> <strong>Player_7</strong></div>
-                        </div>
-
-                        <div class="hud-progress-wrap">
-                            <div class="hud-bar-bg"><div class="hud-bar-fill"></div></div>
-                            <div class="hud-footer-text">
-                                <span>Essence Cap</span>
-                                <strong>94 / 100 PTS</strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="team-card-base">
-                    <div class="team-banner">
-                        <div class="team-banner-bg" style="background-image: url('assets/team-logos/Lunars.png');"></div>
-                        <img src="assets/team-logos/Lunars.png" alt="Lunars" class="team-logo-img">
-                    </div>
-                    <div class="team-header-row">
-                        <h3 class="team-name">Lunars</h3>
-                        <span class="team-tag">LUN</span>
-                    </div>
-                    <div class="style-a-body">
-                        <div class="hud-row">
-                            <div class="hud-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img"><span class="hud-role">TOP</span><span class="hud-name">TBD</span></div><span class="hud-right">--</span>
-                        </div>
-                        <div class="hud-row">
-                            <div class="hud-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img"><span class="hud-role">JGL</span><span class="hud-name">TBD</span></div><span class="hud-right">--</span>
-                        </div>
-                        <div class="hud-row captain-row">
-                            <div class="hud-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img"><span class="hud-role">MID</span><span class="hud-name">TBD <span class="hud-badge-c">[C]</span></span></div><span class="hud-right">--</span>
-                        </div>
-                        <div class="hud-row">
-                            <div class="hud-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img"><span class="hud-role">ADC</span><span class="hud-name">TBD</span></div><span class="hud-right">--</span>
-                        </div>
-                        <div class="hud-row">
-                            <div class="hud-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img"><span class="hud-role">SUP</span><span class="hud-name">TBD</span></div><span class="hud-right">--</span>
-                        </div>
-                        <div class="hud-subs-box">
-                            <div class="hud-sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="hud-sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
-                        </div>
-                        <div class="hud-progress-wrap">
-                            <div class="hud-bar-bg"><div class="hud-bar-fill" style="width: 100%;"></div></div>
-                            <div class="hud-footer-text"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- 2. STYL B -->
-            <div class="preview-section-title">NÁVRH B: 5v5 GRID SLOTS (Hráčské dresy v mřížce)</div>
-            <div class="teams-grid">
-                
-                <div class="team-card-base">
-                    <div class="team-banner">
-                        <div class="team-banner-bg" style="background-image: url('assets/team-logos/Draconics.png');"></div>
-                        <img src="assets/team-logos/Draconics.png" alt="Draconics" class="team-logo-img">
-                    </div>
-                    <div class="team-header-row">
-                        <h3 class="team-name">Draconics</h3>
-                        <span class="team-tag">DRA</span>
-                    </div>
-                    <div class="style-b-body">
-                        <div class="grid-roster">
-                            <div class="grid-player-card captain">
-                                <div class="grid-role-header">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img">
-                                    <span>TOP (C)</span>
-                                </div>
-                                <span class="grid-player-name">Tomíno</span>
-                                <span class="grid-player-rank">Master · 30p</span>
-                            </div>
-                            <div class="grid-player-card">
-                                <div class="grid-role-header">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img">
-                                    <span>JGL</span>
-                                </div>
-                                <span class="grid-player-name">Fish</span>
-                                <span class="grid-player-rank">Diamond · 22p</span>
-                            </div>
-                            <div class="grid-player-card">
-                                <div class="grid-role-header">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img">
-                                    <span>MID</span>
-                                </div>
-                                <span class="grid-player-name">Player_3</span>
-                                <span class="grid-player-rank">Emerald · 18p</span>
-                            </div>
-                            <div class="grid-player-card">
-                                <div class="grid-role-header">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img">
-                                    <span>ADC</span>
-                                </div>
-                                <span class="grid-player-name">Player_4</span>
-                                <span class="grid-player-rank">Plat · 14p</span>
-                            </div>
-                            <div class="grid-player-card full-width">
-                                <div style="display:flex; align-items:center; gap:0.5rem;">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img">
-                                    <span class="grid-player-name">Player_5</span>
-                                </div>
-                                <span class="grid-player-rank">Gold · 10p</span>
-                            </div>
-                        </div>
-                        <div class="grid-footer">
-                            <span>SUB: Player_6, Player_7</span>
-                            <strong>94 / 100 PTS</strong>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="team-card-base">
-                    <div class="team-banner">
-                        <div class="team-banner-bg" style="background-image: url('assets/team-logos/Mystics.png');"></div>
-                        <img src="assets/team-logos/Mystics.png" alt="Mystics" class="team-logo-img">
-                    </div>
-                    <div class="team-header-row">
-                        <h3 class="team-name">Mystics</h3>
-                        <span class="team-tag">MYS</span>
-                    </div>
-                    <div class="style-b-body">
-                        <div class="grid-roster">
-                            <div class="grid-player-card"><div class="grid-role-header"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img"><span>TOP</span></div><span class="grid-player-name">TBD</span><span class="grid-player-rank">--</span></div>
-                            <div class="grid-player-card"><div class="grid-role-header"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img"><span>JGL</span></div><span class="grid-player-name">TBD</span><span class="grid-player-rank">--</span></div>
-                            <div class="grid-player-card captain"><div class="grid-role-header"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img"><span>MID (C)</span></div><span class="grid-player-name">TBD</span><span class="grid-player-rank">--</span></div>
-                            <div class="grid-player-card"><div class="grid-role-header"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img"><span>ADC</span></div><span class="grid-player-name">TBD</span><span class="grid-player-rank">--</span></div>
-                            <div class="grid-player-card full-width"><div style="display:flex; align-items:center; gap:0.5rem;"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img"><span class="grid-player-name">TBD</span></div><span class="grid-player-rank">--</span></div>
-                        </div>
-                        <div class="grid-footer">
-                            <span>SUB: TBD, TBD</span>
-                            <strong>100 / 100 PTS</strong>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- 3. STYL C -->
-            <div class="preview-section-title">NÁVRH C: CYBER DARK (Minimalistické linky a rank badge)</div>
-            <div class="teams-grid">
-                
-                <div class="team-card-base">
-                    <div class="team-banner">
-                        <div class="team-banner-bg" style="background-image: url('assets/team-logos/Hellions.png');"></div>
-                        <img src="assets/team-logos/Hellions.png" alt="Hellions" class="team-logo-img">
-                    </div>
-                    <div class="team-header-row">
-                        <h3 class="team-name">Hellions</h3>
-                        <span class="team-tag">HEL</span>
-                    </div>
-                    <div class="style-c-body">
-                        <ul class="cyber-list">
-                            <li class="cyber-item captain">
-                                <div class="cyber-left">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img">
-                                    <span class="cyber-name">Tomíno</span>
-                                </div>
-                                <div style="display:flex; gap:0.4rem;">
-                                    <span class="cyber-badge captain-badge">C</span>
-                                    <span class="cyber-badge">Master</span>
-                                </div>
+                        <ul class="hex-list">
+                            <li class="hex-row captain">
+                                <div class="hex-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img"><span class="hex-role">TOP</span><span class="hex-name">Tomíno <span class="hex-badge-c">C</span></span></div><span class="hex-rank">Master</span>
                             </li>
-                            <li class="cyber-item">
-                                <div class="cyber-left">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img">
-                                    <span class="cyber-name">Fish</span>
-                                </div>
-                                <span class="cyber-badge">Diamond</span>
+                            <li class="hex-row">
+                                <div class="hex-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img"><span class="hex-role">JGL</span><span class="hex-name">Fish</span></div><span class="hex-rank">Diamond</span>
                             </li>
-                            <li class="cyber-item">
-                                <div class="cyber-left">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img">
-                                    <span class="cyber-name">Player_3</span>
-                                </div>
-                                <span class="cyber-badge">Emerald</span>
+                            <li class="hex-row">
+                                <div class="hex-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img"><span class="hex-role">MID</span><span class="hex-name">Player_3</span></div><span class="hex-rank">Emerald</span>
                             </li>
-                            <li class="cyber-item">
-                                <div class="cyber-left">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img">
-                                    <span class="cyber-name">Player_4</span>
-                                </div>
-                                <span class="cyber-badge">Plat</span>
+                            <li class="hex-row">
+                                <div class="hex-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img"><span class="hex-role">ADC</span><span class="hex-name">Player_4</span></div><span class="hex-rank">Platinum</span>
                             </li>
-                            <li class="cyber-item">
-                                <div class="cyber-left">
-                                    <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img">
-                                    <span class="cyber-name">Player_5</span>
-                                </div>
-                                <span class="cyber-badge">Gold</span>
+                            <li class="hex-row">
+                                <div class="hex-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img"><span class="hex-role">SUP</span><span class="hex-name">Player_5</span></div><span class="hex-rank">Gold</span>
                             </li>
                         </ul>
-                        <div class="cyber-footer">
-                            <span style="font-size:0.75rem;">SUB: Player_6 · Player_7</span>
-                            <strong>94 / 100 PTS</strong>
+                        <div class="hex-subs">
+                            <div class="hex-sub-item"><span>SUB 1:</span> <strong>Player_6</strong></div>
+                            <div class="hex-sub-item"><span>SUB 2:</span> <strong>Player_7</strong></div>
                         </div>
+                        <div class="hex-footer"><span>Essence Cap</span><strong>94 / 100 PTS</strong></div>
                     </div>
                 </div>
+            </div>
 
-                <div class="team-card-base">
+            <!-- 2. ACID GREEN -->
+            <div class="preview-section-title" style="color: #22c55e;">2. STYL: BIO GREEN (Barevná identita týmu)</div>
+            <div class="teams-grid">
+                <div class="card-green">
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('assets/team-logos/Abominatios.png');"></div>
+                        <img src="assets/team-logos/Abominatios.png" alt="Abominations" class="team-logo-img">
+                    </div>
+                    <div class="green-body">
+                        <div class="green-header">
+                            <h3>Abominations</h3>
+                            <span class="green-tag">ABO</span>
+                        </div>
+                        <ul class="green-list">
+                            <li class="green-row captain">
+                                <div class="green-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img"><span class="green-role">TOP</span><span class="green-name">Tomíno <span class="green-badge-c">C</span></span></div><span class="green-rank">Master</span>
+                            </li>
+                            <li class="green-row">
+                                <div class="green-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img"><span class="green-role">JGL</span><span class="green-name">Fish</span></div><span class="green-rank">Diamond</span>
+                            </li>
+                            <li class="green-row">
+                                <div class="green-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img"><span class="green-role">MID</span><span class="green-name">Player_3</span></div><span class="green-rank">Emerald</span>
+                            </li>
+                            <li class="green-row">
+                                <div class="green-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img"><span class="green-role">ADC</span><span class="green-name">Player_4</span></div><span class="green-rank">Platinum</span>
+                            </li>
+                            <li class="green-row">
+                                <div class="green-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img"><span class="green-role">SUP</span><span class="green-name">Player_5</span></div><span class="green-rank">Gold</span>
+                            </li>
+                        </ul>
+                        <div class="green-subs">
+                            <div class="green-sub-item"><span>SUB 1:</span> <strong>Player_6</strong></div>
+                            <div class="green-sub-item"><span>SUB 2:</span> <strong>Player_7</strong></div>
+                        </div>
+                        <div class="green-footer"><span>Essence Cap</span><strong>94 / 100 PTS</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. MONOCHROME MINIMAL -->
+            <div class="preview-section-title" style="color: #ffffff;">3. STYL: MATNÁ OCEL &amp; FROST WHITE (Monochrome)</div>
+            <div class="teams-grid">
+                <div class="card-mono">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Vanguards.png');"></div>
                         <img src="assets/team-logos/Vanguards.png" alt="Vanguards" class="team-logo-img">
                     </div>
-                    <div class="team-header-row">
-                        <h3 class="team-name">Vanguards</h3>
-                        <span class="team-tag">VAN</span>
-                    </div>
-                    <div class="style-c-body">
-                        <ul class="cyber-list">
-                            <li class="cyber-item"><div class="cyber-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img"><span class="cyber-name">TBD</span></div><span class="cyber-badge">--</span></li>
-                            <li class="cyber-item"><div class="cyber-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img"><span class="cyber-name">TBD</span></div><span class="cyber-badge">--</span></li>
-                            <li class="cyber-item captain"><div class="cyber-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img"><span class="cyber-name">TBD</span></div><div style="display:flex; gap:0.4rem;"><span class="cyber-badge captain-badge">C</span><span class="cyber-badge">--</span></div></li>
-                            <li class="cyber-item"><div class="cyber-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img"><span class="cyber-name">TBD</span></div><span class="cyber-badge">--</span></li>
-                            <li class="cyber-item"><div class="cyber-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img"><span class="cyber-name">TBD</span></div><span class="cyber-badge">--</span></li>
-                        </ul>
-                        <div class="cyber-footer">
-                            <span style="font-size:0.75rem;">SUB: TBD · TBD</span>
-                            <strong>100 / 100 PTS</strong>
+                    <div class="mono-body">
+                        <div class="mono-header">
+                            <h3>Vanguards</h3>
+                            <span class="mono-tag">VAN</span>
                         </div>
+                        <ul class="mono-list">
+                            <li class="mono-row captain">
+                                <div class="mono-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img"><span class="mono-role">TOP</span><span class="mono-name">Tomíno <span class="mono-badge-c">C</span></span></div><span class="mono-rank">Master</span>
+                            </li>
+                            <li class="mono-row">
+                                <div class="mono-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img"><span class="mono-role">JGL</span><span class="mono-name">Fish</span></div><span class="mono-rank">Diamond</span>
+                            </li>
+                            <li class="mono-row">
+                                <div class="mono-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img"><span class="mono-role">MID</span><span class="mono-name">Player_3</span></div><span class="mono-rank">Emerald</span>
+                            </li>
+                            <li class="mono-row">
+                                <div class="mono-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img"><span class="mono-role">ADC</span><span class="mono-name">Player_4</span></div><span class="mono-rank">Platinum</span>
+                            </li>
+                            <li class="mono-row">
+                                <div class="mono-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img"><span class="mono-role">SUP</span><span class="mono-name">Player_5</span></div><span class="mono-rank">Gold</span>
+                            </li>
+                        </ul>
+                        <div class="mono-subs">
+                            <div class="mono-sub-item"><span>SUB 1:</span> <strong>Player_6</strong></div>
+                            <div class="mono-sub-item"><span>SUB 2:</span> <strong>Player_7</strong></div>
+                        </div>
+                        <div class="mono-footer"><span>Essence Cap</span><strong>94 / 100 PTS</strong></div>
                     </div>
                 </div>
+            </div>
 
+            <!-- 4. DARK VIOLET ARCANE -->
+            <div class="preview-section-title" style="color: #c084fc;">4. STYL: DARK VIOLET ARCANE (Mystic Glow)</div>
+            <div class="teams-grid">
+                <div class="card-arcane">
+                    <div class="team-banner">
+                        <div class="team-banner-bg" style="background-image: url('assets/team-logos/Mystics.png');"></div>
+                        <img src="assets/team-logos/Mystics.png" alt="Mystics" class="team-logo-img">
+                    </div>
+                    <div class="arcane-body">
+                        <div class="arcane-header">
+                            <h3>Mystics</h3>
+                            <span class="arcane-tag">MYS</span>
+                        </div>
+                        <ul class="arcane-list">
+                            <li class="arcane-row captain">
+                                <div class="arcane-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img"><span class="arcane-role">TOP</span><span class="arcane-name">Tomíno <span class="arcane-badge-c">C</span></span></div><span class="arcane-rank">Master</span>
+                            </li>
+                            <li class="arcane-row">
+                                <div class="arcane-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img"><span class="arcane-role">JGL</span><span class="arcane-name">Fish</span></div><span class="arcane-rank">Diamond</span>
+                            </li>
+                            <li class="arcane-row">
+                                <div class="arcane-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img"><span class="arcane-role">MID</span><span class="arcane-name">Player_3</span></div><span class="arcane-rank">Emerald</span>
+                            </li>
+                            <li class="arcane-row">
+                                <div class="arcane-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img"><span class="arcane-role">ADC</span><span class="arcane-name">Player_4</span></div><span class="arcane-rank">Platinum</span>
+                            </li>
+                            <li class="arcane-row">
+                                <div class="arcane-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img"><span class="arcane-role">SUP</span><span class="arcane-name">Player_5</span></div><span class="arcane-rank">Gold</span>
+                            </li>
+                        </ul>
+                        <div class="arcane-subs">
+                            <div class="arcane-sub-item"><span>SUB 1:</span> <strong>Player_6</strong></div>
+                            <div class="arcane-sub-item"><span>SUB 2:</span> <strong>Player_7</strong></div>
+                        </div>
+                        <div class="arcane-footer"><span>Essence Cap</span><strong>94 / 100 PTS</strong></div>
+                    </div>
+                </div>
             </div>
 
         </div>
