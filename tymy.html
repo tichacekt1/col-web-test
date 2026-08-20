@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Teko:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=160">
+    <link rel="stylesheet" href="style.css?v=180">
 
     <style>
         .hero .subtitle {
@@ -132,7 +132,14 @@
             border-left: 2px solid #2d2d2d;
             padding: 0.4rem 0.7rem;
             border-radius: 2px;
-            transition: background 0.15s ease;
+            cursor: pointer;
+            transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+        }
+
+        .roster-row:hover {
+            background: color-mix(in srgb, var(--team-color) 15%, #181818);
+            border-left-color: var(--team-color, #ff4600);
+            transform: translateX(3px);
         }
 
         .roster-row.captain {
@@ -179,11 +186,28 @@
             vertical-align: middle;
         }
 
+        .roster-right {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
         .roster-rank {
             color: #777;
             font-size: 0.82rem;
             font-weight: 600;
             text-transform: uppercase;
+        }
+
+        .stats-hint {
+            font-size: 0.65rem;
+            color: var(--team-color, #ff4600);
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+
+        .roster-row:hover .stats-hint {
+            opacity: 1;
         }
 
         /* NÁHRADNÍCI */
@@ -203,6 +227,13 @@
             border-radius: 3px;
             display: flex;
             justify-content: space-between;
+            cursor: pointer;
+            transition: border-color 0.15s ease, background 0.15s ease;
+        }
+
+        .sub-pill:hover {
+            border-color: var(--team-color, #ff4600);
+            background: color-mix(in srgb, var(--team-color) 8%, #131313);
         }
 
         .sub-pill strong {
@@ -227,6 +258,241 @@
             font-family: 'Teko', sans-serif;
             font-size: 1.25rem;
             letter-spacing: 1px;
+        }
+
+        /* =========================================================
+           POP-UP MODAL (HRÁČSKÁ STATISTICKÁ KARTA)
+           ========================================================= */
+        .player-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            padding: 1.5rem;
+        }
+
+        .player-modal-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .player-modal-box {
+            background: #0d0d0d;
+            border: 1px solid #282828;
+            border-top: 4px solid var(--modal-color, #ff4600);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 540px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 25px color-mix(in srgb, var(--modal-color) 20%, transparent);
+            padding: 2rem;
+            transform: scale(0.95);
+            transition: transform 0.25s ease;
+        }
+
+        .player-modal-backdrop.active .player-modal-box {
+            transform: scale(1);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            background: #181818;
+            border: 1px solid #333;
+            color: #aaa;
+            font-size: 1.2rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            background: #ff4600;
+            color: #fff;
+            border-color: #ff4600;
+        }
+
+        /* MODAL HEADER */
+        .modal-header-badges {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 0.6rem;
+        }
+
+        .modal-badge {
+            background: #181818;
+            border: 1px solid #333;
+            color: #ccc;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.55rem;
+            border-radius: 3px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .modal-badge.role-badge {
+            border-color: var(--modal-color, #ff4600);
+            color: var(--modal-color, #ff4600);
+        }
+
+        .modal-player-name {
+            font-family: 'Teko', sans-serif;
+            font-size: 3rem;
+            line-height: 0.9;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .modal-team-subtitle {
+            color: var(--modal-color, #ff4600);
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* MODAL TOP STRIP */
+        .modal-strip {
+            background: #141414;
+            border: 1px solid #222;
+            border-radius: 6px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 1rem 0.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .strip-item strong {
+            font-family: 'Teko', sans-serif;
+            font-size: 1.8rem;
+            line-height: 1;
+            display: block;
+            color: #ffffff;
+        }
+
+        .strip-item span {
+            font-size: 0.72rem;
+            color: #777;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* MODAL SECTION TITLE */
+        .modal-sec-title {
+            color: var(--modal-color, #ff4600);
+            font-family: 'Teko', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 1.4rem 0 0.6rem;
+        }
+
+        /* STATS GRID */
+        .modal-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .modal-stats-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .stat-box {
+            background: #141414;
+            border: 1px solid #222;
+            padding: 0.8rem 0.6rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .stat-box strong {
+            font-family: 'Teko', sans-serif;
+            font-size: 1.8rem;
+            line-height: 1;
+            color: #fff;
+            display: block;
+        }
+
+        .stat-box span {
+            font-size: 0.72rem;
+            color: #777;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* CHAMPIONS LIST */
+        .modal-champs-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .champ-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #141414;
+            border: 1px solid #202020;
+            padding: 0.45rem 0.8rem;
+            border-radius: 4px;
+        }
+
+        .champ-left {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .champ-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid var(--modal-color, #ff4600);
+            object-fit: cover;
+        }
+
+        .champ-name {
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: #fff;
+        }
+
+        .champ-right {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .champ-right strong {
+            color: var(--modal-color, #ff4600);
+            margin-left: 0.5rem;
         }
     </style>
 </head>
@@ -262,7 +528,7 @@
             </h1>
             <div class="hero-actions">
                 <div class="hero-text">
-                    <p>Kompletní přehled 16 ligových týmů, draftovaných hráčů a bodové essence jednotlivých sestav v Autumn Splitu 2026.</p>
+                    <p>Kompletní přehled 16 ligových týmů a bodové essence. Kliknutím na kteréhokoliv hráče otevřeš jeho detailní kartu statistik.</p>
                 </div>
             </div>
         </div>
@@ -281,7 +547,7 @@
 
             <div class="teams-grid">
 
-                <!-- 1. ABOMINATIONS (Toxic Green) -->
+                <!-- 1. ABOMINATIONS -->
                 <div class="team-card" style="--team-color: #22c55e;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Abominatios.png');"></div>
@@ -293,21 +559,21 @@
                             <span class="team-tag">ABO</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Abominations', 'TOP', '--', '--', '#22c55e')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Abominations', 'JGL', '--', '--', '#22c55e')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Abominations', 'MID', '--', '--', '#22c55e')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Abominations', 'ADC', '--', '--', '#22c55e')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Abominations', 'SUP', '--', '--', '#22c55e')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Abominations', 'SUB 1', '--', '--', '#22c55e')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Abominations', 'SUB 2', '--', '--', '#22c55e')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 2. APEX PREDATORS (Crimson Red) -->
+                <!-- 2. APEX PREDATORS -->
                 <div class="team-card" style="--team-color: #ef4444;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Apex_Predators.png');"></div>
@@ -319,21 +585,21 @@
                             <span class="team-tag">APX</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Apex Predators', 'TOP', '--', '--', '#ef4444')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Apex Predators', 'JGL', '--', '--', '#ef4444')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Apex Predators', 'MID', '--', '--', '#ef4444')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Apex Predators', 'ADC', '--', '--', '#ef4444')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Apex Predators', 'SUP', '--', '--', '#ef4444')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Apex Predators', 'SUB 1', '--', '--', '#ef4444')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Apex Predators', 'SUB 2', '--', '--', '#ef4444')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 3. ARCANISTS (Arcane Cyan-Blue) -->
+                <!-- 3. ARCANISTS -->
                 <div class="team-card" style="--team-color: #00d2ff;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Arcanists.png');"></div>
@@ -345,21 +611,21 @@
                             <span class="team-tag">ARC</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Arcanists', 'TOP', '--', '--', '#00d2ff')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Arcanists', 'JGL', '--', '--', '#00d2ff')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Arcanists', 'MID', '--', '--', '#00d2ff')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Arcanists', 'ADC', '--', '--', '#00d2ff')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Arcanists', 'SUP', '--', '--', '#00d2ff')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Arcanists', 'SUB 1', '--', '--', '#00d2ff')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Arcanists', 'SUB 2', '--', '--', '#00d2ff')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 4. DRACONICS (Dragon Fire Orange) -->
+                <!-- 4. DRACONICS -->
                 <div class="team-card" style="--team-color: #ea580c;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Draconics.png');"></div>
@@ -371,21 +637,21 @@
                             <span class="team-tag">DRA</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Draconics', 'TOP', '--', '--', '#ea580c')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Draconics', 'JGL', '--', '--', '#ea580c')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Draconics', 'MID', '--', '--', '#ea580c')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Draconics', 'ADC', '--', '--', '#ea580c')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Draconics', 'SUP', '--', '--', '#ea580c')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Draconics', 'SUB 1', '--', '--', '#ea580c')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Draconics', 'SUB 2', '--', '--', '#ea580c')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 5. ETERNALS (Celestial Platinum-White) -->
+                <!-- 5. ETERNALS -->
                 <div class="team-card" style="--team-color: #e2e8f0;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Eternals.png');"></div>
@@ -397,21 +663,21 @@
                             <span class="team-tag">ETE</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Eternals', 'TOP', '--', '--', '#e2e8f0')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Eternals', 'JGL', '--', '--', '#e2e8f0')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Eternals', 'MID', '--', '--', '#e2e8f0')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Eternals', 'ADC', '--', '--', '#e2e8f0')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Eternals', 'SUP', '--', '--', '#e2e8f0')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Eternals', 'SUB 1', '--', '--', '#e2e8f0')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Eternals', 'SUB 2', '--', '--', '#e2e8f0')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 6. FORGOTTENS (Ghost Mint) -->
+                <!-- 6. FORGOTTENS -->
                 <div class="team-card" style="--team-color: #14b8a6;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Forgottens.png');"></div>
@@ -423,21 +689,21 @@
                             <span class="team-tag">FRG</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Forgottens', 'TOP', '--', '--', '#14b8a6')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Forgottens', 'JGL', '--', '--', '#14b8a6')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Forgottens', 'MID', '--', '--', '#14b8a6')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Forgottens', 'ADC', '--', '--', '#14b8a6')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Forgottens', 'SUP', '--', '--', '#14b8a6')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Forgottens', 'SUB 1', '--', '--', '#14b8a6')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Forgottens', 'SUB 2', '--', '--', '#14b8a6')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 7. HELLIONS (Lava Amber) -->
+                <!-- 7. HELLIONS -->
                 <div class="team-card" style="--team-color: #f97316;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Hellions.png');"></div>
@@ -449,21 +715,21 @@
                             <span class="team-tag">HEL</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Hellions', 'TOP', '--', '--', '#f97316')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Hellions', 'JGL', '--', '--', '#f97316')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Hellions', 'MID', '--', '--', '#f97316')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Hellions', 'ADC', '--', '--', '#f97316')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Hellions', 'SUP', '--', '--', '#f97316')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Hellions', 'SUB 1', '--', '--', '#f97316')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Hellions', 'SUB 2', '--', '--', '#f97316')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 8. IMPERIALS (Imperial Gold) -->
+                <!-- 8. IMPERIALS -->
                 <div class="team-card" style="--team-color: #d97706;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Imperials.png');"></div>
@@ -475,21 +741,21 @@
                             <span class="team-tag">IMP</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Imperials', 'TOP', '--', '--', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Imperials', 'JGL', '--', '--', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Imperials', 'MID', '--', '--', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Imperials', 'ADC', '--', '--', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Imperials', 'SUP', '--', '--', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Imperials', 'SUB 1', '--', '--', '#d97706')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Imperials', 'SUB 2', '--', '--', '#d97706')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 9. LUNARS (Moon Indigo) -->
+                <!-- 9. LUNARS -->
                 <div class="team-card" style="--team-color: #6366f1;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Lunars.png');"></div>
@@ -501,21 +767,21 @@
                             <span class="team-tag">LUN</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Lunars', 'TOP', '--', '--', '#6366f1')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Lunars', 'JGL', '--', '--', '#6366f1')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Lunars', 'MID', '--', '--', '#6366f1')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Lunars', 'ADC', '--', '--', '#6366f1')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Lunars', 'SUP', '--', '--', '#6366f1')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Lunars', 'SUB 1', '--', '--', '#6366f1')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Lunars', 'SUB 2', '--', '--', '#6366f1')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 10. MYSTICS (Cosmic Violet) -->
+                <!-- 10. MYSTICS -->
                 <div class="team-card" style="--team-color: #a855f7;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Mystics.png');"></div>
@@ -527,21 +793,21 @@
                             <span class="team-tag">MYS</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Mystics', 'TOP', '--', '--', '#a855f7')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Mystics', 'JGL', '--', '--', '#a855f7')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Mystics', 'MID', '--', '--', '#a855f7')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Mystics', 'ADC', '--', '--', '#a855f7')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Mystics', 'SUP', '--', '--', '#a855f7')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Mystics', 'SUB 1', '--', '--', '#a855f7')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Mystics', 'SUB 2', '--', '--', '#a855f7')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 11. PROTECTORS (Crystal Cyan) -->
+                <!-- 11. PROTECTORS -->
                 <div class="team-card" style="--team-color: #06b6d4;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Protectors.png');"></div>
@@ -553,21 +819,21 @@
                             <span class="team-tag">PRO</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Protectors', 'TOP', '--', '--', '#06b6d4')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Protectors', 'JGL', '--', '--', '#06b6d4')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Protectors', 'MID', '--', '--', '#06b6d4')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Protectors', 'ADC', '--', '--', '#06b6d4')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Protectors', 'SUP', '--', '--', '#06b6d4')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Protectors', 'SUB 1', '--', '--', '#06b6d4')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Protectors', 'SUB 2', '--', '--', '#06b6d4')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 12. REDEEMED (Divine Gold) -->
+                <!-- 12. REDEEMED -->
                 <div class="team-card" style="--team-color: #facc15;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Redeemed.png');"></div>
@@ -579,21 +845,21 @@
                             <span class="team-tag">RED</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Redeemed', 'TOP', '--', '--', '#facc15')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Redeemed', 'JGL', '--', '--', '#facc15')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Redeemed', 'MID', '--', '--', '#facc15')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Redeemed', 'ADC', '--', '--', '#facc15')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Redeemed', 'SUP', '--', '--', '#facc15')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Redeemed', 'SUB 1', '--', '--', '#facc15')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Redeemed', 'SUB 2', '--', '--', '#facc15')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 13. REVENANTS (Dark Crimson) -->
+                <!-- 13. REVENANTS -->
                 <div class="team-card" style="--team-color: #b91c1c;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Revenants.png');"></div>
@@ -605,21 +871,21 @@
                             <span class="team-tag">REV</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Revenants', 'TOP', '--', '--', '#b91c1c')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Revenants', 'JGL', '--', '--', '#b91c1c')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Revenants', 'MID', '--', '--', '#b91c1c')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Revenants', 'ADC', '--', '--', '#b91c1c')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Revenants', 'SUP', '--', '--', '#b91c1c')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Revenants', 'SUB 1', '--', '--', '#b91c1c')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Revenants', 'SUB 2', '--', '--', '#b91c1c')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 14. SOLARS (Sun Gold) -->
+                <!-- 14. SOLARS -->
                 <div class="team-card" style="--team-color: #eab308;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Solars.png');"></div>
@@ -631,21 +897,21 @@
                             <span class="team-tag">SOL</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Solars', 'TOP', '--', '--', '#eab308')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Solars', 'JGL', '--', '--', '#eab308')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Solars', 'MID', '--', '--', '#eab308')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Solars', 'ADC', '--', '--', '#eab308')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Solars', 'SUP', '--', '--', '#eab308')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Solars', 'SUB 1', '--', '--', '#eab308')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Solars', 'SUB 2', '--', '--', '#eab308')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 15. SOUL STEALERS (Spectral Cyan) -->
+                <!-- 15. SOUL STEALERS -->
                 <div class="team-card" style="--team-color: #38bdf8;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Soul_Stealers.png');"></div>
@@ -657,21 +923,21 @@
                             <span class="team-tag">SSL</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Soul Stealers', 'TOP', '--', '--', '#38bdf8')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Soul Stealers', 'JGL', '--', '--', '#38bdf8')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Soul Stealers', 'MID', '--', '--', '#38bdf8')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Soul Stealers', 'ADC', '--', '--', '#38bdf8')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Soul Stealers', 'SUP', '--', '--', '#38bdf8')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Soul Stealers', 'SUB 1', '--', '--', '#38bdf8')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Soul Stealers', 'SUB 2', '--', '--', '#38bdf8')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
                 </div>
 
-                <!-- 16. VANGUARDS (Starlight Ice-Blue) -->
+                <!-- 16. VANGUARDS -->
                 <div class="team-card" style="--team-color: #3b82f6;">
                     <div class="team-banner">
                         <div class="team-banner-bg" style="background-image: url('assets/team-logos/Vanguards.png');"></div>
@@ -683,15 +949,15 @@
                             <span class="team-tag">VAN</span>
                         </div>
                         <ul class="roster-list">
-                            <li class="roster-row captain"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
-                            <li class="roster-row"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><span class="roster-rank">--</span></li>
+                            <li class="roster-row captain" onclick="openPlayerModal('TBD', 'Vanguards', 'TOP', '--', '--', '#3b82f6')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">TBD <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Vanguards', 'JGL', '--', '--', '#3b82f6')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Vanguards', 'MID', '--', '--', '#3b82f6')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Vanguards', 'ADC', '--', '--', '#3b82f6')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" onclick="openPlayerModal('TBD', 'Vanguards', 'SUP', '--', '--', '#3b82f6')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">TBD</span></div><div class="roster-right"><span class="roster-rank">--</span><span class="stats-hint">↗</span></div></li>
                         </ul>
                         <div class="subs-box">
-                            <div class="sub-pill"><span>SUB 1:</span> <strong>TBD</strong></div>
-                            <div class="sub-pill"><span>SUB 2:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Vanguards', 'SUB 1', '--', '--', '#3b82f6')"><span>SUB 1:</span> <strong>TBD</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('TBD', 'Vanguards', 'SUB 2', '--', '--', '#3b82f6')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
                     </div>
@@ -701,6 +967,249 @@
 
         </div>
     </section>
+
+    <!-- STATISTICKÉ MODÁLNÍ OKNO -->
+    <div class="player-modal-backdrop" id="playerModal" onclick="closePlayerModal(event)">
+        <div class="player-modal-box" id="playerModalBox" onclick="event.stopPropagation()">
+            <button class="modal-close-btn" onclick="closePlayerModalDirect()">✕</button>
+            
+            <div class="modal-header-badges">
+                <span class="modal-badge role-badge" id="modalRole">TOP</span>
+                <span class="modal-badge" id="modalRank">DIAMOND II</span>
+                <span class="modal-badge" id="modalEssence">22 PTS</span>
+            </div>
+
+            <h2 class="modal-player-name" id="modalName">Tomíno</h2>
+            <div class="modal-team-subtitle" id="modalTeam">IMPERIALS</div>
+
+            <!-- Souhrn -->
+            <div class="modal-strip">
+                <div class="strip-item">
+                    <strong id="modalGames">12</strong>
+                    <span>Her</span>
+                </div>
+                <div class="strip-item">
+                    <strong id="modalWinrate" style="color: #22c55e;">67%</strong>
+                    <span>Winrate</span>
+                </div>
+                <div class="strip-item">
+                    <strong id="modalKDA" style="color: #eab308;">3.45</strong>
+                    <span>KDA</span>
+                </div>
+                <div class="strip-item">
+                    <strong id="modalMVP" style="color: #f97316;">2×</strong>
+                    <span>MVP</span>
+                </div>
+            </div>
+
+            <!-- Klíčové metriky -->
+            <div class="modal-sec-title">Klíčové metriky splitu</div>
+            <div class="modal-stats-grid">
+                <div class="stat-box">
+                    <strong id="modalKills" style="color: #22c55e;">42</strong>
+                    <span>Kills Celkem</span>
+                </div>
+                <div class="stat-box">
+                    <strong id="modalDeaths" style="color: #ef4444;">21</strong>
+                    <span>Deaths Celkem</span>
+                </div>
+                <div class="stat-box">
+                    <strong id="modalAssists" style="color: #00d2ff;">86</strong>
+                    <span>Assists Celkem</span>
+                </div>
+                <div class="stat-box">
+                    <strong id="modalCS">7.8</strong>
+                    <span>CS / Min</span>
+                </div>
+                <div class="stat-box">
+                    <strong id="modalVision">28.4</strong>
+                    <span>Vision Score</span>
+                </div>
+                <div class="stat-box">
+                    <strong id="modalDMG">21.5k</strong>
+                    <span>DMG / Hru</span>
+                </div>
+            </div>
+
+            <!-- Highlighty -->
+            <div class="modal-sec-title">Highlighty &amp; Speciální akce</div>
+            <div class="modal-stats-grid-4">
+                <div class="stat-box">
+                    <strong id="modalSoloKills" style="color: #10b981;">8</strong>
+                    <span>Solo Kills</span>
+                </div>
+                <div class="stat-box">
+                    <strong id="modalPentaKills" style="color: #ec4899;">1</strong>
+                    <span>Penta Kills</span>
+                </div>
+                <div class="stat-box">
+                    <strong id="modalFirstBloods" style="color: #f59e0b;">3</strong>
+                    <span>First Bloods</span>
+                </div>
+                <div class="stat-box">
+                    <strong id="modalTotalMvp" style="color: #6366f1;">2</strong>
+                    <span>MVP Ocenění</span>
+                </div>
+            </div>
+
+            <!-- Odehraní šampioni -->
+            <div class="modal-sec-title">Nejhranější šampioni</div>
+            <ul class="modal-champs-list" id="modalChampsList">
+                <li class="champ-row">
+                    <div class="champ-left">
+                        <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/Aatrox.png" class="champ-icon" alt="Aatrox">
+                        <span class="champ-name">Aatrox</span>
+                    </div>
+                    <div class="champ-right">5 her <strong>60% WR</strong></div>
+                </li>
+                <li class="champ-row">
+                    <div class="champ-left">
+                        <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/Renekton.png" class="champ-icon" alt="Renekton">
+                        <span class="champ-name">Renekton</span>
+                    </div>
+                    <div class="champ-right">4 hry <strong>75% WR</strong></div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT PRO INTERAKTIVNÍ POP-UP STATISTIKY -->
+    <script>
+        // UKÁZKOVÁ DATABÁZE STATISTIK (Lze doplňovat data jakýchkoliv hráčů)
+        const playersDatabase = {
+            "Tomíno": {
+                games: "14",
+                winrate: "71%",
+                kda: "3.80",
+                mvp: "3×",
+                kills: "52",
+                deaths: "24",
+                assists: "98",
+                cs: "8.1",
+                vision: "26.5",
+                dmg: "24.2k",
+                soloKills: "9",
+                pentaKills: "1",
+                firstBloods: "4",
+                totalMvp: "3",
+                champions: [
+                    { name: "Aatrox", img: "Aatrox", games: "6 her", wr: "83%" },
+                    { name: "Renekton", img: "Renekton", games: "5 her", wr: "60%" },
+                    { name: "K'Sante", img: "KSante", games: "3 hry", wr: "67%" }
+                ]
+            },
+            "Fish": {
+                games: "14",
+                winrate: "71%",
+                kda: "4.20",
+                mvp: "2×",
+                kills: "45",
+                deaths: "20",
+                assists: "120",
+                cs: "6.2",
+                vision: "42.0",
+                dmg: "18.5k",
+                soloKills: "4",
+                pentaKills: "0",
+                firstBloods: "5",
+                totalMvp: "2",
+                champions: [
+                    { name: "Jarvan IV", img: "JarvanIV", games: "7 her", wr: "71%" },
+                    { name: "Sejuani", img: "Sejuani", games: "4 hry", wr: "75%" },
+                    { name: "Lee Sin", img: "LeeSin", games: "3 hry", wr: "67%" }
+                ]
+            }
+        };
+
+        function openPlayerModal(playerName, teamName, role, rank, essence, color) {
+            const modal = document.getElementById('playerModal');
+            const modalBox = document.getElementById('playerModalBox');
+            
+            // Nastavení barvy okna podle týmu
+            modalBox.style.setProperty('--modal-color', color);
+
+            // Základní info
+            document.getElementById('modalName').textContent = playerName;
+            document.getElementById('modalTeam').textContent = teamName;
+            document.getElementById('modalRole').textContent = role;
+            document.getElementById('modalRank').textContent = rank !== '--' ? rank : 'UNRANKED';
+            document.getElementById('modalEssence').textContent = essence !== '--' ? essence + ' PTS' : '-- PTS';
+
+            // Načtení dat z databáze nebo výchozí stav pro TBD
+            const stats = playersDatabase[playerName] || {
+                games: "--",
+                winrate: "--",
+                kda: "--",
+                mvp: "--",
+                kills: "--",
+                deaths: "--",
+                assists: "--",
+                cs: "--",
+                vision: "--",
+                dmg: "--",
+                soloKills: "--",
+                pentaKills: "--",
+                firstBloods: "--",
+                totalMvp: "--",
+                champions: []
+            };
+
+            document.getElementById('modalGames').textContent = stats.games;
+            document.getElementById('modalWinrate').textContent = stats.winrate;
+            document.getElementById('modalKDA').textContent = stats.kda;
+            document.getElementById('modalMVP').textContent = stats.mvp;
+            document.getElementById('modalKills').textContent = stats.kills;
+            document.getElementById('modalDeaths').textContent = stats.deaths;
+            document.getElementById('modalAssists').textContent = stats.assists;
+            document.getElementById('modalCS').textContent = stats.cs;
+            document.getElementById('modalVision').textContent = stats.vision;
+            document.getElementById('modalDMG').textContent = stats.dmg;
+
+            // Highlighty
+            document.getElementById('modalSoloKills').textContent = stats.soloKills;
+            document.getElementById('modalPentaKills').textContent = stats.pentaKills;
+            document.getElementById('modalFirstBloods').textContent = stats.firstBloods;
+            document.getElementById('modalTotalMvp').textContent = stats.totalMvp;
+
+            // Seznam šampionů
+            const champsList = document.getElementById('modalChampsList');
+            champsList.innerHTML = '';
+
+            if (stats.champions.length > 0) {
+                stats.champions.forEach(c => {
+                    const li = document.createElement('li');
+                    li.className = 'champ-row';
+                    li.innerHTML = `
+                        <div class="champ-left">
+                            <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${c.img}.png" class="champ-icon" alt="${c.name}">
+                            <span class="champ-name">${c.name}</span>
+                        </div>
+                        <div class="champ-right">${c.games} <strong>${c.wr} WR</strong></div>
+                    `;
+                    champsList.appendChild(li);
+                });
+            } else {
+                champsList.innerHTML = '<li class="champ-row" style="color:#666; justify-content:center;">Zatím nebyly odehrány žádné zápasy</li>';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closePlayerModal(e) {
+            document.getElementById('playerModal').classList.remove('active');
+        }
+
+        function closePlayerModalDirect() {
+            document.getElementById('playerModal').classList.remove('active');
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePlayerModalDirect();
+            }
+        });
+    </script>
 
     <!-- Footer -->
     <footer class="footer-section">
