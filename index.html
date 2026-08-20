@@ -7,7 +7,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=99">
+
+    <!-- PŘÍMÝ OVERRIDE PRO PROBLÉMOVÝ NADPIS (obchází cache) -->
+    <style>
+        .massive-text {
+            font-family: 'Bebas Neue', sans-serif !important;
+            font-size: clamp(3.8rem, 6.5vw, 6.2rem) !important;
+            line-height: 1.15 !important;
+            letter-spacing: 1px !important;
+            text-transform: uppercase !important;
+        }
+        .massive-text .highlight-soutez {
+            color: #ff4600 !important;
+            -webkit-text-stroke: 0 !important;
+            display: inline-block !important;
+        }
+    </style>
 </head>
 <body class="page-body">
 
@@ -92,7 +108,7 @@
             <div class="about-top">
                 <h2 class="massive-text">
                     KOMUNITA.<br>
-                    <span class="highlight">SOUTĚŽ.</span><br>
+                    <span class="highlight-soutez">SOUTĚŽ.</span><br>
                     RESPEKT.
                 </h2>
                 <div class="about-desc">
