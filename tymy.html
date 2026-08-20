@@ -8,12 +8,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Teko:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=102">
+    <link rel="stylesheet" href="style.css?v=105">
 
     <style>
         .teams-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
@@ -21,7 +21,7 @@
         .team-card-box {
             background: #111111;
             border: 1px solid #262626;
-            border-top: 3px solid #ff4600;
+            border-top: 4px solid #ff4600;
             padding: 1.8rem;
             display: flex;
             flex-direction: column;
@@ -31,7 +31,8 @@
 
         .team-card-box:hover {
             transform: translateY(-3px);
-            border-top-color: #ffffff;
+            border-color: #444;
+            border-top-color: #ff4600;
         }
 
         .team-header {
@@ -45,7 +46,7 @@
 
         .team-name {
             font-family: 'Teko', sans-serif;
-            font-size: 2.2rem;
+            font-size: 2.3rem;
             line-height: 0.9;
             color: #ffffff;
             text-transform: uppercase;
@@ -54,11 +55,12 @@
         }
 
         .team-tag {
-            background: #222;
+            background: #1c1c1c;
             color: #ff4600;
             font-family: 'Teko', sans-serif;
             font-size: 1.2rem;
             padding: 0.2rem 0.6rem;
+            border: 1px solid #333;
             letter-spacing: 1px;
         }
 
@@ -68,22 +70,44 @@
             margin: 0 0 1.5rem 0;
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
+            gap: 0.55rem;
         }
 
         .roster-player {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.95rem;
-            color: #ccc;
+            padding: 0.35rem 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+        }
+
+        .roster-player.sub {
+            background: transparent;
+            opacity: 0.65;
+            border-top: 1px dashed #262626;
+            margin-top: 0.2rem;
+            padding-top: 0.5rem;
+        }
+
+        .player-role-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 90px;
+        }
+
+        .role-icon {
+            width: 18px;
+            height: 18px;
+            fill: #ff4600;
+            opacity: 0.9;
         }
 
         .player-role {
-            color: #777;
+            color: #888;
             font-size: 0.8rem;
             font-weight: 600;
-            width: 55px;
             text-transform: uppercase;
         }
 
@@ -91,17 +115,21 @@
             flex-grow: 1;
             font-weight: 600;
             color: #ffffff;
+            font-size: 0.95rem;
         }
 
         .player-badge {
-            color: #ff4600;
+            background: #ff4600;
+            color: #000;
             font-weight: bold;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+            padding: 0.1rem 0.35rem;
+            border-radius: 2px;
             margin-left: 0.4rem;
         }
 
         .player-rank {
-            color: #888;
+            color: #999;
             font-size: 0.85rem;
         }
 
@@ -112,18 +140,20 @@
             border-top: 1px solid #1f1f1f;
             padding-top: 1rem;
             font-size: 0.85rem;
-            color: #666;
+            color: #777;
             text-transform: uppercase;
         }
 
         .team-footer strong {
             color: #ff4600;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 1px;
         }
 
         .season-filter {
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
             flex-wrap: wrap;
             margin-top: 1.5rem;
         }
@@ -214,29 +244,60 @@
                         </div>
                         <ul class="roster-list">
                             <li class="roster-player">
-                                <span class="player-role">TOP</span>
-                                <span class="player-name">Hráč 1 <span class="player-badge">(C)</span></span>
-                                <span class="player-rank">Diamond</span>
+                                <span class="player-role-wrap">
+                                    <svg class="role-icon" viewBox="0 0 24 24"><path d="M4 4h7v7H4V4zm0 9h7v7H4v-7zm9-9h7v7h-7V4zm0 9h7v7h-7v-7z"/></svg>
+                                    <span class="player-role">TOP</span>
+                                </span>
+                                <span class="player-name">TBD <span class="player-badge">C</span></span>
+                                <span class="player-rank">--</span>
                             </li>
                             <li class="roster-player">
-                                <span class="player-role">JGL</span>
-                                <span class="player-name">Hráč 2</span>
-                                <span class="player-rank">Emerald</span>
+                                <span class="player-role-wrap">
+                                    <svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.8L18 8l-6 3.8L6 8l6-3.2zM6 9.8l5 3.1v5.3L6 15.1V9.8zm7 8.4v-5.3l5-3.1v5.3l-5 3.1z"/></svg>
+                                    <span class="player-role">JGL</span>
+                                </span>
+                                <span class="player-name">TBD</span>
+                                <span class="player-rank">--</span>
                             </li>
                             <li class="roster-player">
-                                <span class="player-role">MID</span>
-                                <span class="player-name">Hráč 3</span>
-                                <span class="player-rank">Platinum</span>
+                                <span class="player-role-wrap">
+                                    <svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2l10 10-10 10L2 12 12 2zm0 3.5L4.5 12 12 19.5 19.5 12 12 5.5z"/></svg>
+                                    <span class="player-role">MID</span>
+                                </span>
+                                <span class="player-name">TBD</span>
+                                <span class="player-rank">--</span>
                             </li>
                             <li class="roster-player">
-                                <span class="player-role">ADC</span>
-                                <span class="player-name">Hráč 4</span>
-                                <span class="player-rank">Gold</span>
+                                <span class="player-role-wrap">
+                                    <svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 5l6 12H6l6-12z"/></svg>
+                                    <span class="player-role">ADC</span>
+                                </span>
+                                <span class="player-name">TBD</span>
+                                <span class="player-rank">--</span>
                             </li>
                             <li class="roster-player">
-                                <span class="player-role">SUPP</span>
-                                <span class="player-name">Hráč 5</span>
-                                <span class="player-rank">Silver</span>
+                                <span class="player-role-wrap">
+                                    <svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 14.93V17h-2v-.07A6.002 6.002 0 016.07 13H6v-2h.07A6.002 6.002 0 0111 6.07V6h2v.07A6.002 6.002 0 0117.93 11H18v2h-.07A6.002 6.002 0 0113 16.93z"/></svg>
+                                    <span class="player-role">SUPP</span>
+                                </span>
+                                <span class="player-name">TBD</span>
+                                <span class="player-rank">--</span>
+                            </li>
+                            <li class="roster-player sub">
+                                <span class="player-role-wrap">
+                                    <svg class="role-icon" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                                    <span class="player-role">SUB 1</span>
+                                </span>
+                                <span class="player-name">TBD</span>
+                                <span class="player-rank">--</span>
+                            </li>
+                            <li class="roster-player sub">
+                                <span class="player-role-wrap">
+                                    <svg class="role-icon" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                                    <span class="player-role">SUB 2</span>
+                                </span>
+                                <span class="player-name">TBD</span>
+                                <span class="player-rank">--</span>
                             </li>
                         </ul>
                     </div>
@@ -255,76 +316,66 @@
                         </div>
                         <ul class="roster-list">
                             <li class="roster-player">
-                                <span class="player-role">TOP</span>
-                                <span class="player-name">Hráč A</span>
-                                <span class="player-rank">Emerald</span>
+                                <span class="player-role-wrap">
+                                    <svg class="role-icon" viewBox="0 0 24 24"><path d="M4 4h7v7H4V4zm0 9h7v7H4v-7zm9-9h7v7h-7V4zm0 9h7v7h-7v-7z"/></svg>
+                                    <span class="player-role">TOP</span>
+                                </span>
+                                <span class="player-name">TBD</span>
+                                <span class="player-rank">--</span>
                             </li>
                             <li class="roster-player">
-                                <span class="player-role">JGL</span>
-                                <span class="player-name">Hráč B <span class="player-badge">(C)</span></span>
-                                <span class="player-rank">Master</span>
+                                <span class="player-role-wrap">
+                                    <svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5zm0 2.8L18 8l-6 3.8L6 8l6-3.2zM6 9.8l5 3.1v5.3L6 15.1V9.8zm7 8.4v-5.3l5-3.1v5.3l-5 3.1z"/></svg>
+                                    <span class="player-role">JGL</span>
+                                </span>
+                                <span class="player-name">TBD <span class="player-badge">C</span></span>
+                                <span class="player-rank">--</span>
                             </li>
                             <li class="roster-player">
-                                <span class="player-role">MID</span>
-                                <span class="player-name">Hráč C</span>
-                                <span class="player-rank">Gold</span>
+                                <span class="player-role-wrap">
+                                    <svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2l10 10-10 10L2 12 12 2zm0 3.5L4.5 12 12 19.5 19.5 12 12 5.5z"/></svg>
+                                    <span class="player-role">MID</span>
+                                </span>
+                                <span class="player-name">TBD</span>
+                                <span class="player-rank">--</span>
                             </li>
                             <li class="roster-player">
-                                <span class="player-role">ADC</span>
-                                <span class="player-name">Hráč D</span>
-                                <span class="player-rank">Platinum</span>
+                                <span class="player-role-wrap">
+                                    <svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 5l6 12H6l6-12z"/></svg>
+                                    <span class="player-role">ADC</span>
+                                </span>
+                                <span class="player-name">TBD</span>
+                                <span class="player-rank">--</span>
                             </li>
                             <li class="roster-player">
-                                <span class="player-role">SUPP</span>
-                                <span class="player-name">Hráč E</span>
-                                <span class="player-rank">Bronze</span>
+                                <span class="player-role-wrap">
+                                    <svg class="role-icon" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 14.93V17h-2v-.07A6.002 6.002 0 016.07 13H6v-2h.07A6.002 6.002 0 0111 6.07V6h2v.07A6.002 6.002 0 0117.93 11H18v2h-.07A6.002 6.002 0 0113 16.93z"/></svg>
+                                    <span class="player-role">SUPP</span>
+                                </span>
+                                <span class="player-name">TBD</span>
+                                <span class="player-rank">--</span>
+                            </li>
+                            <li class="roster-player sub">
+                                <span class="player-role-wrap">
+                                    <svg class="role-icon" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                                    <span class="player-role">SUB 1</span>
+                                </span>
+                                <span class="player-name">TBD</span>
+                                <span class="player-rank">--</span>
+                            </li>
+                            <li class="roster-player sub">
+                                <span class="player-role-wrap">
+                                    <svg class="role-icon" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                                    <span class="player-role">SUB 2</span>
+                                </span>
+                                <span class="player-name">TBD</span>
+                                <span class="player-rank">--</span>
                             </li>
                         </ul>
                     </div>
                     <div class="team-footer">
                         <span>Essence cap</span>
-                        <strong>98 / 100 PTS</strong>
-                    </div>
-                </div>
-
-                <!-- Ukázka Týmu 3 -->
-                <div class="team-card-box">
-                    <div>
-                        <div class="team-header">
-                            <h3 class="team-name">Team Nexus</h3>
-                            <span class="team-tag">NEX</span>
-                        </div>
-                        <ul class="roster-list">
-                            <li class="roster-player">
-                                <span class="player-role">TOP</span>
-                                <span class="player-name">Hráč X</span>
-                                <span class="player-rank">Gold</span>
-                            </li>
-                            <li class="roster-player">
-                                <span class="player-role">JGL</span>
-                                <span class="player-name">Hráč Y</span>
-                                <span class="player-rank">Platinum</span>
-                            </li>
-                            <li class="roster-player">
-                                <span class="player-role">MID</span>
-                                <span class="player-name">Hráč Z <span class="player-badge">(C)</span></span>
-                                <span class="player-rank">Diamond</span>
-                            </li>
-                            <li class="roster-player">
-                                <span class="player-role">ADC</span>
-                                <span class="player-name">Hráč W</span>
-                                <span class="player-rank">Emerald</span>
-                            </li>
-                            <li class="roster-player">
-                                <span class="player-role">SUPP</span>
-                                <span class="player-name">Hráč V</span>
-                                <span class="player-rank">Silver</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="team-footer">
-                        <span>Essence cap</span>
-                        <strong>99 / 100 PTS</strong>
+                        <strong>100 / 100 PTS</strong>
                     </div>
                 </div>
 
