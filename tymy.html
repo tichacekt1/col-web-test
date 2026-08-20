@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Teko:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=380">
+    <link rel="stylesheet" href="style.css?v=390">
 
     <style>
         /* OPRAVA PŘEKRYVU TEXTŮ V HERO SEKCl */
@@ -1583,7 +1583,7 @@
             <ul class="modal-list" id="modalTeamBansList">
                 <li class="modal-list-item">
                     <div class="item-left">
-                        <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/Thresh.png" class="item-icon" alt="Thresh">
+                        <img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="item-icon" alt="Thresh">
                         <span class="item-name">Thresh</span>
                     </div>
                     <div class="item-right">Zabanován <strong>8× (80% banrate)</strong></div>
@@ -1650,7 +1650,7 @@
             "Revenants", "Solars", "Soul Stealers", "Vanguards"
         ];
 
-        // POMOCNÁ FUNKCE PRO ZÍSKÁNÍ OBRÁZKU RANKU (PNG V KOŘENOVÉ SLOŽCE ASSETS)
+        // POMOCNÁ FUNKCE PRO ZÍSKÁNÍ OBRÁZKU RANKU (Z KOŘENOVÉ SLOŽKY ASSETS)
         function getRankIconSrc(rankStr) {
             const r = (rankStr || '').toUpperCase();
             if (r.includes('CHALLENGER')) return 'assets/Rank=Challenger.png';
@@ -1847,6 +1847,136 @@
             "Soul Stealers": { tag: "SSL", record: "6W — 4L", coach: "Coach: Keeper", winrate: 60, kda: 3.45, gameTime: "31:05", streak: "2W", fb: 60, ft: 50, drags: 2.2, barons: 0.8, kills: 16.0, deaths: 14.1, goldDiff: 420, bansAgainst: [{ name: "Thresh", img: "Thresh", count: "7× (70%)" }] },
             "Vanguards": { tag: "VAN", record: "7W — 3L", coach: "Coach: General", winrate: 70, kda: 3.90, gameTime: "29:30", streak: "3W", fb: 70, ft: 60, drags: 2.6, barons: 1.1, kills: 17.5, deaths: 12.2, goldDiff: 890, bansAgainst: [{ name: "Sejuani", img: "Sejuani", count: "6× (60%)" }] }
         };
+
+        // OTEVŘENÍ HRÁČSKÉHO MODALU
+        function openPlayerModal(playerName, teamName, role, rank, essence, color) {
+            closeAllModalsDirect();
+            const modal = document.getElementById('playerModal');
+            const modalBox = document.getElementById('playerModalBox');
+            modalBox.style.setProperty('--modal-color', color);
+
+            document.getElementById('modalPlayerName').textContent = playerName;
+            document.getElementById('modalPlayerTeam').textContent = teamName;
+            document.getElementById('modalPlayerRole').textContent = role;
+            
+            const rankDisplay = rank !== '--' ? rank : 'UNRANKED';
+            const rankImg = getRankIconSrc(rankDisplay);
+            const fallbackRank = getRankCdnFallback(rankDisplay);
+            
+            const badgeImg = document.getElementById('modalPlayerRankBadgeImg');
+            const bigEmblem = document.getElementById('modalPlayerRankIcon');
+            
+            badgeImg.src = rankImg;
+            badgeImg.onerror = function() {
+                this.onerror = null;
+                this.src = `https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-emblems/${fallbackRank}.png`;
+            };
+            
+            bigEmblem.src = rankImg;
+            bigEmblem.onerror = function() {
+                this.onerror = null;
+                this.src = `https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-emblems/${fallbackRank}.png`;
+            };
+
+            document.getElementById('modalPlayerRank').innerHTML = `<img id="modalPlayerRankBadgeImg" src="${rankImg}" onerror="this.onerror=null; this.src='https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-emblems/${fallbackRank}.png';" class="modal-badge-rank-img" alt="${rankDisplay}"> ${rankDisplay}`;
+            document.getElementById('modalPlayerEssence').textContent = essence !== '--' ? essence + ' PTS' : '-- PTS';
+
+            const stats = playersDatabase[playerName] || {
+                games: 10, winrate: 50, kda: 3.00, mvp: 0,
+                kills: 30, deaths: 20, assists: 40, cs: 7.0, vision: 20.0, dmg: 20.0,
+                soloKills: 2, pentaKills: 0, firstBloods: 1,
+                champions: []
+            };
+
+            document.getElementById('modalPlayerGames').textContent = stats.games;
+            document.getElementById('modalPlayerWinrate').textContent = typeof stats.winrate === 'number' ? stats.winrate + '%' : stats.winrate;
+            document.getElementById('modalPlayerKDA').textContent = stats.kda;
+            document.getElementById('modalPlayerMVP').textContent = stats.mvp !== '--' ? stats.mvp + '×' : '--';
+            document.getElementById('modalPlayerKills').textContent = stats.kills;
+            document.getElementById('modalPlayerDeaths').textContent = stats.deaths;
+            document.getElementById('modalPlayerAssists').textContent = stats.assists;
+            document.getElementById('modalPlayerCS').textContent = stats.cs;
+            document.getElementById('modalPlayerVision').textContent = stats.vision;
+            document.getElementById('modalPlayerDMG').textContent = typeof stats.dmg === 'number' ? stats.dmg + 'k' : stats.dmg;
+            document.getElementById('modalPlayerSoloKills').textContent = stats.soloKills;
+            document.getElementById('modalPlayerPentaKills').textContent = stats.pentaKills;
+            document.getElementById('modalPlayerFirstBloods').textContent = stats.firstBloods;
+            document.getElementById('modalPlayerTotalMvp').textContent = stats.mvp;
+
+            const list = document.getElementById('modalPlayerChampsList');
+            list.innerHTML = '';
+            if (stats.champions && stats.champions.length > 0) {
+                stats.champions.forEach(c => {
+                    const li = document.createElement('li');
+                    li.className = 'modal-list-item';
+                    li.innerHTML = `
+                        <div class="item-left">
+                            <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${c.img}.png" class="item-icon" alt="${c.name}">
+                            <span class="item-name">${c.name}</span>
+                        </div>
+                        <div class="item-right">${c.games} <strong>${c.wr} WR</strong></div>
+                    `;
+                    list.appendChild(li);
+                });
+            } else {
+                list.innerHTML = '<li class="modal-list-item" style="color:#666; justify-content:center;">Zatím nebyly odehrány žádné zápasy</li>';
+            }
+
+            modal.classList.add('active');
+        }
+
+        // OTEVŘENÍ TÝMOVÉHO MODALU
+        function openTeamModal(teamName, teamTag, logoSrc, color) {
+            closeAllModalsDirect();
+            const modal = document.getElementById('teamModal');
+            const modalBox = document.getElementById('teamModalBox');
+            modalBox.style.setProperty('--modal-color', color);
+
+            document.getElementById('modalTeamTitle').textContent = teamName;
+            document.getElementById('modalTeamTag').textContent = teamTag;
+
+            const data = teamsDatabase[teamName] || {
+                record: "0W — 0L", coach: "Coach: TBD", winrate: 0, kda: 0,
+                gameTime: "--:--", streak: "--", fb: 0, ft: 0,
+                drags: 0, barons: 0, kills: 0, deaths: 0, goldDiff: 0,
+                bansAgainst: []
+            };
+
+            document.getElementById('modalTeamRecord').textContent = data.record;
+            document.getElementById('modalTeamCoach').textContent = data.coach;
+            document.getElementById('modalTeamWinrate').textContent = typeof data.winrate === 'number' ? data.winrate + '%' : data.winrate;
+            document.getElementById('modalTeamKDA').textContent = data.kda;
+            document.getElementById('modalTeamGameTime').textContent = data.gameTime;
+            document.getElementById('modalTeamStreak').textContent = data.streak;
+            document.getElementById('modalTeamFB').textContent = typeof data.fb === 'number' ? data.fb + '%' : data.fb;
+            document.getElementById('modalTeamFT').textContent = typeof data.ft === 'number' ? data.ft + '%' : data.ft;
+            document.getElementById('modalTeamDrags').textContent = data.drags;
+            document.getElementById('modalTeamBarons').textContent = data.barons;
+            document.getElementById('modalTeamKillsGame').textContent = data.kills;
+            document.getElementById('modalTeamDeathsGame').textContent = data.deaths;
+            document.getElementById('modalTeamGoldDiff').textContent = typeof data.goldDiff === 'number' ? (data.goldDiff > 0 ? '+' + data.goldDiff : data.goldDiff) : data.goldDiff;
+
+            const bansList = document.getElementById('modalTeamBansList');
+            bansList.innerHTML = '';
+            if (data.bansAgainst && data.bansAgainst.length > 0) {
+                data.bansAgainst.forEach(b => {
+                    const li = document.createElement('li');
+                    li.className = 'modal-list-item';
+                    li.innerHTML = `
+                        <div class="item-left">
+                            <img src="https://ddragon.leagueoflegends.com/cdn/14.8.1/img/champion/${b.img}.png" class="item-icon" alt="${b.name}">
+                            <span class="item-name">${b.name}</span>
+                        </div>
+                        <div class="item-right">Zabanován <strong>${b.count}</strong></div>
+                    `;
+                    bansList.appendChild(li);
+                });
+            } else {
+                bansList.innerHTML = '<li class="modal-list-item" style="color:#666; justify-content:center;">Zatím žádná data o banech</li>';
+            }
+
+            modal.classList.add('active');
+        }
 
         // HEAD-TO-HEAD COMPARE
         function openCompareModal() {
