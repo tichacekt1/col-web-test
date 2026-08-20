@@ -3,25 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Kompletní přehled 16 týmů, soupisek a statistik League of Legends komunitní ligy Clash of Legends.">
+    <meta name="description" content="Kompletní přehled 16 týmů, soupisek, statistik a srovnání League of Legends komunitní ligy Clash of Legends.">
     <title>Týmy &amp; Statistiky — COL League</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Teko:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=260">
+    <link rel="stylesheet" href="style.css?v=280">
 
     <style>
         /* =========================================================
            HLAVNÍ STYLY & OVLÁDACÍ PRVKY
            ========================================================= */
-        .page-header-wrap {
-            margin-bottom: 2rem;
-        }
-
-        /* STATS LEADERBOARDS (TOP 4 KARTY) */
         .leaderboards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 1.2rem;
             margin-bottom: 2.5rem;
         }
@@ -144,6 +139,7 @@
             display: flex;
             gap: 0.4rem;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .filter-btn {
@@ -171,6 +167,24 @@
             font-weight: bold;
         }
 
+        .compare-trigger-btn {
+            background: rgba(255, 70, 0, 0.15);
+            border: 1px solid #ff4600;
+            color: #ff4600;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.15rem;
+            letter-spacing: 0.5px;
+            padding: 0.2rem 0.8rem;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .compare-trigger-btn:hover {
+            background: #ff4600;
+            color: #000;
+        }
+
         /* MŘÍŽKA TÝMŮ */
         .teams-grid {
             display: grid;
@@ -178,7 +192,6 @@
             gap: 2rem;
         }
 
-        /* TÝMOVÁ KARTA */
         .team-card {
             background: #101010;
             border: 1px solid #222222;
@@ -201,7 +214,6 @@
             display: none !important;
         }
 
-        /* BANNER LOGA */
         .team-banner {
             position: relative;
             height: 160px;
@@ -300,7 +312,6 @@
             letter-spacing: 1px;
         }
 
-        /* SEZNAM HRÁČŮ */
         .roster-list {
             list-style: none;
             padding: 0;
@@ -396,7 +407,6 @@
             opacity: 1;
         }
 
-        /* NÁHRADNÍCI */
         .subs-box {
             display: flex;
             gap: 0.5rem;
@@ -427,7 +437,6 @@
             font-weight: 600;
         }
 
-        /* PATIČKA KARTY */
         .team-footer {
             border-top: 1px solid #1f1f1f;
             padding-top: 0.6rem;
@@ -475,7 +484,7 @@
             border-top: 4px solid var(--modal-color, #ff4600);
             border-radius: 8px;
             width: 100%;
-            max-width: 560px;
+            max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
@@ -675,6 +684,116 @@
             color: var(--modal-color, #ff4600);
             margin-left: 0.5rem;
         }
+
+        /* =========================================================
+           3. HEAD-TO-HEAD SROVNÁNÍ (COMPARE MODAL)
+           ========================================================= */
+        .compare-switch-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .switch-btn {
+            flex: 1;
+            background: #161616;
+            border: 1px solid #333;
+            color: #888;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.2rem;
+            padding: 0.35rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .switch-btn.active {
+            background: #ff4600;
+            color: #000;
+            font-weight: bold;
+            border-color: #ff4600;
+        }
+
+        .selectors-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .vs-circle {
+            font-family: 'Teko', sans-serif;
+            font-size: 1.4rem;
+            color: #ff4600;
+            background: #161616;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #333;
+        }
+
+        .compare-select {
+            width: 100%;
+            background: #161616;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 0.6rem;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .compare-select:focus {
+            border-color: #ff4600;
+        }
+
+        .compare-table {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .compare-row {
+            display: grid;
+            grid-template-columns: 1fr 140px 1fr;
+            align-items: center;
+            background: #141414;
+            border: 1px solid #202020;
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .compare-val-left {
+            font-family: 'Teko', sans-serif;
+            font-size: 1.5rem;
+            text-align: left;
+            color: #ccc;
+        }
+
+        .compare-label {
+            font-size: 0.72rem;
+            color: #777;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .compare-val-right {
+            font-family: 'Teko', sans-serif;
+            font-size: 1.5rem;
+            text-align: right;
+            color: #ccc;
+        }
+
+        .compare-winner {
+            color: #22c55e !important;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body class="page-body">
@@ -719,32 +838,21 @@
     <section class="section-dark">
         <div class="content-wrap">
             
-            <!-- STATS LEADERBOARDS (4 LÍDŘI) -->
+            <!-- STATS LEADERBOARDS (3 LÍDŘI) -->
             <div class="leaderboards-grid">
                 
-                <!-- 1. MVP KRÁL -->
-                <div class="leader-card">
-                    <div class="leader-icon-badge">👑</div>
-                    <div class="leader-info">
-                        <div class="leader-category">MVP Král Splitu</div>
-                        <div class="leader-name" id="leaderMvpName">Tomíno</div>
-                        <div class="leader-team-tag" id="leaderMvpTeam">IMPERIALS</div>
-                    </div>
-                    <div class="leader-value" id="leaderMvpVal">3×</div>
-                </div>
-
-                <!-- 2. KDA LÍDR -->
+                <!-- 1. KDA LÍDR -->
                 <div class="leader-card">
                     <div class="leader-icon-badge">⚔️</div>
                     <div class="leader-info">
-                        <div class="leader-category">Nejvyšší KDA</div>
+                        <div class="leader-category">Nejvyšší KDA Lídři</div>
                         <div class="leader-name" id="leaderKdaName">Fish</div>
                         <div class="leader-team-tag" id="leaderKdaTeam">IMPERIALS</div>
                     </div>
                     <div class="leader-value" id="leaderKdaVal">4.20</div>
                 </div>
 
-                <!-- 3. SOLO KILLER -->
+                <!-- 2. SOLO KILLER -->
                 <div class="leader-card">
                     <div class="leader-icon-badge">🎯</div>
                     <div class="leader-info">
@@ -755,20 +863,20 @@
                     <div class="leader-value" id="leaderSoloVal">9</div>
                 </div>
 
-                <!-- 4. FARM MASTER -->
+                <!-- 3. FARM MASTER -->
                 <div class="leader-card">
                     <div class="leader-icon-badge">🌾</div>
                     <div class="leader-info">
                         <div class="leader-category">Farm Master (CS/M)</div>
-                        <div class="leader-name" id="leaderCsName">Tomíno</div>
+                        <div class="leader-name" id="leaderCsName">Shadow</div>
                         <div class="leader-team-tag" id="leaderCsTeam">IMPERIALS</div>
                     </div>
-                    <div class="leader-value" id="leaderCsVal">8.1</div>
+                    <div class="leader-value" id="leaderCsVal">9.2</div>
                 </div>
 
             </div>
 
-            <!-- OVLÁDACÍ LIŠTA (HLEDÁNÍ & FILTR ROLE) -->
+            <!-- OVLÁDACÍ LIŠTA (HLEDÁNÍ, FILTR & SROVNÁNÍ) -->
             <div class="controls-bar">
                 <div class="search-box">
                     <span class="search-icon-svg">🔍</span>
@@ -781,6 +889,7 @@
                     <button class="filter-btn" onclick="setRoleFilter('MID', this)">MID</button>
                     <button class="filter-btn" onclick="setRoleFilter('ADC', this)">ADC</button>
                     <button class="filter-btn" onclick="setRoleFilter('SUP', this)">SUPP</button>
+                    <button class="compare-trigger-btn" onclick="openCompareModal()">⚔️ SROVNAT SOUBOJ</button>
                 </div>
             </div>
 
@@ -865,6 +974,33 @@
                             <div class="sub-pill" onclick="openPlayerModal('TBD', 'Arcanists', 'SUB 2', '--', '--', '#00d2ff')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
+                    </div>
+                </div>
+
+                <!-- 8. IMPERIALS (UKÁZKOVÝ TÝM S DATY) -->
+                <div class="team-card" data-team="Imperials" data-tag="IMP" style="--team-color: #d97706;">
+                    <div class="team-banner" onclick="openTeamModal('Imperials', 'IMP', 'assets/team-logos/Imperials.png', '#d97706')">
+                        <div class="team-banner-bg" style="background-image: url('assets/team-logos/Imperials.png');"></div>
+                        <img src="assets/team-logos/Imperials.png" alt="Imperials" class="team-logo-img">
+                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
+                    </div>
+                    <div class="team-body">
+                        <div class="team-header">
+                            <h3 class="team-name">Imperials</h3>
+                            <span class="team-tag">IMP</span>
+                        </div>
+                        <ul class="roster-list">
+                            <li class="roster-row captain" data-role="TOP" onclick="openPlayerModal('Tomíno', 'Imperials', 'TOP', 'MASTER', '30', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">Tomíno <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">Master</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" data-role="JGL" onclick="openPlayerModal('Fish', 'Imperials', 'JGL', 'DIAMOND I', '25', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">Fish</span></div><div class="roster-right"><span class="roster-rank">Diamond I</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" data-role="MID" onclick="openPlayerModal('Valky', 'Imperials', 'MID', 'EMERALD II', '18', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">Valky</span></div><div class="roster-right"><span class="roster-rank">Emerald II</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" data-role="ADC" onclick="openPlayerModal('Shadow', 'Imperials', 'ADC', 'PLATINUM I', '14', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">Shadow</span></div><div class="roster-right"><span class="roster-rank">Plat I</span><span class="stats-hint">↗</span></div></li>
+                            <li class="roster-row" data-role="SUP" onclick="openPlayerModal('Kexik', 'Imperials', 'SUP', 'GOLD I', '10', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">Kexik</span></div><div class="roster-right"><span class="roster-rank">Gold I</span><span class="stats-hint">↗</span></div></li>
+                        </ul>
+                        <div class="subs-box">
+                            <div class="sub-pill" onclick="openPlayerModal('Danik', 'Imperials', 'SUB 1', 'EMERALD IV', '16', '#d97706')"><span>SUB 1:</span> <strong>Danik</strong></div>
+                            <div class="sub-pill" onclick="openPlayerModal('Mirek', 'Imperials', 'SUB 2', 'PLATINUM III', '12', '#d97706')"><span>SUB 2:</span> <strong>Mirek</strong></div>
+                        </div>
+                        <div class="team-footer"><span>Essence Cap</span><strong>97 / 100 PTS</strong></div>
                     </div>
                 </div>
 
@@ -973,33 +1109,6 @@
                             <div class="sub-pill" onclick="openPlayerModal('TBD', 'Hellions', 'SUB 2', '--', '--', '#f97316')"><span>SUB 2:</span> <strong>TBD</strong></div>
                         </div>
                         <div class="team-footer"><span>Essence Cap</span><strong>100 / 100 PTS</strong></div>
-                    </div>
-                </div>
-
-                <!-- 8. IMPERIALS (VYPLNĚNÝ TESTOVACÍ TÝM) -->
-                <div class="team-card" data-team="Imperials" data-tag="IMP" style="--team-color: #d97706;">
-                    <div class="team-banner" onclick="openTeamModal('Imperials', 'IMP', 'assets/team-logos/Imperials.png', '#d97706')">
-                        <div class="team-banner-bg" style="background-image: url('assets/team-logos/Imperials.png');"></div>
-                        <img src="assets/team-logos/Imperials.png" alt="Imperials" class="team-logo-img">
-                        <span class="team-banner-badge">TÝMOVÉ STATS ↗</span>
-                    </div>
-                    <div class="team-body">
-                        <div class="team-header">
-                            <h3 class="team-name">Imperials</h3>
-                            <span class="team-tag">IMP</span>
-                        </div>
-                        <ul class="roster-list">
-                            <li class="roster-row captain" data-role="TOP" onclick="openPlayerModal('Tomíno', 'Imperials', 'TOP', 'MASTER', '30', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-top.png" class="role-icon-img" alt="TOP"><span class="roster-role">TOP</span><span class="roster-name">Tomíno <span class="captain-badge">C</span></span></div><div class="roster-right"><span class="roster-rank">Master</span><span class="stats-hint">↗</span></div></li>
-                            <li class="roster-row" data-role="JGL" onclick="openPlayerModal('Fish', 'Imperials', 'JGL', 'DIAMOND I', '25', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-jungle.png" class="role-icon-img" alt="JGL"><span class="roster-role">JGL</span><span class="roster-name">Fish</span></div><div class="roster-right"><span class="roster-rank">Diamond I</span><span class="stats-hint">↗</span></div></li>
-                            <li class="roster-row" data-role="MID" onclick="openPlayerModal('Valky', 'Imperials', 'MID', 'EMERALD II', '18', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-middle.png" class="role-icon-img" alt="MID"><span class="roster-role">MID</span><span class="roster-name">Valky</span></div><div class="roster-right"><span class="roster-rank">Emerald II</span><span class="stats-hint">↗</span></div></li>
-                            <li class="roster-row" data-role="ADC" onclick="openPlayerModal('Shadow', 'Imperials', 'ADC', 'PLATINUM I', '14', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-bottom.png" class="role-icon-img" alt="ADC"><span class="roster-role">ADC</span><span class="roster-name">Shadow</span></div><div class="roster-right"><span class="roster-rank">Plat I</span><span class="stats-hint">↗</span></div></li>
-                            <li class="roster-row" data-role="SUP" onclick="openPlayerModal('Kexik', 'Imperials', 'SUP', 'GOLD I', '10', '#d97706')"><div class="roster-left"><img src="https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-clash/global/default/assets/images/position-selector/positions/icon-position-utility.png" class="role-icon-img" alt="SUP"><span class="roster-role">SUP</span><span class="roster-name">Kexik</span></div><div class="roster-right"><span class="roster-rank">Gold I</span><span class="stats-hint">↗</span></div></li>
-                        </ul>
-                        <div class="subs-box">
-                            <div class="sub-pill" onclick="openPlayerModal('Danik', 'Imperials', 'SUB 1', 'EMERALD IV', '16', '#d97706')"><span>SUB 1:</span> <strong>Danik</strong></div>
-                            <div class="sub-pill" onclick="openPlayerModal('Mirek', 'Imperials', 'SUB 2', 'PLATINUM III', '12', '#d97706')"><span>SUB 2:</span> <strong>Mirek</strong></div>
-                        </div>
-                        <div class="team-footer"><span>Essence Cap</span><strong>97 / 100 PTS</strong></div>
                     </div>
                 </div>
 
@@ -1410,94 +1519,124 @@
         </div>
     </div>
 
+    <!-- 3. POP-UP MODAL: HEAD-TO-HEAD SROVNÁNÍ -->
+    <div class="modal-backdrop" id="compareModal" onclick="closeAllModals(event)">
+        <div class="modal-box" id="compareModalBox" style="--modal-color: #ff4600;" onclick="event.stopPropagation()">
+            <button class="modal-close-btn" onclick="closeAllModalsDirect()">✕</button>
+
+            <div class="compare-switch-row">
+                <button class="switch-btn active" id="compareTypeTeam" onclick="setCompareType('TEAMS')">⚔️ SROVNÁNÍ TÝMŮ</button>
+                <button class="switch-btn" id="compareTypePlayer" onclick="setCompareType('PLAYERS')">👤 SROVNÁNÍ HRÁČŮ</button>
+            </div>
+
+            <div class="selectors-grid">
+                <select id="compareSelectLeft" class="compare-select" onchange="renderComparison()"></select>
+                <div class="vs-circle">VS</div>
+                <select id="compareSelectRight" class="compare-select" onchange="renderComparison()"></select>
+            </div>
+
+            <div class="compare-table" id="compareTableContainer">
+                <!-- Dynamicky vykreslené řádky porovnání -->
+            </div>
+        </div>
+    </div>
+
     <!-- JAVASCRIPT PRO INTERAKTIVITU -->
     <script>
-        // =========================================================
-        // DATABÁZE HRÁČŮ & TÝMŮ (Ukázková data pro Imperials)
-        // =========================================================
+        // DATABÁZE HRÁČŮ
         const playersDatabase = {
             "Tomíno": {
-                games: "10", winrate: "80%", kda: "3.85", mvp: "3×",
-                kills: "48", deaths: "22", assists: "68", cs: "8.1", vision: "24.5", dmg: "24.2k",
-                soloKills: "9", pentaKills: "1", firstBloods: "4", totalMvp: "3",
+                team: "Imperials", role: "TOP", games: 10, winrate: 80, kda: 3.85, mvp: 3,
+                kills: 48, deaths: 22, assists: 68, cs: 8.1, vision: 24.5, dmg: 24.2,
+                soloKills: 9, pentaKills: 1, firstBloods: 4,
                 champions: [
                     { name: "Aatrox", img: "Aatrox", games: "5 her", wr: "80%" },
-                    { name: "Renekton", img: "Renekton", games: "3 hry", wr: "67%" },
-                    { name: "K'Sante", img: "KSante", games: "2 hry", wr: "100%" }
+                    { name: "Renekton", img: "Renekton", games: "3 hry", wr: "67%" }
                 ]
             },
             "Fish": {
-                games: "10", winrate: "80%", kda: "4.20", mvp: "2×",
-                kills: "35", deaths: "18", assists: "92", cs: "6.4", vision: "38.0", dmg: "16.8k",
-                soloKills: "3", pentaKills: "0", firstBloods: "5", totalMvp: "2",
+                team: "Imperials", role: "JGL", games: 10, winrate: 80, kda: 4.20, mvp: 2,
+                kills: 35, deaths: 18, assists: 92, cs: 6.4, vision: 38.0, dmg: 16.8,
+                soloKills: 3, pentaKills: 0, firstBloods: 5,
                 champions: [
                     { name: "Jarvan IV", img: "JarvanIV", games: "5 her", wr: "80%" },
-                    { name: "Sejuani", img: "Sejuani", games: "3 hry", wr: "67%" },
-                    { name: "Lee Sin", img: "LeeSin", games: "2 hry", wr: "100%" }
+                    { name: "Sejuani", img: "Sejuani", games: "3 hry", wr: "67%" }
                 ]
             },
             "Valky": {
-                games: "10", winrate: "80%", kda: "4.05", mvp: "2×",
-                kills: "52", deaths: "20", assists: "75", cs: "8.7", vision: "21.0", dmg: "28.5k",
-                soloKills: "6", pentaKills: "0", firstBloods: "2", totalMvp: "2",
+                team: "Imperials", role: "MID", games: 10, winrate: 80, kda: 4.05, mvp: 2,
+                kills: 52, deaths: 20, assists: 75, cs: 8.7, vision: 21.0, dmg: 28.5,
+                soloKills: 6, pentaKills: 0, firstBloods: 2,
                 champions: [
                     { name: "Ahri", img: "Ahri", games: "4 hry", wr: "100%" },
-                    { name: "Azir", img: "Azir", games: "3 hry", wr: "67%" },
-                    { name: "Syndra", img: "Syndra", games: "3 hry", wr: "67%" }
+                    { name: "Azir", img: "Azir", games: "3 hry", wr: "67%" }
                 ]
             },
             "Shadow": {
-                games: "10", winrate: "80%", kda: "3.75", mvp: "1×",
-                kills: "60", deaths: "25", assists: "58", cs: "9.2", vision: "18.5", dmg: "29.8k",
-                soloKills: "2", pentaKills: "0", firstBloods: "1", totalMvp: "1",
+                team: "Imperials", role: "ADC", games: 10, winrate: 80, kda: 3.75, mvp: 1,
+                kills: 60, deaths: 25, assists: 58, cs: 9.2, vision: 18.5, dmg: 29.8,
+                soloKills: 2, pentaKills: 0, firstBloods: 1,
                 champions: [
                     { name: "Jinx", img: "Jinx", games: "4 hry", wr: "75%" },
-                    { name: "Kai'Sa", img: "Kaisa", games: "4 hry", wr: "75%" },
-                    { name: "Varus", img: "Varus", games: "2 hry", wr: "100%" }
+                    { name: "Kai'Sa", img: "Kaisa", games: "4 hry", wr: "75%" }
                 ]
             },
             "Kexik": {
-                games: "10", winrate: "80%", kda: "4.50", mvp: "2×",
-                kills: "12", deaths: "16", assists: "125", cs: "1.4", vision: "64.2", dmg: "9.5k",
-                soloKills: "0", pentaKills: "0", firstBloods: "3", totalMvp: "2",
+                team: "Imperials", role: "SUP", games: 10, winrate: 80, kda: 4.50, mvp: 2,
+                kills: 12, deaths: 16, assists: 125, cs: 1.4, vision: 64.2, dmg: 9.5,
+                soloKills: 0, pentaKills: 0, firstBloods: 3,
                 champions: [
                     { name: "Nautilus", img: "Nautilus", games: "4 hry", wr: "100%" },
-                    { name: "Lulu", img: "Lulu", games: "3 hry", wr: "67%" },
-                    { name: "Rakan", img: "Rakan", games: "3 hry", wr: "67%" }
+                    { name: "Lulu", img: "Lulu", games: "3 hry", wr: "67%" }
                 ]
             },
             "Danik": {
-                games: "2", winrate: "50%", kda: "2.80", mvp: "0×",
-                kills: "6", deaths: "5", assists: "14", cs: "7.5", vision: "19.0", dmg: "18.0k",
-                soloKills: "1", pentaKills: "0", firstBloods: "0", totalMvp: "0",
-                champions: [
-                    { name: "Gnar", img: "Gnar", games: "2 hry", wr: "50%" }
-                ]
+                team: "Imperials", role: "SUB 1", games: 2, winrate: 50, kda: 2.80, mvp: 0,
+                kills: 6, deaths: 5, assists: 14, cs: 7.5, vision: 19.0, dmg: 18.0,
+                soloKills: 1, pentaKills: 0, firstBloods: 0,
+                champions: [{ name: "Gnar", img: "Gnar", games: "2 hry", wr: "50%" }]
             },
             "Mirek": {
-                games: "1", winrate: "100%", kda: "5.00", mvp: "0×",
-                kills: "1", deaths: "2", assists: "11", cs: "1.1", vision: "52.0", dmg: "7.2k",
-                soloKills: "0", pentaKills: "0", firstBloods: "0", totalMvp: "0",
-                champions: [
-                    { name: "Leona", img: "Leona", games: "1 hra", wr: "100%" }
-                ]
+                team: "Imperials", role: "SUB 2", games: 1, winrate: 100, kda: 5.00, mvp: 0,
+                kills: 1, deaths: 2, assists: 11, cs: 1.1, vision: 52.0, dmg: 7.2,
+                soloKills: 0, pentaKills: 0, firstBloods: 0,
+                champions: [{ name: "Leona", img: "Leona", games: "1 hra", wr: "100%" }]
             }
         };
 
+        // DATABÁZE TÝMŮ
         const teamsDatabase = {
             "Imperials": {
-                record: "8W — 2L", coach: "Coach: Alex", winrate: "80%", kda: "4.12",
-                gameTime: "29:15", streak: "4W", fb: "70%", ft: "60%",
-                drags: "2.8", barons: "1.1", kills: "18.4", deaths: "11.2", goldDiff: "+1 450",
+                tag: "IMP", record: "8W — 2L", coach: "Coach: Alex", winrate: 80, kda: 4.12,
+                gameTime: "29:15", streak: "4W", fb: 70, ft: 60,
+                drags: 2.8, barons: 1.1, kills: 18.4, deaths: 11.2, goldDiff: 1450,
                 bansAgainst: [
                     { name: "Thresh", img: "Thresh", count: "8× (80% banrate)" },
-                    { name: "Ahri", img: "Ahri", count: "6× (60% banrate)" },
-                    { name: "Jarvan IV", img: "JarvanIV", count: "5× (50% banrate)" }
+                    { name: "Ahri", img: "Ahri", count: "6× (60% banrate)" }
                 ]
+            },
+            "Abominations": {
+                tag: "ABO", record: "6W — 4L", coach: "Coach: TBD", winrate: 60, kda: 3.40,
+                gameTime: "31:40", streak: "2W", fb: 50, ft: 50,
+                drags: 2.1, barons: 0.8, kills: 15.2, deaths: 14.0, goldDiff: 320,
+                bansAgainst: []
+            },
+            "Apex Predators": {
+                tag: "APX", record: "7W — 3L", coach: "Coach: TBD", winrate: 70, kda: 3.90,
+                gameTime: "27:50", streak: "1W", fb: 80, ft: 70,
+                drags: 2.5, barons: 1.0, kills: 19.1, deaths: 13.5, goldDiff: 980,
+                bansAgainst: []
+            },
+            "Arcanists": {
+                tag: "ARC", record: "5W — 5L", coach: "Coach: TBD", winrate: 50, kda: 2.95,
+                gameTime: "33:10", streak: "1L", fb: 40, ft: 40,
+                drags: 1.9, barons: 0.6, kills: 13.8, deaths: 15.2, goldDiff: -450,
+                bansAgainst: []
             }
         };
 
         let currentRoleFilter = 'ALL';
+        let currentCompareMode = 'TEAMS';
 
         // FILTROVÁNÍ PODLE ROLE
         function setRoleFilter(role, btn) {
@@ -1507,7 +1646,6 @@
             handleSearchAndFilter();
         }
 
-        // VYHLEDÁVÁNÍ & FILTR
         function handleSearchAndFilter() {
             const query = document.getElementById('teamSearchInput').value.toLowerCase().trim();
             const cards = document.querySelectorAll('.team-card');
@@ -1570,19 +1708,19 @@
             };
 
             document.getElementById('modalPlayerGames').textContent = stats.games;
-            document.getElementById('modalPlayerWinrate').textContent = stats.winrate;
+            document.getElementById('modalPlayerWinrate').textContent = typeof stats.winrate === 'number' ? stats.winrate + '%' : stats.winrate;
             document.getElementById('modalPlayerKDA').textContent = stats.kda;
-            document.getElementById('modalPlayerMVP').textContent = stats.mvp;
+            document.getElementById('modalPlayerMVP').textContent = stats.mvp !== '--' ? stats.mvp + '×' : '--';
             document.getElementById('modalPlayerKills').textContent = stats.kills;
             document.getElementById('modalPlayerDeaths').textContent = stats.deaths;
             document.getElementById('modalPlayerAssists').textContent = stats.assists;
             document.getElementById('modalPlayerCS').textContent = stats.cs;
             document.getElementById('modalPlayerVision').textContent = stats.vision;
-            document.getElementById('modalPlayerDMG').textContent = stats.dmg;
+            document.getElementById('modalPlayerDMG').textContent = typeof stats.dmg === 'number' ? stats.dmg + 'k' : stats.dmg;
             document.getElementById('modalPlayerSoloKills').textContent = stats.soloKills;
             document.getElementById('modalPlayerPentaKills').textContent = stats.pentaKills;
             document.getElementById('modalPlayerFirstBloods').textContent = stats.firstBloods;
-            document.getElementById('modalPlayerTotalMvp').textContent = stats.totalMvp;
+            document.getElementById('modalPlayerTotalMvp').textContent = stats.mvp;
 
             const list = document.getElementById('modalPlayerChampsList');
             list.innerHTML = '';
@@ -1625,17 +1763,17 @@
 
             document.getElementById('modalTeamRecord').textContent = data.record;
             document.getElementById('modalTeamCoach').textContent = data.coach;
-            document.getElementById('modalTeamWinrate').textContent = data.winrate;
+            document.getElementById('modalTeamWinrate').textContent = typeof data.winrate === 'number' ? data.winrate + '%' : data.winrate;
             document.getElementById('modalTeamKDA').textContent = data.kda;
             document.getElementById('modalTeamGameTime').textContent = data.gameTime;
             document.getElementById('modalTeamStreak').textContent = data.streak;
-            document.getElementById('modalTeamFB').textContent = data.fb;
-            document.getElementById('modalTeamFT').textContent = data.ft;
+            document.getElementById('modalTeamFB').textContent = typeof data.fb === 'number' ? data.fb + '%' : data.fb;
+            document.getElementById('modalTeamFT').textContent = typeof data.ft === 'number' ? data.ft + '%' : data.ft;
             document.getElementById('modalTeamDrags').textContent = data.drags;
             document.getElementById('modalTeamBarons').textContent = data.barons;
             document.getElementById('modalTeamKillsGame').textContent = data.kills;
             document.getElementById('modalTeamDeathsGame').textContent = data.deaths;
-            document.getElementById('modalTeamGoldDiff').textContent = data.goldDiff;
+            document.getElementById('modalTeamGoldDiff').textContent = typeof data.goldDiff === 'number' ? (data.goldDiff > 0 ? '+' + data.goldDiff : data.goldDiff) : data.goldDiff;
 
             const bansList = document.getElementById('modalTeamBansList');
             bansList.innerHTML = '';
@@ -1659,15 +1797,105 @@
             modal.classList.add('active');
         }
 
+        // =========================================================
+        // HEAD-TO-HEAD COMPARE LOGIKA
+        // =========================================================
+        function openCompareModal() {
+            closeAllModalsDirect();
+            setCompareType(currentCompareMode);
+            document.getElementById('compareModal').classList.add('active');
+        }
+
+        function setCompareType(type) {
+            currentCompareMode = type;
+            const btnTeam = document.getElementById('compareTypeTeam');
+            const btnPlayer = document.getElementById('compareTypePlayer');
+            const selLeft = document.getElementById('compareSelectLeft');
+            const selRight = document.getElementById('compareSelectRight');
+
+            if (type === 'TEAMS') {
+                btnTeam.classList.add('active');
+                btnPlayer.classList.remove('active');
+
+                const allTeams = ["Imperials", "Abominations", "Apex Predators", "Arcanists", "Draconics", "Eternals", "Forgottens", "Hellions", "Lunars", "Mystics", "Protectors", "Redeemed", "Revenants", "Solars", "Soul Stealers", "Vanguards"];
+                selLeft.innerHTML = allTeams.map(t => `<option value="${t}">${t}</option>`).join('');
+                selRight.innerHTML = allTeams.map(t => `<option value="${t}">${t}</option>`).join('');
+                
+                selLeft.value = "Imperials";
+                selRight.value = "Apex Predators";
+            } else {
+                btnPlayer.classList.add('active');
+                btnTeam.classList.remove('active');
+
+                const playerNames = Object.keys(playersDatabase);
+                selLeft.innerHTML = playerNames.map(p => `<option value="${p}">${p} (${playersDatabase[p].role})</option>`).join('');
+                selRight.innerHTML = playerNames.map(p => `<option value="${p}">${p} (${playersDatabase[p].role})</option>`).join('');
+                
+                if (playerNames.length >= 2) {
+                    selLeft.value = playerNames[0];
+                    selRight.value = playerNames[1];
+                }
+            }
+
+            renderComparison();
+        }
+
+        function renderComparison() {
+            const leftVal = document.getElementById('compareSelectLeft').value;
+            const rightVal = document.getElementById('compareSelectRight').value;
+            const container = document.getElementById('compareTableContainer');
+
+            container.innerHTML = '';
+
+            if (currentCompareMode === 'TEAMS') {
+                const t1 = teamsDatabase[leftVal] || { winrate: 0, kda: 0, drags: 0, barons: 0, goldDiff: 0, kills: 0 };
+                const t2 = teamsDatabase[rightVal] || { winrate: 0, kda: 0, drags: 0, barons: 0, goldDiff: 0, kills: 0 };
+
+                container.appendChild(createCompareRow(t1.winrate + '%', 'Winrate', t2.winrate + '%', t1.winrate, t2.winrate));
+                container.appendChild(createCompareRow(t1.kda, 'Týmové KDA', t2.kda, t1.kda, t2.kda));
+                container.appendChild(createCompareRow(t1.drags, 'Draků / Hru', t2.drags, t1.drags, t2.drags));
+                container.appendChild(createCompareRow(t1.barons, 'Baronů / Hru', t2.barons, t1.barons, t2.barons));
+                container.appendChild(createCompareRow(t1.kills, 'Kills / Hru', t2.kills, t1.kills, t2.kills));
+                container.appendChild(createCompareRow((t1.goldDiff > 0 ? '+' : '') + t1.goldDiff, 'Gold Diff @ 15', (t2.goldDiff > 0 ? '+' : '') + t2.goldDiff, t1.goldDiff, t2.goldDiff));
+            } else {
+                const p1 = playersDatabase[leftVal] || { winrate: 0, kda: 0, cs: 0, dmg: 0, vision: 0, soloKills: 0 };
+                const p2 = playersDatabase[rightVal] || { winrate: 0, kda: 0, cs: 0, dmg: 0, vision: 0, soloKills: 0 };
+
+                container.appendChild(createCompareRow(p1.winrate + '%', 'Winrate', p2.winrate + '%', p1.winrate, p2.winrate));
+                container.appendChild(createCompareRow(p1.kda, 'KDA Ratio', p2.kda, p1.kda, p2.kda));
+                container.appendChild(createCompareRow(p1.cs, 'CS / Minutu', p2.cs, p1.cs, p2.cs));
+                container.appendChild(createCompareRow(p1.dmg + 'k', 'DMG / Hru', p2.dmg + 'k', p1.dmg, p2.dmg));
+                container.appendChild(createCompareRow(p1.vision, 'Vision Score', p2.vision, p1.vision, p2.vision));
+                container.appendChild(createCompareRow(p1.soloKills, 'Solo Kills', p2.soloKills, p1.soloKills, p2.soloKills));
+            }
+        }
+
+        function createCompareRow(leftText, label, rightText, leftNum, rightNum) {
+            const row = document.createElement('div');
+            row.className = 'compare-row';
+
+            const lClass = leftNum > rightNum ? 'compare-winner' : '';
+            const rClass = rightNum > leftNum ? 'compare-winner' : '';
+
+            row.innerHTML = `
+                <div class="compare-val-left ${lClass}">${leftText}</div>
+                <div class="compare-label">${label}</div>
+                <div class="compare-val-right ${rClass}">${rightText}</div>
+            `;
+            return row;
+        }
+
         // ZAVÍRÁNÍ MODALŮ
         function closeAllModals(e) {
             document.getElementById('playerModal').classList.remove('active');
             document.getElementById('teamModal').classList.remove('active');
+            document.getElementById('compareModal').classList.remove('active');
         }
 
         function closeAllModalsDirect() {
             document.getElementById('playerModal').classList.remove('active');
             document.getElementById('teamModal').classList.remove('active');
+            document.getElementById('compareModal').classList.remove('active');
         }
 
         document.addEventListener('keydown', function(e) {
