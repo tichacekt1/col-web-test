@@ -582,3 +582,169 @@ a {
         display: none;
     }
 }
+
+/* --- SWISS STAGE BRACKET --- */
+.swiss-wrapper {
+    width: 100%;
+    overflow-x: auto; /* Zabezpečí horizontálny posun na mobiloch */
+    padding-bottom: 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--col-primary) #1a1a1a;
+}
+
+.swiss-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+.swiss-wrapper::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 4px;
+}
+.swiss-wrapper::-webkit-scrollbar-thumb {
+    background-color: var(--col-primary);
+    border-radius: 4px;
+}
+
+.swiss-bracket {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center; /* Vycentruje stĺpce vertikálne (presne ako na obrázku) */
+    min-width: max-content; /* Zabráni zmršťovaniu boxov pod ich obsah */
+    padding: 1rem 0;
+}
+
+.swiss-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 180px;
+    flex: 1;
+}
+
+/* KARTA PRE ZÁPASY */
+.swiss-card {
+    background: #2a2624; /* Tmavohnedý podklad z tvojho obrázku */
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    border: 1px solid #3d3936;
+}
+
+.swiss-card-header {
+    background: #474340; /* Svetlejší header */
+    color: var(--col-primary);
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    padding: 0.15rem 0;
+    line-height: 1.2;
+}
+
+/* Špeciálne farby pre Postup a Koniec */
+.swiss-card-header.highlight {
+    color: var(--col-primary);
+}
+
+.swiss-card-header.muted {
+    color: #888888;
+}
+
+/* --- RIADKY ZÁPASOV --- */
+.match-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.45rem 1rem; /* Trochu viac miesta zhora/zdola aj po bokoch */
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #ffffff;
+    gap: 1rem; /* Garantuje jasnú medzeru medzi tímami a stredovým skóre */
+}
+
+/* --- RIADKY ZÁPASOV (OBAL) --- */
+.swiss-card-body {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0; /* Týmto pridáš priestor hore nad prvým a dole pod posledným zápasom */
+}
+
+/* Ľavý aj pravý tím zarovnaný na stred */
+.match-row > span:first-child,
+.match-row > span:last-child {
+    flex: 1;
+    text-align: center;
+    transform: translateY(-2px); 
+}
+
+.match-row.text-muted {
+    color: #888888;
+}
+
+/* --- SKÓRE A VS TEXT --- */
+.match-score {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: #ffffff;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.match-score > span:not(.vs-text) {
+    display: inline-block;
+    width: 14px;
+    text-align: center;
+}
+
+.vs-text {
+    color: var(--col-primary);
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    margin: 0 0.8rem; /* Zväčšená medzera okolo VS (pôvodne 0.4rem) */
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 1;
+}
+
+/* Ak je VS priamo v riadku (bez čísiel, v stĺpci 0-0) */
+.match-row > .vs-text {
+    flex-shrink: 0;
+    width: auto;
+    margin: 0;
+}
+
+/* VÝSLEDNÉ KARTY (POSTUP/KONEC) */
+.result-card {
+    border: 1px solid #3d3936;
+}
+
+.outcome-content {
+    padding: 0.8rem;
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    line-height: 1;
+}
+
+.outcome-content.text-highlight {
+    color: var(--col-primary);
+}
+
+.outcome-content.text-muted {
+    color: #888888;
+}
+
+/* Oranžové VS */
+.vs-text {
+    color: var(--col-primary);
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    margin: 0 0.4rem;
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 1; /* Zabráni naťahovaniu boxu */
+}
