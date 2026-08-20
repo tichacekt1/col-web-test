@@ -263,25 +263,19 @@ a {
 .massive-text {
     font-family: var(--font-heading);
     font-size: clamp(3.8rem, 6.5vw, 6.2rem);
-    line-height: 1.05;
+    line-height: 1.15;
     letter-spacing: 1px;
     text-transform: uppercase;
 }
 
-.massive-text .stroke-text {
-    color: transparent;
-    -webkit-text-stroke: 2px #ffffff;
-}
-
 .massive-text .highlight {
     color: var(--col-primary);
-    -webkit-text-stroke: 0;
 }
 
 .massive-text-dark {
     font-family: var(--font-heading);
     font-size: clamp(3.8rem, 6.5vw, 6.2rem);
-    line-height: 1.05;
+    line-height: 1.15;
     letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--bg-dark);
